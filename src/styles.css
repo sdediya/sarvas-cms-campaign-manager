@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles — legacy-layout-tokens.css is the frozen light CMS baseline (pre-Optimus). */
 @import "primeicons/primeicons.css";
 @import "./assets/layout/styles/theme/legacy-layout-tokens.css";
 
