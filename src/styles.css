@@ -1,6 +1,12 @@
-/* Global styles — legacy-layout-tokens.css is the frozen light CMS baseline (pre-Optimus). */
-@import "@openng/icons/openng-icons.css";
-@import "./assets/layout/styles/theme/legacy-layout-tokens.css";
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+@import "@spartan-ng/brain/hlm-tailwind-preset.css";
+@import "./styles/spartan-theme.css";
+
+/* OpenNG icons + legacy tokens are listed in angular.json styles[] so Tailwind
+   PostCSS does not rewrite their font/url() paths incorrectly. */
 
 .customBtn{
     color: #fff !important;
@@ -119,4 +125,22 @@ p-button.p-button-outlined {
 p-button {
     display: inline-flex;
     vertical-align: middle;
+}
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

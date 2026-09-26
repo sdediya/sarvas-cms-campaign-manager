@@ -1,0 +1,62 @@
+:root {
+  color-scheme: light;
+  --radius: 0.5rem;
+  /* Shemaroo brand primary (logo magenta) — replaces Aura emerald on Spartan surfaces */
+  --primary: #d51f53;
+  --primary-foreground: #ffffff;
+  --background: #eff3f8;
+  --foreground: #212121;
+  --card: #ffffff;
+  --card-foreground: #212121;
+  --popover: #ffffff;
+  --popover-foreground: #212121;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #212121;
+  --muted: #f5f5f5;
+  --muted-foreground: #6c757d;
+  --accent: #f6f9fc;
+  --accent-foreground: #212121;
+  --destructive: #e24c4c;
+  --border: #dfe7ef;
+  --input: #dfe7ef;
+  --ring: #d51f53;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #212121;
+  --sidebar-primary: #d51f53;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f6f9fc;
+  --sidebar-accent-foreground: #212121;
+  --sidebar-border: #dfe7ef;
+  --sidebar-ring: #d51f53;
+}
+
+/* Dark-ready tokens — not activated in v1 (no .dark class toggle) */
+.dark {
+  color-scheme: dark;
+  --background: #0f1419;
+  --foreground: #f5f5f5;
+  --card: #1a1f26;
+  --card-foreground: #f5f5f5;
+  --popover: #1a1f26;
+  --popover-foreground: #f5f5f5;
+  --primary: #ed1651;
+  --primary-foreground: #ffffff;
+  --secondary: #262b33;
+  --secondary-foreground: #f5f5f5;
+  --muted: #262b33;
+  --muted-foreground: #9e9e9e;
+  --accent: #262b33;
+  --accent-foreground: #f5f5f5;
+  --destructive: #ef4444;
+  --border: #2e3440;
+  --input: #2e3440;
+  --ring: #ed1651;
+  --sidebar: #1a1f26;
+  --sidebar-foreground: #f5f5f5;
+  --sidebar-primary: #ed1651;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #262b33;
+  --sidebar-accent-foreground: #f5f5f5;
+  --sidebar-border: #2e3440;
+  --sidebar-ring: #ed1651;
+}
