@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
+/** Retained for ConfigComponent / login inject; shell sidebar state lives on LayoutComponent. */
 export interface AppConfig {
   inputStyle: string;
   colorScheme: string;
@@ -20,81 +20,40 @@ interface LayoutState {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LayoutService {
-
   config: AppConfig = {
-      ripple: false,
-      inputStyle: 'outlined',
-      menuMode: 'static',
-      colorScheme: 'light',
-      theme: 'lara-light-indigo',
-      scale: 12,
+    ripple: false,
+    inputStyle: 'outlined',
+    menuMode: 'static',
+    colorScheme: 'light',
+    theme: 'lara-light-indigo',
+    scale: 12,
   };
 
   state: LayoutState = {
-      staticMenuDesktopInactive: false,
-      overlayMenuActive: false,
-      profileSidebarVisible: false,
-      configSidebarVisible: false,
-      staticMenuMobileActive: false,
-      menuHoverActive: false
+    staticMenuDesktopInactive: false,
+    overlayMenuActive: false,
+    profileSidebarVisible: false,
+    configSidebarVisible: false,
+    staticMenuMobileActive: false,
+    menuHoverActive: false,
   };
 
-    private configUpdate = new Subject<AppConfig>();
-
-    private overlayOpen = new Subject<any>();
-
-    configUpdate$ = this.configUpdate.asObservable();
-
-    overlayOpen$ = this.overlayOpen.asObservable();
-
-    onMenuToggle() {
-      if (this.isOverlay()) {
-          this.state.overlayMenuActive = !this.state.overlayMenuActive;
-          if (this.state.overlayMenuActive) {
-              this.overlayOpen.next(null);
-          }
-      }
-
-      if (this.isDesktop()) {
-          this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-      }
-      else {
-          this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-
-          if (this.state.staticMenuMobileActive) {
-              this.overlayOpen.next(null);
-          }
-      }
+  showConfigSidebar(): void {
+    this.state.configSidebarVisible = true;
   }
 
-  showProfileSidebar() {
-      this.state.profileSidebarVisible = !this.state.profileSidebarVisible;
-      if (this.state.profileSidebarVisible) {
-          this.overlayOpen.next(null);
-      }
+  isDesktop(): boolean {
+    return window.innerWidth > 991;
   }
 
-  showConfigSidebar() {
-      this.state.configSidebarVisible = true;
+  isMobile(): boolean {
+    return !this.isDesktop();
   }
 
-  isOverlay() {
-      return this.config.menuMode === 'overlay';
+  onConfigUpdate(): void {
+    // no-op: Sakai theme switcher removed from shell
   }
-
-  isDesktop() {
-      return window.innerWidth > 991;
-  }
-
-  isMobile() {
-      return !this.isDesktop();
-  }
-
-  onConfigUpdate() {
-      this.configUpdate.next(this.config);
-  }
-  
 }

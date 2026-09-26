@@ -1,18 +1,43 @@
-<div class="layout-topbar">
-    <a class="layout-topbar-logo" routerLink="">
-        <img src="../../../../../assets/images/shemaroo_logo.svg" alt="logo">
-    </a>
+<header class="flex h-14 items-center gap-3 border-b border-border bg-background px-4">
+  <button
+    type="button"
+    hlmBtn
+    variant="ghost"
+    size="icon"
+    class="md:hidden"
+    (click)="menuToggle.emit()"
+    aria-label="Toggle menu"
+  >
+    <ng-icon name="lucideMenu" size="1.25rem" />
+  </button>
 
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
-        <i class="pi pi-bars"></i>
+  <a routerLink="/" class="flex items-center">
+    <img src="assets/images/shemaroo_logo.svg" alt="Shemaroo" class="h-8 w-auto" />
+  </a>
+
+  <div class="ms-auto">
+    <button
+      type="button"
+      hlmBtn
+      variant="ghost"
+      size="sm"
+      class="gap-2"
+      [hlmDropdownMenuTrigger]="userMenu"
+    >
+      <ng-icon name="lucideUser" size="1.1rem" />
+      <span class="hidden sm:inline">{{ displayName }}</span>
+      <ng-icon name="lucideChevronDown" size="1rem" class="opacity-60" />
     </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <button #btn type="button" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
-            <i class="pi pi-user"></i>
+    <ng-template #userMenu>
+      <div hlmDropdownMenu class="min-w-48">
+        <div hlmDropdownMenuLabel>Welcome, {{ displayName }}</div>
+        <div hlmDropdownMenuSeparator></div>
+        <button type="button" hlmDropdownMenuItem (triggered)="logout()">
+          <ng-icon name="lucideLogOut" size="1rem" />
+          Logout
         </button>
-        <p-tieredmenu #menu [model]="items" [popup]="true"></p-tieredmenu>
-    </div>
-</div>
-
-<p-toast></p-toast>
+      </div>
+    </ng-template>
+  </div>
+</header>

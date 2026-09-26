@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LayoutService } from '../../layout.service';
 import jsonMenuData from '../../../../../assets/menu.json';
 import { environment } from 'src/environments/environment';
-import { HttpService } from 'src/app/services/http/http.service';
 import { StateService } from 'src/app/services/storage/state.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Subscription } from 'rxjs';
@@ -20,8 +18,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   private stateSub!: Subscription;
 
   constructor(
-    public layoutService: LayoutService,
-    private httpService: HttpService,
     private StateService: StateService,
     private storageService: StorageService
   ) {}
