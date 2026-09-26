@@ -1,0 +1,191 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Campaigns</h5>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid">
+        <p-select class="col" [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Services" optionValue="id"></p-select>
+
+        <p-select class="col" [(ngModel)]="telcom_id" id="tel_id" [options]="telecom_operators" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
+
+        <!-- <p-select class="col" [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select> -->
+
+        <p-select class="col" [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
+
+        <p-select class="col" [(ngModel)]="filter.campaign_type" id="campaign_type" [options]="campaign_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'campaign_type')" placeholder="Campaign Type" optionValue="code"></p-select>
+
+        <p-select class="col" [(ngModel)]="filter.status" id="campaign_status" [options]="campaign_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Campaign Status" optionValue="code"></p-select>
+
+      </div>
+      <div class="flex">
+        @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+        }
+      </div>
+      <p-divider></p-divider>
+      <p-table #dt1 [value]="campaigns"  [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Campaign" class="w-full"/></p-iconfield>
+            @if (campaigns.length>0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="min-width: 6rem" >
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+            <th style="width: 10px">
+              Campaign URL / ID
+            </th>
+            <th style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                Campaign ID
+              </div>
+            </th>
+            <th pSortableColumn="name"  style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="service" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Service <p-sort-icon class="mx-4" field="service"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="region"  style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="plan" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Plan <p-sort-icon class="mx-4" field="plan"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="platform" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Platform <p-sort-icon class="mx-4" field="platform"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="operator" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                S2S URL
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Created at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Created by
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated by
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Campaign Owner
+              </div>
+            </th>
+
+          </tr>
+        </ng-template>
+        <ng-template #body let-campaigns let-rowIndex="rowIndex">
+          <tr>
+            <td >
+              @if (write) {
+                <p-button [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+            <td class="text-center">
+              <i class="pi pi-clone cursor-pointer" title="{{campaigns.campaigntype=='wap' ? 'Copy Camapign Link!' : 'Copy Camapign ID'}}" (click)="copyToClipboard(campaigns.id, campaigns.campaigntype, campaigns.is_silent)"></i></td>
+              <td>
+                {{campaigns.id}}
+              </td>
+              <td>
+                {{campaigns.name}}
+              </td>
+              <td>
+                {{campaigns.service_name}}
+              </td>
+              <td>
+                {{campaigns.region_name}}
+              </td>
+              <td>
+                {{getPlanName(campaigns.plan_name)}}
+              </td>
+              <td>
+                {{campaigns.ad_platform_name}}
+              </td>
+              <td>
+                {{campaigns.telecom_name}}
+              </td>
+              <td>
+                {{campaigns.s2s_url}}
+              </td>
+              <td>
+                <p-toggleswitch [(ngModel)]="campaigns.checked" [disabled]="!write" class="p-inputswitch-checked" (onChange)="toggleCampaign(campaigns.id, campaigns.status, rowIndex)"></p-toggleswitch>
+              </td>
+              <td>
+                {{campaigns.createdat}}
+              </td>
+              <td>
+                {{campaigns.createdby}}
+              </td>
+              <td>
+                {{campaigns.updatedat}}
+              </td>
+              <td>
+                {{campaigns.updatedby}}
+              </td>
+              <td>
+                {{campaigns.campaign_owner_name}}
+              </td>
+
+            </tr>
+          </ng-template>
+
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="8">No data found.</td>
+            </tr>
+          </ng-template>
+          <ng-template #loadingbody>
+            <tr>
+              <td colspan="8">Loading data. Please wait.</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  <p-toast></p-toast>
+  <p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

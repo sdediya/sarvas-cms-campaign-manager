@@ -1,0 +1,117 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="ml-1 grid">
+        <h5>IP Reports</h5>
+      </div>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <form [formGroup]="ipForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="ip_date_range">Select Date Range<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-datepicker formControlName="ip_date_range" selectionMode="range" [readonlyInput]="true"
+                inputId="range" [class]="'w-12'" dateFormat="yy-mm-dd" [showIcon]="true"
+                [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['ip_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['ip_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Operator<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select (onChange)="dropdownOnChange($event, 'operator')" formControlName="operator"
+                id="operator" [options]="telecoms" optionLabel="name" [filter]="true"
+              placeholder="Operator" [showClear]="true" optionValue="id"></p-select>
+              @if (submitted && !f['operator'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['operator'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select operator
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Campaign</label>
+              <p-select formControlName="campaign" id="campaign" [options]="campaignData"
+                optionLabel="name" [filter]="true" placeholder="Campaign" [showClear]="true"
+              optionValue="id"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Ad-Partner</label>
+              <p-select formControlName="ad_partner" id="ad_partner" [options]="advertising_platforms"
+                optionLabel="name" [filter]="true" placeholder="Ad-Partner" [showClear]="true"
+              optionValue="id"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label>Select msisdn</label>
+              <p-select formControlName="is_msisdn" id="is_msisdn" [options]="msisdns"
+                optionLabel="name" [filter]="true" placeholder="Msisdn" [showClear]="true"
+              optionValue="code"></p-select>
+            </div>
+          </div>
+          <div class="col-3 md:col-2">
+            <button type="submit" pButton pRipple severity="primary">Export</button>
+          </div>
+
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <!-- <p-table #dt1 [columns]="cols" [value]="reports" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="total_records" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+          <ng-template #caption>
+            <div class="flex justify-content-end flex-column sm:flex-row">
+              <button *ngIf="reports.length>0" type="button" pButton pRipple  (click)="exportToExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+            </div>
+          </ng-template>
+          <ng-template #header let-columns>
+            <tr>
+              <th pFrozenColumn [frozen]="dateColumn" *ngFor="let col of columns; first as dateColumn">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-rowData let-columns="columns">
+            <tr>
+              <td pFrozenColumn [frozen]="dateColumn" *ngFor="let col of columns; first as dateColumn" >
+                {{rowData[col.key]}}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="8">No data found.</td>
+            </tr>
+          </ng-template>
+          <ng-template #loadingbody>
+            <tr>
+              <td colspan="8">Loading data. Please wait.</td>
+            </tr>
+          </ng-template>
+        </p-table> -->
+      </div>
+    }
+  </div>
+</div>
+</div>
+<p-toast></p-toast>

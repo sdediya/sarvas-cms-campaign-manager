@@ -1,0 +1,138 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="serviceAPILogsForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12">
+            <h5 class="m-0">Service API Logs</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="log_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="log_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['log_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['log_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="log_telcom">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="log_telcom" [options]="telcoms" [filter]="true" optionLabel="name" formControlName="log_telcom" placeholder="Select Telcom" optionValue="id"></p-select>
+              @if (submitted && !f['log_telcom'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['log_telcom'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select telcom
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="master_aggregator">Select Master Aggregator</label>
+              <p-select id="master_aggregator" [showClear]="true" [options]="masterAggregator" [filter]="true" optionLabel="maggregator_name" formControlName="master_aggregator" placeholder="Master Aggregator" optionValue="maggregator_id"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="log_partner">Select Partner</label>
+              <p-select id="log_partner" [filter]="true" [options]="partners" [filter]="true" [showClear]="true" optionLabel="name" formControlName="log_partner" placeholder="Select Partner" optionValue="id"></p-select>
+            </div>
+          </div>
+
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table #dt1 [value]="logs" [scrollable]="true" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="50" [totalRecords]="totalRecords" [loading]="loading"  [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]="true" [globalFilterFields]="['msisdn']">
+            <ng-template #caption>
+              <div class="flex justify-content-between flex-column sm:flex-row">
+                <div class="flex align-items-center justify-content-between">
+                  {{log_fields?.telecom?.name}}
+                </div>
+                <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+                  <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search By MSISDN" class="w-full"/></p-iconfield>
+                @if (logs.length>0) {
+                    <button type="button" pButton pRipple (click)="downloadExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                  }
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                <th style="min-width: 6rem" >
+                  <div class="flex justify-content-between align-items-center">
+                    Date
+                  </div>
+                </th>
+                <th style="min-width: 6rem" >
+                  <div class="flex justify-content-between align-items-center">
+                    MSISDN
+                  </div>
+                </th>
+                <th style="min-width: 6rem" >
+                  <div class="flex justify-content-between align-items-center">
+                    Type
+                  </div>
+                </th>
+                <th style="min-width: 6rem" >
+                  <div class="flex justify-content-between align-items-center">
+                    Request
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-logs let-rowIndex="rowIndex">
+              <tr>
+                <td style="text-wrap: nowrap;">
+                  {{logs.istDate}}
+                </td>
+                <td>
+                  <div class="flex align-items-center gap-2">
+                    <span>
+                      {{ logs.showFull ? logs.msisdn : (logs.msisdn | maskMsisdn) }}
+                    </span>
+                    @if (logs.msisdn) {
+                      <button
+                        pButton
+                        type="button"
+                        class="p-button-text p-0"
+                        (click)="showMsisdn(logs)"><i [ngClass]="logs.showFull ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                      </button>
+                    }
+                  </div>
+                </td>
+                <td>
+                  {{logs.type}}
+                </td>
+                <td [innerHTML]="getMaskedRequestBody(logs.request, logs.msisdn)"></td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="18">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="18">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

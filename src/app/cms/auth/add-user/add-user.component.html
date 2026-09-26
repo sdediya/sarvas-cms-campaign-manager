@@ -1,0 +1,114 @@
+<div class="grid">
+	<div class="col-12">
+		<div class="card">
+			<h5 class="mb-5" *ngIf="!editable">Add User</h5>
+			<h5 class="mb-5" *ngIf="editable">Edit User</h5>
+            <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_fname">First Name</label>
+                        <input pInputText id="user_fname" type="text" formControlName="user_fname" placeholder="First Name" />
+                        <div *ngIf="submitted && !f['user_fname'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_fname'].hasError('required') ">  
+                                Please enter first name  
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_lname">Last Name</label>
+                        <input pInputText id="user_lname" type="text" formControlName="user_lname" placeholder="Last Name" />
+                        <div *ngIf="submitted && !f['user_lname'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_lname'].hasError('required') ">  
+                                Please enter last name  
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_email">Email Address</label>
+                        <input pInputText id="user_email" type="text" formControlName="user_email" placeholder="Email Address" />
+                        <div *ngIf="submitted && !f['user_email'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_email'].hasError('email') ">  
+                                Please enter valid email address  
+                            </span>
+                            <span class="p-error" *ngIf="f['user_email'].hasError('required') ">  
+                                Please enter email address  
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_mobile">Mobile</label>
+                        <input pInputText id="user_mobile" type="text" formControlName="user_mobile" placeholder="Mobile" />
+                        <div *ngIf="submitted && !f['user_mobile'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_mobile'].hasError('minlength') || f['user_mobile'].hasError('maxlength') || f['user_mobile'].hasError('digit') ">  
+                                Please enter valid 10 digit mobile number
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_password">Password</label>
+                        <input pInputText id="user_password" type="text" formControlName="user_password" placeholder="Password" />
+                        <div *ngIf="submitted && !f['user_password'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_password'].hasError('required') ">  
+                                Please enter password
+                            </span>
+                            <span class="p-error" *ngIf="f['user_password'].hasError('minLength') ">  
+                                Password should be atleast 10 characters long
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label htmlFor="user_cpassword">Confirm Password</label>
+                        <input pInputText id="user_cpassword" type="text" formControlName="user_cpassword" placeholder="Confirm Password" />
+                        <div *ngIf="submitted && !f['user_cpassword'].valid" style="display: block; width: 100%;">
+                            <span class="p-error" *ngIf="f['user_cpassword'].hasError('required')">  
+                                Please enter confirm password
+                            </span>
+                            <span class="p-error" *ngIf="f['user_cpassword'].hasError('compare') && f['user_password'].valid">  
+                                Password and Confirm Password should be same
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label htmlFor="user_role">Select Role</label>
+                        <p-select id="user_role" [options]="rolesList" optionLabel="name" formControlName="user_role" placeholder="Select Role" optionValue="id"></p-select>
+                        <div *ngIf="submitted && !f['user_role'].valid" style="display: block; width: 100%;">  
+                            <span class="p-error" *ngIf="f['user_role'].hasError('required') ">  
+                                Please select user role  
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-9" formArrayName="user_permissions">
+                        <div class="grid">
+                            <div class="field col-12 md:col-12 m-0 pb-0">
+                                <label htmlFor="user_role">Select User Permissions</label>
+                            </div>
+                            <div class="field col-12 md:col-4 field-checkbox" *ngFor="let permission of f['user_permissions'].controls; let i=index">
+                                <div class="" [formGroupName]="i">
+                                    <p><b>{{f['user_permissions'].controls[i].controls['module_label'].value | titlecase}}</b></p>
+                                    <div class="flex align-items-center gap-1">
+                                        <p-checkbox formControlName="read" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-read" [binary]="true" ></p-checkbox>
+                                        <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-read">Read </label>
+                                    </div>
+                                    <div class="flex align-items-center gap-1 mb-1 mt-1">
+                                        <p-checkbox formControlName="write" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-write" [binary]="true" ></p-checkbox>
+                                        <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-write">Write </label>
+                                    </div>
+                                    <div class="flex align-items-center gap-1">
+                                        <p-checkbox formControlName="delete" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-delete" [binary]="true"></p-checkbox>
+                                        <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-delete">Delete </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-fluid formgrid grid field ">
+                    <div class="col-12 md:col-3 pt-0">
+                        <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+                    </div>
+                </div>
+            </form>
+		</div>
+	</div>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,7 @@
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr.sticky-last-row > td.sticky-last-cell {
+  font-weight: 700;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: #ffffff;
+}

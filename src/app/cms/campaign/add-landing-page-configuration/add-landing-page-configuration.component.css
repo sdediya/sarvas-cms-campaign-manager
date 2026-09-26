@@ -1,0 +1,158 @@
+.banner_img{
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+.input {
+    width: 40px;
+    border: none;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+    margin: 0 10px;
+    text-align: center;
+    font-size: 36px;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+  
+.input:focus {
+    border-bottom: 3px solid orange;
+    outline: none;
+}
+  
+.input:nth-child(1) {
+    cursor: pointer;
+    pointer-events: all;
+}
+.blur-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    -moz-backdrop-filter: blur(6px);
+}
+
+.operator-name{
+    padding-left: 20px;
+    margin-left: 20px;
+    border-left: 1px solid #dfe7ef;
+}
+
+/* Extra Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+    .landing_page_wrapper{
+        height: 100vh;
+    }
+    .landing_page_card{
+        height: 100vh;
+        border-radius: 0;
+        padding: 0;
+    }
+    .inner_card {
+        height: calc( 100% - 68px);
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .landing_page_card{
+        margin:3rem 0;
+        padding: 2rem !important;
+        border: 1px solid #dfe7ef !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+/* @media (min-width: 768px) {
+    
+} */
+
+/* Large devices (desktops, 992px and up) */
+/* @media (min-width: 992px) {
+    
+} */
+
+/* X-Large devices (large desktops, 1200px and up) */
+/* @media (min-width: 1200px) {
+    
+} */
+
+/* XX-Large devices (larger desktops, 1400px and up) */ 
+@media (min-width: 1400px) {
+    /* .banner_img{
+        width: 51%;
+    } */
+}
+
+@media (min-width: 1920px) {
+    .landing_page_card{
+        width: 50%;
+        margin: auto;
+    }
+}   
+
+
+
+.header {
+    position: relative;
+}
+.language{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.rtl {
+    text-align: right;
+    direction: rtl;
+}
+.ltr {
+    direction: ltr;
+}
+.logo_container ,
+.operator_logo_container{
+    flex-grow: 1;  
+    width: 50%;
+}
+.logo_container img ,
+.operator_logo_container img {
+    width: 100%;
+    height: 40px;   
+}
+.operator-img{
+    border-left: 1px solid #dfe7ef;
+    object-fit: contain;
+}
+::ng-deep .p-inputtextarea,
+.terms-textarea {
+  width: 100% !important;
+  font-size: 0.95rem;
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  color: #333;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 0.75rem 1rem;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.4;
+  box-shadow: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+::ng-deep .p-inputtextarea:focus,
+.terms-textarea:focus {
+  border-color: #3b82f6; /* PrimeNG blue */
+  box-shadow: 0 0 0 0.15rem rgba(59, 130, 246, 0.25);
+  outline: none;
+}
+
+::ng-deep .p-inputtextarea::placeholder {
+  color: #999;
+}
+
+::ng-deep .p-error + .p-inputtextarea {
+  border-color: #dc2626 !important; /* red for error */
+}

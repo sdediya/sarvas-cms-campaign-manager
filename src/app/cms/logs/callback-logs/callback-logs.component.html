@@ -1,0 +1,120 @@
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="callbackLogsForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-end">
+          <div class="col-12">
+            <h5 class="m-0 mb-3">Callback Logs</h5>
+          </div>
+          <div class="field col-12 md:col-3">
+            <label for="callback_date_range">Select Date Range<span class="text-red-500">*</span></label>
+            <p-datepicker formControlName="callback_date_range" placeholder="Select date range" selectionMode="range" [readonlyInput]="true" inputId="callback_date_range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+            </p-datepicker>
+            @if (submitted && !f['callback_date_range'].valid) {
+              <div>
+                @if (f['callback_date_range'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select report date range
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-3">
+            <label for="callback_telcom_region">Select Telcom<span class="text-red-500">*</span></label>
+            <p-select id="callback_telcom_region" [options]="telcoms" [filter]="true" optionLabel="name" formControlName="callback_telcom_region" placeholder="Select Telcom" [showClear]="true" (onChange)="filterOnChange($event,'telcom')" ></p-select>
+            @if (submitted && !f['callback_telcom_region'].valid) {
+              <div>
+                @if (f['callback_telcom_region'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select telcom
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-3">
+            <label for="callback_partner">Select Partner</label>
+            <p-select id="callback_partner" [options]="masterAggregator" [filter]="true" optionLabel="name" formControlName="callback_partner" placeholder="Select Partner" [showClear]="true" ></p-select>
+            @if (submitted && !f['callback_partner'].valid) {
+              <div>
+                @if (f['callback_partner'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select partner
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-auto " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (freezTableValue) {
+        <div>
+          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+            <ng-template #caption>
+              <div class="flex justify-content-between flex-column sm:flex-row">
+                <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+                  <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Service" class="w-full"/></p-iconfield>
+                @if (callbacklogs?.length > 0) {
+                  <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                }
+              </div>
+            </ng-template>
+            <ng-template #header>
+              <tr>
+                <th style="min-width: 10rem" >
+                  <div class="flex justify-content-between align-items-center">
+                    Date
+                  </div>
+                </th>
+                <th style="min-width: 12rem">
+                  <div class="flex justify-content-between align-items-center">
+                    MSISDN
+                  </div>
+                </th>
+                <th style="min-width: 12rem">
+                  <div class="flex justify-content-between align-items-center">
+                    Callback
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-callbackLogs let-rowIndex="rowIndex">
+              <tr>
+                <!-- <td><i class="pi pi-clone cursor-pointer" title="Copy Campaign Link" (click)="copyToClipboard(campaigns.id, campaigns.campaigntype)"></i></td> -->
+                <td style="text-wrap: nowrap;">
+                  {{callbackLogs.date | date: 'yyyy-MM-dd HH:mm a':'IST'}}
+                </td>
+                <td class="flex align-items-center gap-2">
+                  {{ callbackLogs.showFull ? callbackLogs.msisdn : (callbackLogs.msisdn | maskMsisdn) }}
+                  @if (callbackLogs.msisdn) {
+                    <button pButton type="button" class="p-button-text p-0" (click)="showMsisdn(callbackLogs)"><i [ngClass]="callbackLogs.showFull ? 'pi pi-eye-slash' : 'pi pi-eye'"></i></button>
+                  }
+                </td>
+                <td>{{ getMaskedRequestBody(callbackLogs.requestBody, callbackLogs.msisdn) }}</td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="8">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="8">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<p-dialog header="Request body" [(visible)]="showLogResponse" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <pre>{{selectedCallbackLog | json}}</pre>
+</p-dialog>

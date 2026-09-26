@@ -1,0 +1,85 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="m-2 grid justify-content-between">
+        <h5>Master Aggregator List</h5>
+        @if (write) {
+          <p-button [routerLink]="['/masters/add-master-aggregator']">Add  Master Aggregator</p-button>
+        }
+      </div>
+      <p-table #dt1 [value]="m_aggregators"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Master Aggregator" class="w-full"/></p-iconfield>
+            @if (m_aggregators.length>0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th pSortableColumn="name" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Created at
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated at
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-m_aggregators let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{m_aggregators.name}}
+            </td>
+            <td>
+              {{m_aggregators.createdat | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              {{m_aggregators.updatedat | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              <p-toggleswitch [disabled]="!write" [(ngModel)]="m_aggregators.checked" class="p-inputswitch-checked" (onChange)="toggleMasterAggregator(m_aggregators.id, m_aggregators.status, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/masters/edit-master-aggregator']" [queryParams]="{id: m_aggregators.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

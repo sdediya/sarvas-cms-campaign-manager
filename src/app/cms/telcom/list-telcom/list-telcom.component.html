@@ -1,0 +1,119 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Operators</h5>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid">
+        <!-- <p-select class="col" [(ngModel)]="filter.maggregator_id" id="maggregator_id" [options]="master_aggregators" optionLabel="maggregator_name" (onChange)="filterOnChange($event, 'maggregator_id')" placeholder="Partner" optionValue="maggregator_id"></p-select> -->
+        <div class="col-3">
+          <p-select  [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" [filter]="true" [showClear]="true" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select>
+        </div>
+
+        <div class="col-3">
+          <p-select [(ngModel)]="filter.status" id="status" [options]="operator_status" optionLabel="status" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Status" optionValue="value"></p-select>
+        </div>
+        <div class="col-3">
+          @if (filter.region_id || filter.status) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+          }
+        </div>
+
+      </div>
+      <p-divider></p-divider>
+      <p-table #dt1 [value]="telcoms"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Operator" class="w-full"/></p-iconfield>
+            @if (telcoms.length>0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="width: 10px"></th>
+            <th style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                Operator ID
+              </div>
+            </th>
+            <th pSortableColumn="name" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              </div>
+            </th>
+            <th pSortableColumn="region" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Created at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-telcoms let-rowIndex="rowIndex">
+          <tr>
+            <td><i class="pi pi-clone cursor-pointer" title="Copy Operator ID" (click)="copyToClipboard(telcoms.id)"></i></td>
+            <td>
+              {{telcoms.id}}
+            </td>
+            <td>
+              {{telcoms.name}}
+            </td>
+            <td>
+              {{telcoms.region_name}}
+            </td>
+            <td>
+              {{ telcoms.createdat | date: 'yyyy-MM-dd HH:mm a' }}
+            </td>
+            <td>
+              {{ telcoms.updatedat | date: 'yyyy-MM-dd HH:mm a' }}
+            </td>
+            <td>
+              <p-toggleswitch [disabled]="!write" [(ngModel)]="telcoms.checked" class="p-inputswitch-checked" (onChange)="toggleTelcom(telcoms.id, telcoms.status, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/operator/edit']" [queryParams]="{id: telcoms.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

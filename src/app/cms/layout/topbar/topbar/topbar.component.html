@@ -1,0 +1,19 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo" routerLink="">
+        <img src="../../../../../assets/images/shemaroo_logo.svg" alt="logo">
+    </a>
+
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        <p-togglebutton id="themeSwitchBtn" styleClass="p-button-lg" [(ngModel)]="darkTheme" onIcon="pi pi-moon" offIcon="pi pi-sun" [style]="{ width: 'auto', background: 'none', border: 'none' }" (onChange)="switchTheme($event)"></p-togglebutton>
+        <button #btn type="button" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
+            <i class="pi pi-user"></i>
+        </button>
+        <p-tieredmenu #menu [model]="items" [popup]="true"></p-tieredmenu>
+    </div>
+</div>
+
+<p-toast></p-toast>

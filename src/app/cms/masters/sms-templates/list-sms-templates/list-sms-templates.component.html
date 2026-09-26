@@ -1,0 +1,97 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="grid justify-content-between">
+        <h5>SMS Template List</h5>
+        @if (write) {
+          <p-button [routerLink]="['/masters/add-sms-template']">Add SMS Template</p-button>
+        }
+      </div>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid mx-1">
+        <span>
+          <p-select class="col-3" [(ngModel)]="filter.telcom_id" id="telcom_id" placeholder="Operator" [options]="telecoms" optionLabel="name" [filter]="true" [showClear]="true" (onChange)="filterOnChange($event, 'telcom_id')"  optionValue="id"></p-select>
+          @if (filter.telcom_id) {
+            <button type="button" pButton pRipple (click)="clearFilters()" class="my-3" severity="secondary">Clear</button>
+          }
+        </span>
+      </div>
+      <p-divider></p-divider>
+      <p-table #dt1 [value]="sms_templates"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search SMS Template" class="w-full"/></p-iconfield>
+            @if (sms_templates.length > 0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Name
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Telcom
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Message
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-sms_templates let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{sms_templates.name}}
+            </td>
+            <td>
+              {{sms_templates.telcom_name}}
+            </td>
+            <td>
+              {{sms_templates.msg}}
+            </td>
+            <td>
+              <p-toggleswitch [(ngModel)]="sms_templates.checked" [disabled]="!write" class="p-inputswitch-checked" (onChange)="toggleSmsTemplates(sms_templates.id, sms_templates.status, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/masters/edit-sms-template']" [queryParams]="{id: sms_templates.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

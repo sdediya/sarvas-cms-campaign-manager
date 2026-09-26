@@ -1,0 +1,108 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="currencyLogForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-3">
+            <h5 class="m-0">Currency Logs</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="currency_year">Select Year<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="currency_year" view="year" inputId="yearpicker" dateFormat="yy" selectionMode="single" [maxDate]="maxDate" [readonlyInput]="true" [showIcon]="true">
+              </p-datepicker>
+              @if (submitted && !f['currency_year'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['currency_year'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select year
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm && recordsFound) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+            <ng-template #caption>
+              <div class="flex">
+                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                <th style="min-width: 6rem">
+                  <div class="flex justify-content-between align-items-center">
+                    Options
+                  </div>
+                </th>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <th pFrozenColumn [frozen]="dateColumn">
+                    {{col.header}}
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                <td>
+                  @if (write) {
+                    <p-button (click)="showDialog(rowData.id)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                  }
+                </td>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn" >
+                    {{rowData[col.key]}} @if (col.key=='inr') {
+                    <span>({{rowData.currlog_inr_buffer}})</span>
+                  }
+                </td>
+              }
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    }
+  </div>
+</div>
+</div>
+<p-toast></p-toast>
+
+<!-- Currency Buffer edit for INR -->
+<p-drawer [(visible)]="visible" position="right">
+  <h5>Edit Currency Log ({{currentCurrlog.date}})</h5>
+  <form [formGroup]="currencyBufferForm" (ngSubmit)="onCurrencyBufferSubmit()">
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+
+        <div class="field col-12">
+          <label htmlFor="currlog_inr_buffer">Buffer Amount<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="currlog_inr_buffer" type="number" formControlName="currlog_inr_buffer" placeholder="INR Buffer amount"  />
+          <small id="currlog_inr_buffer">This buffer amount used to plus or minus from INR currency and used for report purpose</small>
+          @if (submitted && !cbf['currlog_inr_buffer'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (cbf['currlog_inr_buffer'].hasError('required') ) {
+                <span class="p-error">
+                  Buffer Amount is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-12 col-3">
+          <label >INR Amount after buffer will be {{afterBufferINR}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="p-fluid formgrid grid pl-3">
+      <div class="field col-12 md:col-12 pt-0">
+        <button type="submit" pButton pRipple class="w-6 text-sm " size="small">Submit</button>
+      </div>
+    </div>
+  </form>
+</p-drawer>

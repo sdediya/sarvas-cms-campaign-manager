@@ -1,0 +1,259 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="grid justify-content-between">
+        <h5 class="m-2">Plans</h5>
+      </div>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid">
+        <p-select class="col" [(ngModel)]="telcom_id" id="telcom_id" [options]="telcoms" optionLabel="tel_name" [filter]="true" [showClear]="true" (onChange)="filterOnChange($event, 'telcom_id')" placeholder="Operator" optionValue="tel_id"></p-select>
+
+        <!-- <p-select class="col" [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select> -->
+
+        <p-select class="col" [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Service" optionValue="id"></p-select>
+
+        <p-select class="col" [(ngModel)]="filter.validity" id="validity" [options]="plan_validity" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'validity')" placeholder="Validity" optionValue="value"></p-select>
+
+        <p-select class="col" [(ngModel)]="filter.status" id="status" [options]="plan_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Status" optionValue="value"></p-select>
+
+      </div>
+      <div class="flex">
+        @if (filter.telcom_id || filter.region_id || filter.service_id || filter.validity || filter.status) {
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+        }
+      </div>
+      <p-divider></p-divider>
+      <p-table #dt1 [value]="plans" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Plan" class="w-full"/></p-iconfield>
+            @if (plans.length>0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="width: 10px">
+              Product URL
+            </th>
+            <th style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                Plan ID
+              </div>
+            </th>
+            <th style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                Plan Name
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Plan Amount
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Plan Validity
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Service
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Operator
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Region
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Created at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated at
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-plans let-rowIndex="rowIndex">
+          <tr>
+            <td class="text-center"><i class="pi pi-clone cursor-pointer" title="Copy Product URL" (click)="copyToClipboard(plans.id)"></i></td>
+            <td>{{plans.id}}</td>
+            <td>{{plans.name}}</td>
+            <td>{{plans.amount}}</td>
+            <td>{{plans.validity}}</td>
+            <td>{{plans.service}}</td>
+            <td>{{plans.telecom}}</td>
+            <td>{{plans.region}}</td>
+            <td>{{ plans.createdat | date: 'yyyy-MM-dd HH:mm a' }}</td>
+            <td>{{ plans.updatedat | date: 'yyyy-MM-dd HH:mm a' }}</td>
+            <td>
+              <p-toggleswitch [disabled]="!write" [(ngModel)]="plans.checked" class="p-inputswitch-checked" (onChange)="togglePlan(plans.id, plans.status, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/plan/edit']" [queryParams]="{id: plans.id}" title="Edit Plan" class="mr-2" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+              @if (write && plans.fallback && plans.fallback==1) {
+                <p-button type="button" (click)="getPlanbyId(plans.id)" title="Add Fallback" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<!-- Fallback Sidebar Starts -->
+@if (fallbackSidebarVisible) {
+  <div>
+    <p-drawer [(visible)]="fallbackSidebarVisible" position="right" [style]="{width:'40em'}">
+      <h3>Plan Details</h3>
+      <table>
+        <body>
+          <tr>
+            <th width="50%">Region</th>
+            <td width="50%">{{ selectedPlan.region_name }}</td>
+          </tr>
+          <tr>
+            <th>Operator</th>
+            <td>{{ selectedPlan.tel_name }}</td>
+          </tr>
+          <tr>
+            <th>Plan Name</th>
+            <td>{{ selectedPlan.plan_name }}</td>
+          </tr>
+          <!-- <tr>
+          <th>Plan Code</th>
+          <td>{{ selectedPlan.plan_code }}</td>
+        </tr> -->
+        <tr>
+          <th>Plan Validity</th>
+          <td>{{ selectedPlan.plan_validity }}</td>
+        </tr>
+        <tr>
+          <th>Plan Amount</th>
+          <td>{{ selectedPlan.plan_amount }}</td>
+        </tr>
+      </body>
+    </table>
+    @if (fallbackList.length > 0) {
+      <div class="col-12 md:col-12  pl-0 pr-0 mt-4">
+        <h5 class="m-0">Fallback List</h5>
+        <div class="col-12 md:col-12  pl-0 pr-0">
+          <p-table [value]="fallbackList">
+            <ng-template #header>
+              <tr>
+                <th>Fallback Amount</th>
+                <th>Fallback Validity</th>
+                <th>Options</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-fallback let-i="rowIndex">
+              <tr>
+                <td>{{ fallback.fallback_amount }}</td>
+                <td>{{ fallback.fallback_validity }}</td>
+                <td>
+                  <p-button type="button" (click)="deleteFallback(fallback.fallback_id, i)" title="Delete Fallback" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    }
+    <form [formGroup]="fallbackForm" (ngSubmit)="onSubmit()">
+      <div class="col-12 md:col-12" formArrayName="fallback_plans">
+        <div class="grid">
+          <div class="col-12 md:col-9">
+            <h5>Add Fallback Plan</h5>
+          </div>
+          <div class="col-12 md:col-3">
+            <p-button label="Add" (click)="addFallback()" size="small"></p-button>
+          </div>
+        </div>
+        @for (award of fallback_plans.controls; track award; let i = $index) {
+          <div>
+            <div class="p-fluid formgrid grid" [formGroupName]="i">
+              <div class="col-12 md:col-4">
+                <input pInputText id="fallbackValidity" type="text" placeholder="Fallback Validity" formControlName="fbplan_validity"/>
+                @if (submitted && !fadd['fallback_plans'].controls[i].controls['fbplan_validity'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (fadd['fallback_plans'].controls[i].controls['fbplan_validity'].hasError('required') ) {
+                      <span class="p-error">
+                        Fallback Validity is required
+                      </span>
+                    }
+                    @if (fadd['fallback_plans'].controls[i].controls['fbplan_validity'].hasError('pattern') ) {
+                      <span class="p-error">
+                        Fallback Validity should be number only
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="col-12 md:col-4">
+                <input pInputText id="fallbackPrice" type="text" placeholder="Fallback Amount" formControlName="fbplan_amount"/>
+                @if (submitted && !fadd['fallback_plans'].controls[i].controls['fbplan_amount'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (fadd['fallback_plans'].controls[i].controls['fbplan_amount'].hasError('required') ) {
+                      <span class="p-error">
+                        Fallback Amount is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="col-12 md:col-2">
+                <p-button (click)="removeFallback(i)" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="field col-12 md:col-12">
+        <button type="submit" pButton pRipple styleClass="p-button-sm" class="w-full p-3 text-md">Submit</button>
+      </div>
+    </form>
+  </p-drawer>
+</div>
+}
+<!-- Fallback Sidebar Ends -->
+
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>
+<p-confirmdialog key="confirmDeleteFallback"></p-confirmdialog>

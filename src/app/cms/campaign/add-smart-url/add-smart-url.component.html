@@ -1,0 +1,259 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Smart Url</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Smart Url</h5>
+      }
+      <form [formGroup]="smartUrlForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-12">
+            <p-fieldset legend="Smart Url Details">
+              <div class="grid">
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="campaign_region" [options]="campaign_regions" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_region')" formControlName="campaign_region" placeholder="Select Region" optionValue="id" [readonly]="editable"></p-select>
+                  @if (submitted && !f['campaign_region'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_region'].hasError('required') ) {
+                        <span class="p-error"> Region is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_telecom_id"> Select Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-multiselect id="campaign_telecom_id" [options]="telecom_operators" optionLabel="name" [filter]="false" (onChange)="dropdownOnChange($event, 'campaign_telecom_id')" formControlName="campaign_telecom_id" placeholder="Select Operator" optionValue="id" [readonly]="editable"></p-multiselect>
+                  @if (submitted && !f['campaign_telecom_id'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_telecom_id'].hasError('required')) {
+                        <span class="p-error"> Operator is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="dafault_telecom_id"> Select Default Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="dafault_telecom_id" [options]="default_telecom_operators" optionLabel="name" [filter]="false" (onChange)="dropdownOnChange($event, 'dafault_telecom_id')" formControlName="dafault_telecom_id" placeholder="Select Default Operator" optionValue="id" ></p-select>
+                  @if (submitted && !f['dafault_telecom_id'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['dafault_telecom_id'].hasError('required') ) {
+                        <span class="p-error"> Default Operator is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_plan_id">Select Plan<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="campaign_plan_id" [options]="planValidity" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_plan_id')"   formControlName="campaign_plan_id" placeholder="Select Plan Validity" optionValue="id" [readonly]="editable"></p-select>
+                  @if (submitted && !f['campaign_plan_id'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_plan_id'].hasError('required') ) {
+                        <span class="p-error"> Plan is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_platform_id">Select Ad Partner<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="campaign_platform_id" [options]="advertising_platforms" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_platform_id')" formControlName="campaign_platform_id" placeholder="Select As Partner" optionValue="id"></p-select>
+                  @if (submitted && !f['campaign_platform_id'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_platform_id'].hasError('required') ) {
+                        <span class="p-error"> Ad Partner is required </span>
+                      }
+                    </div>
+                  }
+                </div>
+
+
+                <div class="col-4 md:col-3">
+                  <div class="field col-12 m-0 p-0">
+                    <label htmlFor="selected_campaign">Select Campaign<span label styleclass="label-required" class="text-red-500">*</span></label>
+                    <p-multiselect [options]="campaignDataList"  optionLabel="name" optionValue="id" formControlName="selected_campaign" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select Campaign">
+                      <ng-template #selectedItem let-selectedOption>
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ selectedOption.name }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template #item let-campaign>
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ campaign.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-multiselect>
+
+                    @if (submitted && !f['selected_campaign'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['selected_campaign'].hasError('required') ) {
+                          <span class="p-error">Please select campaign</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+              <p-divider type="solid"></p-divider>
+              <div class="grid">
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_languages">Languages<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-multiselect [options]="languages" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_languages')" formControlName="campaign_languages" defaultLabel="Select Language" optionLabel="name" optionValue="name" display="chip"></p-multiselect>
+                  @if (submitted && !f['campaign_languages'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_languages'].hasError('required') ) {
+                        <span class="p-error"> Language is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+                <div class="field col-12 md:col-3">
+                  <label htmlFor="campaign_default_language">Default Language<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="campaign_default_language" [readonly]="default_language_readonly" [options]="default_language_list" optionLabel="name" formControlName="campaign_default_language" placeholder="Select Default Language" optionValue="name"></p-select>
+                  @if (submitted && !f['campaign_languages'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_languages'].hasError('required') ) {
+                        <span class="p-error"> Default language is required</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="field col-12 md:col-12 pt-0">
+
+                  <div formArrayName="theme">
+                    <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines"  dataKey="idd" [value]="theme.controls"  [scrollable]="false" id="addPlatform">
+                      <ng-template #header>
+                        <tr>
+                          <th style="width: 3rem">#</th>
+                          <th style="width: 20%">Language</th>
+                          <th style="width: 20%">Additional Text</th>
+                          <th style="width: 40%">Terms & Conditions</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template #body let-control let-expanded="expanded" let-i="rowIndex" let-last="last">
+                        <tr [formGroupName]="i">
+                          <td>
+                            {{i+1}}
+                          </td>
+                          <td style="width: 10rem">
+                            <div class="field m-0">
+                              {{f['theme'].controls[i].controls['language'].value }}
+                            </div>
+                          </td>
+                          <td style="width: 10rem">
+                            <div class="field m-0">
+                              <input pInputText id="additional_text" type="text" formControlName="additional_text" placeholder="Additional Text" />
+                            </div>
+                          </td>
+                          <td style="width: 10rem">
+                            <div class="field m-0">
+                              <p-editor formControlName="terms_conditions" [style]="{ height: '235px' }">
+                                <ng-template #header>
+                                  <span class="ql-formats">
+                                    <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                                    <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                                    <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                                    <button type="button" class="ql-list" aria-label="List" value='ordered'></button>
+                                    <button type="button" class="ql-list" aria-label="Bullet" value='bullet'></button>
+                                  </span>
+                                </ng-template>
+                              </p-editor>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+
+                <div class="field col-6">
+                  <label htmlFor="banner_image_urls">Banner Image</label>
+                  <span label styleclass="label-required" class="text-red-500">*</span>
+                  <div class="p-inputgroup w-full">
+                    <input pInputText id="banner_image_urls" #themeFileInput type="file"
+                      accept="image/*" (change)="onFileChange($event)"
+                      aria-describedby="theme_image" />
+                    @if (selectedThemeImageFile && f['banner_image_urls'].valid) {
+                      <span
+                        (click)="uploadBannerImage($event, themeFileInput)"
+                      class="p-inputgroup-addon cursor-pointer">Upload</span>
+                    }
+                    @if (selectedThemeImageFile) {
+                      <span (click)="clearThemeImage(themeFileInput)"
+                      class="p-inputgroup-addon cursor-pointer">Clear</span>
+                    }
+                  </div>
+                  <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
+                  @if (!f['banner_image_urls'].valid && selectedThemeImageFile!==null) {
+                    <div
+                      style="display: block; width: 100%;">
+                      @if (f['banner_image_urls'].hasError('required') || f['banner_image_urls'].hasError('invalidDimensions') ) {
+                        <span class="p-error"
+                          >
+                          Please upload theme image of dimensions (640px * 480px)
+                        </span>
+                      }
+                    </div>
+                  }
+                  @if (smartUrlForm.get('banner_image_urls')?.errors; as errors) {
+                    <div>
+                      @if (errors.invalidFileType) {
+                        <p class="text-red-500">Only image files are allowed.</p>
+                      }
+                      @if (errors.fileTooLarge) {
+                        <p class="text-red-500">File size must be under 2MB.</p>
+                      }
+                      @if (errors.invalidDimensions) {
+                        <p class="text-red-500">Image must be 640x480.</p>
+                      }
+                    </div>
+                  }
+                  @if (submitted && !f['banner_image_urls'].valid) {
+                    <div
+                      style="display: block; width: 100%;">
+                      @if (f['banner_image_urls'].hasError('required') ) {
+                        <span class="p-error">
+                          Banner Image is required
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+                <div class="field col-6">
+                  <label htmlFor="banner_image_preview">Banner Image Preview</label>
+                  <div
+                    class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center">
+                    <div class="card bg-blue-50 col-12 flex flex-column align-items-center">
+                      <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center"
+                        [innerHTML]="smartUrlForm.value.theme_banner_title_text"
+                        [style]="{'color':smartUrlForm.value.theme_page_text_color || 'black'}">
+                      </div>
+                      <img [src]="selectedThemeImage || '../../../../assets/images/campaign/campaign_default_banner.svg'"
+                        alt="" class="banner_img">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </p-fieldset>
+          </div>
+        </div>
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-2">
+            <p-button type="submit" label="Submit" [raised]="true"></p-button>
+          </div>
+          <div class="field col-12 md:col-2">
+            <p-button [routerLink]="['/campaign/smart-url/list']" label="Cancel" severity="danger"></p-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

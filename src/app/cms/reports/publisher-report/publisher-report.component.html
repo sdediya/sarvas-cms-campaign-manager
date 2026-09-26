@@ -1,0 +1,93 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+
+      <form [formGroup]="publisherReportForm" (ngSubmit)="onClickSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-3">
+            <h5 class="m-0">Top Publisher Report</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12 m-0 p-0">
+              <label htmlFor="publisher_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="publisher_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['publisher_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['publisher_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report date range
+                    </span>
+                  }
+                </div>
+              }
+
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12 m-0 p-0">
+              <label htmlFor="publisher_campaign">Select Campaign<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select [options]="campaignData"  optionLabel="name" optionValue="id" formControlName="selectedCampaign" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select Campaign">
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex align-items-center gap-2">
+
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template #item let-campaign>
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ campaign.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+              @if (submitted && !f['selectedCampaign'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['selectedCampaign'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select campaign
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+
+
+          <div class="col-3 md:col-3 flex align-items-center mt-4">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+
+
+      @if (submitted && this.reports.length) {
+        <div class="p-fluid formgrid grid align-items-center justify-content-center mt-5">
+          <div class="col-12 md:col-6 card ">
+            <p-table [value]="reports">
+              <ng-template #caption>
+                <div class="flex">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
+              </ng-template>
+              <ng-template #header>
+                <tr><th>P7</th><th>Count</th></tr>
+              </ng-template>
+              <ng-template #body let-report>
+                <tr><td>{{ report.p7}}</td><td>{{ report.count}}</td></tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      }
+      @if (submitted && this.reports.length==0) {
+        <div>
+          <p-divider></p-divider>
+          No data found
+        </div>
+      }
+
+
+    </div>
+  </div>
+</div>

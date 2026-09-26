@@ -1,0 +1,97 @@
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Users Activity Logs</h5>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid">
+        <p-datepicker class="col-3" [(ngModel)]="userActivity_date_range" placeholder="Select User Activity Date"  selectionMode="range" (onSelect)="onSelectFilter($event, 'activity_date')" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+        </p-datepicker>
+        <p-select class="col-3" [(ngModel)]="selected_user" [options]="users" optionLabel="name" (onChange)="onSelectFilter($event, 'user')" placeholder="User" optionValue="id"></p-select>
+
+        @if (selected_user != '' || userActivity_date_range != null ) {
+          <div class="col-3">
+            <p-button type="submit" label="Submit" (click)="onSubmit()" class="w-6 text-xl" severity="primary" size="small"></p-button>
+            <button type="button" pButton pRipple (click)="clearFilters()" class="ml-4" severity="secondary">Clear</button>
+          </div>
+        }
+      </div>
+      <div class="flex">
+        @if (selectedUser) {
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+        }
+      </div>
+      <p-table #dt1 [value]="userActivityLogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #header>
+          <tr>
+            <!-- <th style="width: 10px"></th> -->
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Date - Time
+              </div>
+            </th>
+            <th style="min-width: 20rem">
+              <div class="flex justify-content-between align-items-center">
+                User Name
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Page Name
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Action
+              </div>
+            </th>
+
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-userlog let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{userlog.timestamp | date: 'yyyy-MM-dd HH:mm a':'IST'}}
+            </td>
+            <td>
+              {{userlog.userName}}
+            </td>
+            <td>
+              {{userlog.pageName}}
+            </td>
+            <td>
+              {{userlog.action}}
+            </td>
+
+            <td>
+              <p-button (click)="showDialog(userlog)" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+            </td>
+
+          </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog header="User Log Event Details" [(visible)]="showUserActivityLog" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <pre>{{selectedUserActivityLog | json}}</pre>
+</p-dialog>

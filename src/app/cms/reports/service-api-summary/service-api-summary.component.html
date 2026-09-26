@@ -1,0 +1,79 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="serviceApiSummaryReportForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-3">
+            <h5 class="m-0">Service API Summary Report</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="s2s_date_range">Select Date <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker  formControlName="date" selectionMode="range" [readonlyInput]="true" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" ></p-datepicker>
+              @if (submitted && !f['date'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['date'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report date
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px"  [resizableColumns]="true" columnResizeMode="expand">
+            <ng-template #caption>
+              <div class="flex">
+                @if (reports.length>0) {
+                  <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                }
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <th pFrozenColumn [frozen]="dateColumn">
+                    {{col.header}}
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn"  [ngClass]="{'text-right': col.type == 'Number' }">
+                    {{rowData[col.key]}}
+                  </td>
+                }
+              </tr>
+            </ng-template>
+            @if (footerData; as columns) {
+              <ng-template #footer let-columns>
+                <tr> @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn"  [ngClass]="{'text-right': col.type == 'Number' }">{{footerData[col.key]}}</td>
+                } </tr>
+              </ng-template>
+            }
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="18">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="18">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="revenueCalForm" (ngSubmit)="onSubmit()">
+        <!-- Header Section -->
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-3">
+            <h5 class="m-0">Revenue Calculator</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label for="revenue_telcom_region">Select Telcom
+                <span class="label-required text-red-500">*</span>
+              </label>
+              <p-select
+                id="revenue_telcom_region"
+                [options]="telcoms"
+                [filter]="true"
+                optionLabel="name"
+                formControlName="revenue_telcom_region"
+                placeholder="Select Telcom"
+                optionValue="id"
+                (onChange)="onDropdownChangeTel($event)">
+              </p-select>
+
+              @if (submitted && f['revenue_telcom_region']?.invalid) {
+                <div style="display: block; width: 100%">
+                  @if (f['revenue_telcom_region']?.hasError('required')) {
+                    <span class="p-error">Please select a telcom
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="revenue_service_type">Select Service<span class="label-required text-red-500">*</span></label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="revenue_service_type" id="revenue_service_type" placeholder="Service" [options]="service" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Table for Formula Rows (only visible after submit) -->
+        @if (submitted) {
+          <div id="div_formulas" class="field col-12 md:col-12 pt-0">
+            <div formArrayName="op_formulas">
+              <p-table [value]="op_formulas.controls" tableStyleClass="p-datatable-sm p-datatable-gridlines">
+                <ng-template #header>
+                  <tr>
+                    <th style="width: 20%">Header Name</th>
+                    <th style="width: 40%">Formula</th>
+                    <th style="width: 10%">Action</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-row let-i="rowIndex">
+                  <tr [formGroupName]="i">
+                    <td>
+                      <input formControlName="headerName" placeholder="Enter header" [readonly]="!row.get('editable').value"(ngModelChange)="onHeaderNameChange($event, i)"(blur)="onHeaderBlur(i)"/>
+                    </td>
+                    <td>
+                      <div>
+                        <!-- <textarea pTextarea id="formulas" formControlName="formulas" [(ngModel)]="row.formulaValue" [readonly]="!row.get('editable').value" placeholder="Enter formula"></textarea -->
+                        <!-- > -->
+                        <textarea pTextarea id="formulas" formControlName="formulas" [readonly]="!row.get('editable').value" placeholder="Enter formula"></textarea >
+                        <br />
+                        @if (row.get('editable').value) {
+                          <p-select
+                            [options]="headers"
+                            formControlName="selectedHeader"
+                            optionLabel="header"
+                            optionValue="key"
+                            [editable]="true"
+                            (onChange)="onDropdownChange($event, i)"
+                            [placeholder]="'Select header or enter your value'"
+                            [disabled]="!row.get('editable').value"
+                            >
+                          </p-select>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <p-button (click)="addNewRow(i)" class="mr-3" [text]="true" size="small" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                      <p-button (click)="removeRow(i)" [disabled]="!row.get('editable').value" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="col-3 md:col-3 flex align-items-center">
+              <button type="submit" pButton pRipple class="w-6 text-xl " (click)="onSubmitFormula()" size="small">Submit</button>
+            </div>
+          </div>
+        }
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

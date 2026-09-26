@@ -1,0 +1,125 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class=" m-2 grid justify-content-between">
+        <h5>ShortLink List</h5>
+        @if (write) {
+          <p-button [routerLink]="['/masters/add-short-link']">Add ShortLink</p-button>
+        }
+      </div>
+      <p-table #dt1 [value]="shortlink" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true"
+        [rows]="10" [totalRecords]="totalRecords" [loading]="loading"
+        [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)"
+                placeholder="Search Links" class="w-full" /></p-iconfield>
+            @if (shortlink.length > 0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <!-- <th pSortableColumn="name" style="min-width: 12rem">
+            <div class="flex justify-content-between align-items-center">
+              Copy URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            </div>
+          </th> -->
+          <th pSortableColumn="name" style="min-width: 12rem">
+            <div class="flex justify-content-between align-items-center">
+              Copy URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            </div>
+          </th>
+
+          <th pSortableColumn="name" style="min-width: 12rem">
+            <div class="flex justify-content-between align-items-center">
+              Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            </div>
+          </th>
+          <th pSortableColumn="name" style="min-width: 12rem">
+            <div class="flex justify-content-between align-items-center">
+              Code <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            </div>
+          </th>
+          <th pSortableColumn="name" style="min-width: 12rem">
+            <div class="flex justify-content-between align-items-center">
+              Redirect URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-content-between align-items-center">
+              Created at
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-content-between align-items-center">
+              Updated at
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-content-between align-items-center">
+              Status
+            </div>
+          </th>
+          <th style="min-width: 10rem">
+            <div class="flex justify-content-between align-items-center">
+              Options
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-shortlink let-rowIndex="rowIndex">
+        <tr>
+          <!-- <td class="text-center">
+
+          <td> -->
+            <td>
+              <i class="pi pi-clone cursor-pointer" title="Copy URL"
+              (click)="copyToClipboard(shortlink.shortlink_url)"></i>
+            </td>
+
+            <td>
+              {{shortlink.shortlink_name}}
+            </td>
+            <td>
+              {{shortlink.shortlink_url}}
+            </td>
+            <td>
+              {{shortlink.shortlink_redirect_url}}
+            </td>
+            <td>
+              {{shortlink.CreatedAt | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              {{shortlink.UpdatedAt | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              <p-toggleswitch [(ngModel)]="shortlink.IsActive" [disabled]="!write"
+                class="p-inputswitch-checked"
+              (onChange)="toggleshortlink(shortlink.shortlink_id, shortlink.IsActive, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/masters/edit-short-link']" [queryParams]="{id: shortlink.shortlink_id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

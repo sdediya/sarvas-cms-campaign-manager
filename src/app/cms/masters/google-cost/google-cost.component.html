@@ -1,0 +1,191 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="googleCampaignCostForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center" style="display: flex; justify-content: space-between;">
+          <div class="col-12 md:col-8">
+            <h5 class="m-0">Google Campaign Cost</h5>
+          </div>
+          <div class="col-6 md:col-4 text-right">
+            @if (write && !isCronScheduled) {
+              <button type="button" pButton pRipple [disabled]="manualProcess" tooltip="Process Sheet Manually" (click)="showuploadDialog()" class="md:w-6" tooltipPosition="bottom" severity="success">Process Sheet Manually</button>
+            }
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="google_camapign_cost_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="google_camapign_cost_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="minDate" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['google_camapign_cost_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['google_camapign_cost_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select campaign cost date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="tel_id">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="tel_id" [options]="telcoms" [filter]="true" optionLabel="tel_name" formControlName="tel_id" placeholder="Select Telcom" optionValue="tel_id"></p-select>
+              @if (submitted && !f['tel_id'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['tel_id'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select telcom
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="partner_id">Select Services</label>
+              <p-multiselect id="service_id" [options]="services" optionLabel="service_name" optionValue="service_id" formControlName="service_id" placeholder="Select Product" [filter]="false" [showClear]="true" class="w-full md:w-80"></p-multiselect>
+            </div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="partner_id">Select Plans</label>
+              <p-multiselect id="plan_id" [options]="filteredPlans" optionLabel="plan_name" optionValue="plan_id" formControlName="plan_id" placeholder="Select Product" [filter]="false" [showClear]="true" class="w-full md:w-80"></p-multiselect>
+            </div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="partner_id">Select Ad Partner</label>
+              <p-select id="partner_id"  [options]="partners" [filter]="true" optionLabel="partner_name" formControlName="partner_id" placeholder="Select Ad Partner" [showClear]="true" optionValue="partner_id"></p-select>
+            </div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="field">
+              <label htmlFor="campaign_id">Select Campaign</label>
+              <p-select id="campaign_id" [options]="campaigns" [filter]="true" optionLabel="campaign_name" formControlName="campaign_id" placeholder="Select Campaign" [showClear]="true" optionValue="campaign_id"></p-select>
+            </div>
+          </div>
+          <div class="col-6 md:col-2">
+            <button type="submit" pButton pRipple class="md:w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table #dt1 [value]="googleCampaignCost" [scrollable]="true" scrollHeight="400px" [lazy]="true"  (onLazyLoad)="nextPage($event)"  [paginator]="false" [loading]="loading">
+            <ng-template #caption>
+              <div class="flex justify-content-between flex-column sm:flex-row">
+                <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+                  <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Campaign" class="w-full"/></p-iconfield>
+                @if (googleCampaignCost.length>0) {
+                    <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                  }
+              </div>
+            </ng-template>
+            <ng-template #header>
+              <tr>
+                <th style="min-width: 12rem"> Date</th>
+                <th style="min-width: 12rem"> Service</th>
+                <th style="min-width: 12rem"> Plan</th>
+                <th style="min-width: 12rem"> Campaign ID</th>
+                <th style="min-width: 12rem"> Campaign Name</th>
+                <th style="min-width: 12rem"> Partner Name</th>
+                <th style="min-width: 12rem"> Cost</th>
+                <th style="min-width: 5rem"> Options </th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-googleCampaignCost let-rowIndex="rowIndex">
+              <tr>
+                <td> {{ googleCampaignCost.date }} </td>
+                <td> {{ googleCampaignCost.service_name }} </td>
+                <td> {{ googleCampaignCost.plan_name }} </td>
+                <td> {{ googleCampaignCost.campaign_id }} </td>
+                <td> {{ googleCampaignCost.campaign_name }} </td>
+                <td> {{ googleCampaignCost.partner_name }} </td>
+                <td> {{ googleCampaignCost.amount }} </td>
+                <td> @if (write) {
+                  <p-button (click)="showDialog(googleCampaignCost)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                } </td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="8">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="8">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+
+<p-drawer [(visible)]="visible" position="right" class="w-30rem" (onHide)='reset()'>
+  <h5>Edit Google Cost</h5>
+  <form [formGroup]="gCampaignCostBufferForm" (ngSubmit)="onGCampaignCostBufferSubmit()">
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12  md:col-12">
+        <div class="cost-field">
+          <label htmlFor="cost">Campaign Cost<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="cost" type="text" formControlName="cost" appTwoDigitDecimalDirective placeholder="Enter Cost" />
+          @if (adaEditsubmitted && !cbf['cost'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (cbf['cost'].hasError('required') ) {
+                <span class="p-error">
+                  Campaign cost is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12 pt-0">
+        <button type="submit" pButton pRipple class="w-6 text-sm " style="font-size: 12px !important; font-weight: 600;display: flex; justify-content: center;" size="small">{{!isEdit?'Submit':'Update'}}</button>
+      </div>
+    </div>
+  </form>
+</p-drawer>
+<p-drawer [(visible)]="visibleProcessManually" position="right" class="w-30rem" (onHide)='reset()'>
+  <h5>Process Sheet Manually</h5>
+  <form [formGroup]="manualProcessForm" (ngSubmit)="processSheetManually()" [ngClass]="{'is_processing':manualProcess }" >
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12  md:col-12">
+        <div class="cost-field">
+          <label htmlFor="cost">Process Date<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <p-datepicker formControlName="date" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [minDate]="manualProcessDate" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
+          @if (adaEditsubmitted && !mpf['date'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (mpf['date'].hasError('required') ) {
+                <span class="p-error">Process Date required</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12 pt-0">
+        <button type="submit" [disabled]="manualProcess" pButton pRipple class="w-6 text-sm " style="font-size: 12px !important; font-weight: 600;display: flex; justify-content: center;" size="small">{{!isEdit?'Submit':'Update'}}</button>
+      </div>
+    </div>
+    @if (manualProcessData) {
+      <div class="result">
+        <ul>
+          <li>Total: {{manualProcessData.totalRows}}</li>
+          <li>Success: {{manualProcessData.inserted}} </li>
+          <li>Already Process: {{manualProcessData.alreadyExists.length}}</li>
+          <li>Failed: {{manualProcessData.failures.length}}</li>
+        </ul>
+      </div>
+    }
+  </form>
+</p-drawer>

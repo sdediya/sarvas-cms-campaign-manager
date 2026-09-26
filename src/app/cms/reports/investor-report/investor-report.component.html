@@ -1,0 +1,121 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="ml-1 grid">
+        <h5>Investor Reports</h5>
+      </div>
+      <p-divider align="center">
+
+      </p-divider>
+      <form [formGroup]="ipForm" (ngSubmit)="$event.preventDefault()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="year">Select Year<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select formControlName="year" id="year" [options]="years" optionLabel="label"
+              optionValue="value" placeholder="Year" [showClear]="false"></p-select>
+              @if (submitted && !f['year'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['year'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select year
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Service<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select formControlName="service" id="service" [options]="services"
+                optionLabel="label" optionValue="value" placeholder="Service"
+              [showClear]="true"></p-select>
+              @if (submitted && !f['service'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['service'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select service
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Report Type<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select formControlName="reportType" id="reportType" [options]="reportTypes"
+                optionLabel="label" optionValue="value" placeholder="Report Type"
+              [showClear]="false"></p-select>
+              @if (submitted && !f['reportType'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['reportType'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report type
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-2 flex flex-wrap align-items-end gap-2">
+            <button type="button" pButton pRipple (click)="onSubmit()" severity="primary">Submit</button>
+          </div>
+
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          @if (reports?.length) {
+            <div class="flex justify-content-end mb-2">
+              @if (ipForm.get('reportType')?.value !== 'detail') {
+                <button type="button" pButton pRipple (click)="onExport()" severity="success"><i class="pi pi-file-excel"></i> Export</button>
+              }
+            </div>
+          }
+          @if (reports?.length && ipForm.get('reportType')?.value !== 'detail') {
+            <p-table [columns]="cols" [value]="reports"
+              [scrollable]="true" scrollHeight="500px" [customSort]="true"
+              (sortFunction)="customSort($event)">
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of columns; track col) {
+                    <th [pSortableColumn]="col.key">
+                      {{ col.header || col.key }}
+                      <p-sort-icon [field]="col.key"></p-sort-icon>
+                    </th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                <tr [ngClass]="{ 'sticky-last-row': rowIndex === reports.length - 1 }">
+                  @for (col of columns; track col) {
+                    <td
+                      [ngClass]="{ 'sticky-last-cell': rowIndex === reports.length - 1 }">
+                      {{ rowData[col.key] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #emptymessage>
+                <tr>
+                  <td [attr.colspan]="cols?.length || 1">No data found.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          }
+          @if (submitted && isValidForm && !(reports?.length) && ipForm.get('reportType')?.value !== 'detail') {
+            <div class="mt-2">
+              No data found.
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

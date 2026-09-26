@@ -1,0 +1,112 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Custom Message</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Custom Message</h5>
+      }
+      <form [formGroup]="addErrorMasterForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid mb-0 pb-0">
+          <div class="col-3 md:col-3">
+            <div class="field">
+              <label htmlFor="error_severities">Select Response Severity<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="error_severities" [options]="error_severities" optionLabel="name" formControlName="error_msg_severity" placeholder="Select Response Severity" optionValue="code"></p-select>
+              @if (submitted && !f['error_msg_severity'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['error_msg_severity'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select response severity
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-3 md:col-3">
+            <div class="field">
+              <label htmlFor="error_type">Select Response Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="error_type" [options]="error_types" optionLabel="name" formControlName="error_type" placeholder="Select Response Type" optionValue="code"></p-select>
+              @if (submitted && !f['error_type'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['error_type'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select response type
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-3 md:col-3">
+            <div class="field">
+              <label htmlFor="error_telcom_id">Select Telcom</label>
+              <p-select id="error_telcom_id" [options]="telcoms" [filter]="true" optionLabel="name" formControlName="error_telcom_id" placeholder="Select Telcom" optionValue="id"></p-select>
+            </div>
+          </div>
+          <div class="col-3 md:col-3">
+            <div class="field">
+              <label htmlFor="error_language">Select Language</label>
+              <p-select id="error_language" [options]="languages" [filter]="true" optionLabel="name" formControlName="error_language" placeholder="Select Language" optionValue="name"></p-select>
+            </div>
+          </div>
+        </div>
+        @if (!editable) {
+          <div class="p-fluid formgrid grid" formArrayName="error_msg">
+            <div class="field col-12 md:col-12 mb-0 pb-0">
+              <label class="mb-0">Response Message<span label styleclass="label-required" class="text-red-500">*</span></label>
+            </div>
+            @for (error of f['error_msg'].controls; track error; let i = $index; let last = $last) {
+              <div class="field col-12 md:col-12  mb-0 pb-0">
+                <div class="grid" [formGroupName]="i">
+                  <div class="col-10">
+                    <input pInputText type="text" formControlName="error" placeholder="Response Message" />
+                    @if (submitted && !f['error_msg'].controls[i].controls['error'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['error_msg'].controls[i].controls['error'].hasError('required') ) {
+                          <span class="p-error">
+                            Please enter response message
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  @if (f['error_type'].value=='drop_service_api') {
+                    <div class="col-2 flex justify-content-evenly">
+                      <button pButton pRipple type="button" (click)="removeError(f['error_msg'].controls, i)" severity="danger"><i class="pi pi-trash"></i></button>
+                      <button pButton pRipple type="button" (click)="addError()" severity="info"><i class="pi pi-plus"></i></button>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+        @if (editable) {
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-12">
+              <label class="mb-0">Response Message</label>
+              <input pInputText type="text" formControlName="error_msg" placeholder="Response Message" />
+              @if (submitted && !f['error_msg'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['error_msg'].hasError('required') ) {
+                    <span class="p-error">
+                      Please enter response message
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-3 pt-3">
+            <button type="submit" pButton pRipple class="text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

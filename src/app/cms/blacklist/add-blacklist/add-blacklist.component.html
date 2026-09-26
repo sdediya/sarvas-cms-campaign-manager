@@ -1,0 +1,114 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Add Blacklist</h5>
+      <div class="mb-1 mt-6">
+        <form [formGroup]="addBlacklistForm" (ngSubmit)="onSubmit()">
+          <div class="p-fluid formgrid grid">
+            <div class="field col-3 mb-0">
+              <label htmlFor="blacklist_type">Select Blacklist Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="blacklist_type" [options]="blacklist_types" optionLabel="name" formControlName="blacklist_type" (onChange)="onBlacklistTypeChange($event)" placeholder="Select Blacklist Type" optionValue="code"></p-select>
+              @if (submitted && !f['blacklist_type'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['blacklist_type'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select Blacklist Type
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+            @if (f['blacklist_type'].value == 'number') {
+              <div class="field col-3 md:col-2">
+                <div class="grid">
+                  <div class="field col-12">
+                    <label htmlFor="blacklist_type">Is bulk upload</label>
+                    <br>
+                      <p-toggleswitch formControlName="blacklist_is_bulk"></p-toggleswitch>
+                    </div>
+                  </div>
+                </div>
+              }
+              <div class="field col-3 md:col-3" [class]="f['blacklist_is_bulk'].value ? 'md:col-7' : ''">
+                @if (this.blacklistType=='series') {
+                  <label htmlFor="blacklist_value">Enter Blacklist Series<span label styleclass="label-required" class="text-red-500">*</span></label>
+                }
+                @if (this.blacklistType!=='series') {
+                  <label htmlFor="blacklist_value">Enter Mobile@if (f['blacklist_is_bulk'].value) {
+                    <span>s</span>
+                    } (with country code)<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  }
+
+                  @if (!f['blacklist_is_bulk'].value) {
+                    <input pInputText id="blacklist_value" type="text" [placeholder]="this.blacklistType=='series' ? 'Please enter series':'Please enter mobile number'" formControlName="blacklist_value"  />
+                  }
+
+                  @if (f['blacklist_is_bulk'].value) {
+                    <textarea placeholder="Please enter mobile numbers with comma separate" class="p-inputtext" rows="5"  formControlName="blacklist_value"></textarea>
+                  }
+                  @if (f['blacklist_is_bulk'].value) {
+                    <small>Enter mobile numbers with comma separated</small>
+                  }
+
+                  @if (submitted && !f['blacklist_value'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['blacklist_value'].hasError('required') ) {
+                        <span class="p-error">
+                          Please enter blacklist value
+                        </span>
+                      }
+                      @if (f['blacklist_value'].hasError('pattern')) {
+                        <span class="p-error">
+                          Please enter valid blacklist value
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="p-fluid formgrid grid">
+                <div class="field col-3 mb-0">
+                  <label htmlFor="blacklist_duration_type">Select Blacklist Duration<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <p-select id="blacklist_duration_type" [options]="blacklist_duration_types" optionLabel="name"  (onChange)="onBlacklistDurationTypeChange($event)" formControlName="blacklist_duration_type" placeholder="Select Blacklist Duration" optionValue="code"></p-select>
+                  @if (submitted && !f['blacklist_duration_type'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['blacklist_duration_type'].hasError('required') ) {
+                        <span class="p-error">
+                          Please select blacklist duration
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+                @if (f['blacklist_duration_type'].value == 'temporary') {
+                  <div class="field col-3 md:col-3">
+                    <label htmlFor="blacklist_days">Enter Blacklist Days</label>
+                    <input pInputText id="blacklist_days" type="text" formControlName="blacklist_days" placeholder="Enter Blacklist Days"  />
+                    @if (submitted && !f['blacklist_days'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['blacklist_days'].hasError('required') ) {
+                          <span class="p-error">
+                            Please enter blacklist days
+                          </span>
+                        }
+                        @if (f['blacklist_days'].hasError('pattern') || f['blacklist_days'].hasError('minLength') || f['blacklist_days'].hasError('maxLength')) {
+                          <span class="p-error">
+                            Please enter valid blacklist days
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+                <div class="field col-12 md:col-12">
+                  <div class="field col-3 pl-0">
+                    <button type="submit" pButton pRipple class="w-6 text-sm " size="small">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-toast></p-toast>

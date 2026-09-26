@@ -1,0 +1,118 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+@import "./assets/layout/styles/theme/legacy-layout-tokens.css";
+
+.customBtn{
+    color: #fff !important;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+#addPlatform .p-datatable-wrapper{
+    overflow: unset !important;
+}
+
+label sup {
+    color: red;
+}
+
+/* Card surface used by CMS pages */
+.card {
+    background: var(--surface-card);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
+
+/* ---- PrimeNG 22 / Aura compatibility ---- */
+
+/* Templates use p-formgrid; Sakai/PrimeFlex styles .formgrid.grid */
+.p-formgrid.grid > .col,
+.p-formgrid.grid > [class*=col] {
+    padding: 0.5rem;
+}
+.formgrid.grid > .col,
+.formgrid.grid > [class*=col],
+.p-formgrid.grid > .col,
+.p-formgrid.grid > [class*=col] {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Aura search fields still using legacy wrapper */
+.p-input-icon-left,
+.p-iconfield {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+}
+.p-input-icon-left > .pi,
+.p-input-icon-left > i,
+.p-iconfield > .p-inputicon,
+.p-iconfield > .pi {
+    position: absolute;
+    left: 0.75rem;
+    z-index: 1;
+    color: var(--text-color-secondary, #6c757d);
+    pointer-events: none;
+}
+.p-input-icon-left > input,
+.p-input-icon-left > .p-inputtext,
+.p-iconfield > input,
+.p-iconfield > .p-inputtext {
+    padding-left: 2.5rem !important;
+    width: 100%;
+}
+
+/* Keep p-select / inputs readable width inside filter rows */
+.card > .grid > [class*=col-] > p-select,
+.card > .grid > [class*=col-] > .p-select {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* DataTable density closer to previous CMS look */
+.p-datatable .p-datatable-thead > tr > th {
+    background: var(--surface-section, #fff);
+    color: var(--text-color, #495057);
+    font-weight: 600;
+    border-bottom: 1px solid var(--surface-border, #dfe7ef);
+}
+.p-datatable .p-datatable-tbody > tr > td {
+    border-bottom: 1px solid var(--surface-border, #dfe7ef);
+}
+.p-datatable .p-datatable-tbody > tr:hover {
+    background: var(--surface-hover, #f6f9fc);
+}
+
+/* Fieldset content spacing */
+.p-fieldset .p-fieldset-content {
+    padding-top: 0.75rem;
+}
+
+/* Avoid double host chrome on p-button when legacy classes remain */
+p-button.p-button-danger,
+p-button.p-button-success,
+p-button.p-button-info,
+p-button.p-button-secondary,
+p-button.p-button-warning,
+p-button.p-button-help,
+p-button.p-button-contrast,
+p-button.p-button,
+p-button.p-button-raised,
+p-button.p-button-sm,
+p-button.p-button-rounded,
+p-button.p-button-text,
+p-button.p-button-outlined {
+    display: inline-flex;
+    vertical-align: middle;
+}
+p-button {
+    display: inline-flex;
+    vertical-align: middle;
+}

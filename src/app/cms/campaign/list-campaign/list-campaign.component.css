@@ -1,0 +1,10 @@
+::ng-deep .p-select{
+    width: 100%;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    text-wrap: nowrap;
+}

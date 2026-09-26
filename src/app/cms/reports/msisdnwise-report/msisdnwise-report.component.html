@@ -1,0 +1,107 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="m-0" style="text-wrap: nowrap;">Msisdn Wise Reports</h5>
+      <p-divider></p-divider>
+      <form [formGroup]="msisdnForm">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <label htmlFor="msisdn_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-datepicker formControlName="msisdn_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
+            @if (submitted && !f['msisdn_date_range'].valid) {
+              <div style="display: block; width: 100%;">@if (f['msisdn_date_range'].hasError('required') ) {
+                <span class="p-error">  Please select report date range  </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="operator">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="operator" [options]="telcoms" [filter]="true" optionLabel="tel_name" formControlName="operator" placeholder="Telcom" optionValue="tel_id"></p-select>
+            @if (submitted && !f['operator'].valid) {
+              <div style="display: block; width: 100%;">@if (f['operator'].hasError('required') ) {
+                <span class="p-error"> Please select telcom </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="partner_id">Select Master Aggregator<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="partner_id" [options]="masterAggregator" [filter]="true" optionLabel="maggregator_name" formControlName="partner_id" placeholder="Master Aggregator" optionValue="maggregator_id"></p-select>
+            @if (submitted && !f['partner_id'].valid) {
+              <div style="display: block; width: 100%;">@if (f['partner_id'].hasError('required') ) {
+                <span class="p-error">  Please select master aggregator </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Report Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select formControlName="types" id="types" [options]="types" optionLabel="name" [filter]="true" placeholder="Report Type" [showClear]="true" optionValue="code"></p-select>
+              @if (submitted && !f['types'].valid) {
+                <div style="display: block; width: 100%;"> @if (f['types'].hasError('required') ) {
+                  <span class="p-error"> Please select type</span>
+                }</div>
+              }
+            </div>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Export</button>
+          </div>
+        </div>
+      </form>
+      <!-- <p-divider></p-divider>
+      <form [formGroup]="msisdnForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="msisdn_date_range">Select Date Range<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-datepicker formControlName="msisdn_date_range" selectionMode="range" [readonlyInput]="true"
+                inputId="range" [class]="'w-12'" dateFormat="yy-mm-dd" [showIcon]="true"
+                [showButtonBar]="true" [maxDate]="maxDate">
+              </p-datepicker>
+              <div *ngIf="submitted && !f['msisdn_date_range'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['msisdn_date_range'].hasError('required') ">
+                  Please select report date range
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label>Select Operator<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select  formControlName="operator"
+                id="operator" [options]="telecoms" optionLabel="name" [filter]="true"
+              placeholder="Operator" [showClear]="true" optionValue="id"></p-select>
+              <div *ngIf="submitted && !f['operator'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['operator'].hasError('required') ">
+                  Please select operator
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label>Select Report Type<span label styleclass="label-required"
+              class="text-red-500">*</span></label>
+              <p-select formControlName="types" id="types" [options]="types"
+                optionLabel="name" [filter]="true" placeholder="Report Type" [showClear]="true"
+              optionValue="code"></p-select>
+              <div *ngIf="submitted && !f['types'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['types'].hasError('required') ">
+                  Please select type
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-3 md:col-2">
+            <button type="submit" pButton pRipple severity="primary">Export</button>
+          </div>
+
+        </div>
+      </form> -->
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

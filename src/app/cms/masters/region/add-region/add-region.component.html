@@ -1,0 +1,131 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Region</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Region</h5>
+      }
+      <form [formGroup]="regionForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-6 md:col-6">
+            <label htmlFor="region_name">Region Name<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="region_name" type="text" formControlName="region_name" placeholder="eg. India" />
+            @if (submitted && !f['region_name'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['region_name'].hasError('required') ) {
+                  <span class="p-error">
+                    Region Name is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="region_iso">Region Shortcode (3 Character ISO code)<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="region_iso" type="text" formControlName="region_iso" placeholder="eg. IND" />
+            @if (submitted && !f['region_iso'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['region_iso'].hasError('required') ) {
+                  <span class="p-error">
+                    Region Shortcode is required
+                  </span>
+                }
+                @if (f['region_iso'].hasError('maxlength')) {
+                  <span class="p-error">
+                    Please enter valid Shortcode length.
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-4 md:col-4">
+            <label htmlFor="region_call_code">Region Call Code<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="region_call_code" type="text" formControlName="region_call_code" placeholder="eg. 91" />
+            @if (submitted && !f['region_call_code'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['region_call_code'].hasError('required') ) {
+                  <span class="p-error">
+                    Region Call Code is required
+                  </span>
+                }
+                <!-- <span class="p-error" *ngIf="f['region_call_code'].hasError('pattern') || f['region_call_code'].hasError('minLength') || f['region_call_code'].hasError('maxLength')">
+                Please enter valid call code
+              </span> -->
+            </div>
+          }
+        </div>
+        <div class="field col-4 md:col-4">
+          <label htmlFor="region_mob_max_length">Region Mobile Max Length<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="region_mob_max_length" type="text" formControlName="region_mob_max_length" placeholder="Region Mobile Max Length" />
+          @if (submitted && !f['region_mob_max_length'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['region_mob_max_length'].hasError('required') ) {
+                <span class="p-error">
+                  Region Mobile Max Length is required
+                </span>
+              }
+              @if (f['region_mob_max_length'].hasError('pattern') || f['region_mob_max_length'].hasError('minLength') || f['region_mob_max_length'].hasError('maxLength')) {
+                <span class="p-error">
+                  Please enter valid Mobile Max Length
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-4 md:col-4">
+          <label htmlFor="region_mob_min_length">Region Mobile Min Length<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="region_mob_min_length" type="text" formControlName="region_mob_min_length" placeholder="Region Mobile Min Length" />
+          @if (submitted && !f['region_mob_min_length'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['region_mob_min_length'].hasError('required') ) {
+                <span class="p-error">
+                  Region Mobile Min Length is required
+                </span>
+              }
+              @if (f['region_mob_min_length'].hasError('pattern') || f['region_mob_min_length'].hasError('minLength') || f['region_mob_min_length'].hasError('maxLength')) {
+                <span class="p-error">
+                  Please enter valid Mobile Min Length
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-4 md:col-4">
+          <label htmlFor="region_currency_name">Region Currency Name<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="region_currency_name" type="text" formControlName="region_currency_name" placeholder="eg. Rupees" />
+          @if (submitted && !f['region_currency_name'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['region_currency_name'].hasError('required') ) {
+                <span class="p-error">
+                  Region Currency Name is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-4 md:col-4">
+          <label htmlFor="region_currency_code">Region Currency Code<span label styleclass="label-required" class="text-red-500">*</span></label>
+          <input pInputText id="region_currency_code" type="text" formControlName="region_currency_code" placeholder="eg. INR" />
+          @if (submitted && !f['region_currency_code'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['region_currency_code'].hasError('required') ) {
+                <span class="p-error">
+                  Region Currency Code is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      <div class="p-fluid formgrid grid field ">
+        <div class="col-12 md:col-3 pt-0">
+          <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<p-toast></p-toast>

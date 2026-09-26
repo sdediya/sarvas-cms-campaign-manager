@@ -1,0 +1,85 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="m-0" style="text-wrap: nowrap;">Target vs Achievement Activation</h5>
+      <p-divider></p-divider>
+      <form [formGroup]="reportForm">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="report_date">Report Date<span class="text-red-500">*</span></label>
+              <p-datepicker formControlName="report_date" view="month" dateFormat="mm/yy"
+                selectionMode="single" [readonlyInput]="true" inputId="report_date"
+                [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['report_date'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['report_date'].hasError('required')) {
+                    <span class="p-error">
+                      Please select report date
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="manager_id">Manager</label>
+              <p-select id="manager_id" [showClear]="true" formControlName="manager_id" placeholder="Manager" [options]="managers" optionLabel="name" optionValue="name" [filter]="true"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3 flex align-items-center gap-2">
+            <button type="button" (click)="onSearch()" pButton pRipple severity="primary">Search</button>
+            <button type="button" (click)="onReset()" pButton pRipple severity="secondary">Reset</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+            <ng-template #caption>
+              <div class="flex">
+                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="Export" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                @for (col of columns; track col; let firstCol = $first) {
+                  <th pFrozenColumn [frozen]="firstCol" [innerHTML]="col.header">
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                @for (col of columns; track col; let firstCol = $first) {
+                  <td pFrozenColumn [frozen]="firstCol">
+                    {{ rowData[col.key] }}
+                  </td>
+                }
+              </tr>
+            </ng-template>
+            @if (footerData; as columns) {
+              <ng-template #footer let-columns>
+                <tr>
+                  @for (col of columns; track col; let firstCol = $first) {
+                    <td pFrozenColumn [frozen]="firstCol">
+                      {{ footerData[col.key] }}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            }
+            <ng-template #emptymessage>
+              <tr>
+                <td [attr.colspan]="cols.length || 1">No data found.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

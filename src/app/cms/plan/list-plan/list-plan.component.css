@@ -1,0 +1,15 @@
+table{
+    width: 100%; 
+    border: 1px solid #eee;
+}
+table tr {
+    width: 100%;
+}
+table th, table td{
+    width: 50%;
+    text-align: left;
+}
+
+::ng-deep .p-select.p-component{
+    width: 100% !important;
+}

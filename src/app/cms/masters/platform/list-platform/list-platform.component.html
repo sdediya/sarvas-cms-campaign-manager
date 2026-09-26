@@ -1,0 +1,136 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="m-2 grid justify-content-between mx-2">
+        <h5 >Ad-Partner List</h5>
+        @if (write) {
+          <p-button [routerLink]="['/masters/add-ad-partner']">Add Ad-Partner</p-button>
+        }
+      </div>
+      <p-table #dt1 [value]="platforms_list" dataKey="name"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Ad-Partner" class="w-full"/></p-iconfield>
+            @if (platforms_list.length > 0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="width: 5rem"></th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Ad-Partner Id
+              </div>
+            </th>
+            <th pSortableColumn="name" style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Created at
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Updated at
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Status
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+            <th style="min-width: 5rem">
+              <div class="flex justify-content-between align-items-center">
+                HE_CTR Link
+              </div>
+            </th>
+            <th style="min-width: 5rem">
+              <div class="flex justify-content-between align-items-center">
+                HE_DATA Link
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-platform_list let-rowIndex="rowIndex" let-expanded="expanded">
+          <tr>
+            <td>
+              @if (platform_list.s2s_urls.length > 0) {
+                <button type="button" pButton pRipple [pRowToggler]="platform_list" class="p-button-text p-button-rounded p-button-plain"><i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i></button>
+              }
+            </td>
+            <td>
+              {{platform_list.id}}
+            </td>
+            <td>
+              {{platform_list.name}}
+            </td>
+            <td>
+              {{platform_list.createdat | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              {{platform_list.updatedat | date: 'yyyy-MM-dd HH:mm a'}}
+            </td>
+            <td>
+              <p-toggleswitch [disabled]="!write" [(ngModel)]="platform_list.checked" class="p-inputswitch-checked" (onChange)="togglePlatform(platform_list.id, platform_list.status, rowIndex)"></p-toggleswitch>
+            </td>
+            <td>
+              @if (write) {
+                <p-button [routerLink]="['/masters/edit-ad-partner']" [queryParams]="{id: platform_list.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              }
+            </td>
+            <td class="text-center">
+              <i class="pi pi-clone cursor-pointer" title="Copy Ad-Partner ID" (click)="copyToClipboardCTR(platform_list.key)"></i>
+            </td>
+            <td class="text-center">
+              <i class="pi pi-clone cursor-pointer" title="Copy Ad-Partner ID" (click)="copyToClipboardData(platform_list.key)"></i>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #rowexpansion let-platform_list>
+          <tr>
+            <td colspan="7">
+              <div class="p-3">
+                <p-table [value]="platform_list.s2s_urls" dataKey="platform_list.id">
+                  <ng-template #header>
+                    <tr>
+                      <th>S2S Url</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template #body let-s2s_url let-subRowIndex="rowIndex">
+                    <tr>
+                      <td>{{ s2s_url.s2s_final_url }}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>
+<p-confirmdialog key="confirmS2sActiveInactive"></p-confirmdialog>

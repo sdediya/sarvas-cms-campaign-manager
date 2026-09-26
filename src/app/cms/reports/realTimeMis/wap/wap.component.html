@@ -1,0 +1,110 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="m-0">Real-Time MIS(WAP)</h5>
+      <p-divider></p-divider>
+      <div>
+        <form [formGroup]="revenueReportForm" (ngSubmit)="onSubmit()">
+          <div class="grid">
+            <div class="col-3">
+              <label htmlFor="revenue_date_range">Select Date Range<span class="required">*</span></label>
+              <p-datepicker formControlName="revenue_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" [class]="'w-12'" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['revenue_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['revenue_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+            <div class="col-3">
+              <label>Select Operator<span class="required">*</span></label>
+              <p-select  formControlName="tel_id" id="type" [options]="telecoms" optionLabel="name" [filter]="true" placeholder="Operator" [showClear]="true" ></p-select>
+              @if (submitted && !f['tel_id'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['tel_id'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select operator
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+            <div class="col-4 md:col-3">
+              <label htmlFor="master_aggregator">Select Master Aggregator</label>
+              <p-select id="master_aggregator" [showClear]="true" [options]="masterAggregator" [filter]="true" optionLabel="maggregator_name" formControlName="master_aggregator" placeholder="Master Aggregator" optionValue="maggregator_id"></p-select>
+            </div>
+            <div class="col-4 md:col-3">
+              <label htmlFor="service_id">Select Service</label>
+              <p-select class="col-3 p-0" [showClear]="true" formControlName="service_id" id="service_id" placeholder="Service" [options]="services" optionLabel="service_name" [filter]="true"  optionValue="service_id"></p-select>
+            </div>
+            <div class="col-4 md:col-3">
+              <label htmlFor="plan_id">Select plan</label>
+              <p-select class="col-3 p-0" [showClear]="true" formControlName="plan_id" id="plan_id" placeholder="Plan" [options]="plans" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
+            </div>
+            <div class="col-3">
+              <label>Select Campaign</label>
+              <p-select  formControlName="campaign_id" id="duration_type" [options]="campaignData" optionLabel="name" [filter]="true" placeholder="Campaign" [showClear]="true" optionValue="id"></p-select>
+            </div>
+            <div class="col-3">
+              <label>Select Ad-Partner</label>
+              <p-select  formControlName="platform_id" id="type" [options]="advertising_platforms" optionLabel="name" [filter]="true" placeholder="Ad-Partner" [showClear]="true" optionValue="id"></p-select>
+            </div>
+            <div class="col-3 md:col-3">
+              <button type="submit" pButton pRipple severity="primary">Submit</button>
+
+              @if (f['revenue_date_range'].valid && f['tel_id'].valid ) {
+                <button type="button" pButton pRipple (click)="clearFilters()" class="mx-4" severity="secondary">Clear</button>
+              }
+            </div>
+
+          </div>
+        </form>
+        <!-- <p-divider></p-divider> -->
+        @if (reports.length>0) {
+          <div>
+            <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+              <ng-template #caption>
+                <div class="flex">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
+              </ng-template>
+              <ng-template #header let-columns>
+                <tr>
+                  @for (col of columns; track col; let dateColumn = $first) {
+                    <th pFrozenColumn [frozen]="dateColumn" [innerHTML]="col.header"></th>
+                  }
+                </tr>
+              </ng-template>
+              <ng-template #body let-rowData let-columns="columns">
+                <tr>
+                  @for (col of columns; track col; let dateColumn = $first) {
+                    <td pFrozenColumn [frozen]="dateColumn" >
+                      {{rowData[col.key]}}
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+              @if (footerData; as columns) {
+                <ng-template #footer let-columns>
+                  <tr> @for (col of columns; track col; let dateColumn = $first) {
+                    <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+                  } </tr>
+                </ng-template>
+              }
+            </p-table>
+          </div>
+        }
+        @if (emptyDataFlag == true) {
+          <div>
+            <p-divider></p-divider>
+            No data found
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

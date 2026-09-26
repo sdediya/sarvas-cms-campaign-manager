@@ -1,0 +1,179 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add User</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit User</h5>
+      }
+      <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-6 md:col-6">
+            <label htmlFor="user_fname">First Name<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="user_fname" type="text" formControlName="user_fname" placeholder="First Name" />
+            @if (submitted && !f['user_fname'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['user_fname'].hasError('required') ) {
+                  <span class="p-error">
+                    Please enter first name
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="user_lname">Last Name<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="user_lname" type="text" formControlName="user_lname" placeholder="Last Name" />
+            @if (submitted && !f['user_lname'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['user_lname'].hasError('required') ) {
+                  <span class="p-error">
+                    Please enter last name
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="user_email">Email Address<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="user_email" type="text" formControlName="user_email" placeholder="Email Address" [readonly]="editable" />
+            @if (submitted && !f['user_email'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['user_email'].hasError('email') ) {
+                  <span class="p-error">
+                    Please enter valid email address
+                  </span>
+                }
+                @if (f['user_email'].hasError('required') ) {
+                  <span class="p-error">
+                    Please enter email address
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="user_mobile">Mobile</label>
+            <input pInputText id="user_mobile" type="text" formControlName="user_mobile" placeholder="Mobile" />
+            @if (submitted && !f['user_mobile'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['user_mobile'].hasError('minlength') || f['user_mobile'].hasError('maxlength') || f['user_mobile'].hasError('digit') ) {
+                  <span class="p-error">
+                    Please enter valid 10 digit mobile number
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          @if (!editable) {
+            <div class="field col-6 md:col-6">
+              <label htmlFor="user_password">Password<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <input pInputText id="user_password" type="password" formControlName="user_password" placeholder="Password" />
+              @if (submitted && !f['user_password'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['user_password'].hasError('required') ) {
+                    <span class="p-error">
+                      Please enter password
+                    </span>
+                  }
+                  @if (f['user_password'].hasError('minlength') ) {
+                    <span class="p-error">
+                      Password should be atleast 10 characters long
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          }
+          @if (!editable) {
+            <div class="field col-6 md:col-6">
+              <label htmlFor="user_cpassword">Confirm Password<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <input pInputText id="user_cpassword" type="password" formControlName="user_cpassword" placeholder="Confirm Password" />
+              @if (submitted && !f['user_cpassword'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['user_cpassword'].hasError('required')) {
+                    <span class="p-error">
+                      Please enter confirm password
+                    </span>
+                  }
+                  @if (f['user_cpassword'].hasError('compare') && f['user_password'].valid) {
+                    <span class="p-error">
+                      Password and Confirm Password should be same
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          }
+          <div class="field col-12 md:col-6">
+            <label htmlFor="user_role">Select Role<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="user_role" [options]="rolesList" optionLabel="name" formControlName="user_role" placeholder="Select Role" optionValue="id"></p-select>
+            @if (submitted && !f['user_role'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['user_role'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select user role
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-12" formArrayName="user_permissions">
+            <div class="grid">
+              <div class="field col-12 md:col-12 m-0 pb-0">
+                <label htmlFor="user_role">Select User Permissions</label>
+              </div>
+              <div class="field card w-full">
+                <table class="w-full text-center">
+                  <thead>
+                    <tr>
+                      <th width="40%"><h5>Module</h5></th>
+                      <th width="60%"><h5>Permissions</h5></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (permission of f['user_permissions'].controls; track permission; let i = $index) {
+                      <tr [formGroupName]="i" class="border-solid border-primary-500">
+                        <td width="40%">
+                          <p class="text-left"><b>{{f['user_permissions'].controls[i].controls['module_label'].value | titlecase}} </b> @if (f['user_permissions'].controls[i].controls['module_info'].value!=='') {
+                          <span class="pi pi-info text-primary cursor-pointer" style="font-size: 10px" [pTooltip]="f['user_permissions'].controls[i].controls['module_info'].value" tooltipPosition="bottom"></span>
+                        }
+                      </p>
+                    </td>
+                    <td class="flex w-full justify-content-between" >
+                      <div class="flex align-items-center gap-1">
+                        <p-checkbox formControlName="read" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-read" [binary]="true"  [readonly]="f['user_permissions'].controls[i].controls['delete'].value || f['user_permissions'].controls[i].controls['write'].value"></p-checkbox>
+                        <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-read">Read </label>
+                      </div>
+                      @if (f['user_permissions'].controls[i].controls['module_name'].value !== 'customer_logs' && f['user_permissions'].controls[i].controls['module_name'].value !== 'customer_refund') {
+                        <div class="flex align-items-center gap-1 mb-1 mt-1">
+                          <p-checkbox formControlName="write" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-write" [binary]="true" (onChange)="isPermissionWrite($event, i)"  [readonly]="f['user_permissions'].controls[i].controls['delete'].value"></p-checkbox>
+                          <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-write">Write </label>
+                        </div>
+                      }
+                      @if (f['user_permissions'].controls[i].controls['module_name'].value !== 'customer_logs' && f['user_permissions'].controls[i].controls['module_name'].value !== 'customer_refund') {
+                        <div class="flex align-items-center gap-1">
+                          <p-checkbox formControlName="delete" inputId="{{f['user_permissions'].controls[i].controls['module_name'].value}}-delete" [binary]="true" (onChange)="isPermissionDelete($event, i)" ></p-checkbox>
+                          <label for="{{f['user_permissions'].controls[i].controls['module_name'].value}}-delete">Delete </label>
+                        </div>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-fluid formgrid grid field ">
+      <div class="col-12 md:col-3 pt-0">
+        <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+<p-toast></p-toast>

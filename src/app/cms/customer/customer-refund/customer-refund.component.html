@@ -1,0 +1,188 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Customer Refund</h5>
+      <div class="mb-6 mt-6">
+        <form [formGroup]="getUserCCDetailsForm" (ngSubmit)="onSubmit()">
+          <div class="p-fluid formgrid grid align-items-center">
+            <div class="field col-12 md:col-2 mb-0">
+              <label for="msisdn">MSISDN <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <input id="msisdn" type="text" formControlName="msisdn" class="text-base text-color surface-overlay p-inputtext border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" placeholder="MSISDN">
+              @if (submitted && !f['msisdn'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['msisdn'].hasError('required') ) {
+                    <span class="p-error">MSISDN is required</span>
+                  }
+                  @if (f['msisdn'].hasError('pattern') ) {
+                    <span class="p-error">Please enter valid MSISDN</span>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field col-12 md:col-2 mb-0">
+              <label for="operator">Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="operator" [options]="telecom_operators" optionLabel="name" formControlName="operator" placeholder="Select Operator" optionValue="tel_id" [filter]="true"
+              filterBy="name" class="sm w-full" [showClear]="true"></p-select>
+              @if (submitted && !f['operator'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['operator'].hasError('required') ) {
+                    <span class="p-error">Please select operator</span>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field col-12 md:col-2 mb-0">
+              <label for="master_aggregator">Master Aggregator <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="master_aggregator" [options]="masterAggregator" optionLabel="maggregator_name" formControlName="master_aggregator" placeholder="Select Master Aggregator" optionValue="maggregator_id" [filter]="true"
+              filterBy="maggregator_name" class="sm w-full" [showClear]="true"></p-select>
+              @if (submitted && !f['master_aggregator'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['master_aggregator'].hasError('required') ) {
+                    <span class="p-error">Please select master aggregator</span>
+                  }
+                </div>
+              }
+
+            </div>
+            <div class="field col-12 md:col-2 mb-0">
+              <label for="service_id">Service <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="service_id" [options]="filteredServices" optionLabel="service_name" formControlName="service_id" placeholder="Select Service" optionValue="service_id" [filter]="true"
+              filterBy="service_name" class="sm w-full"></p-select>
+              @if (submitted && !f['service_id'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['service_id'].hasError('required') ) {
+                    <span class="p-error">Please select service</span>
+                  }
+                </div>
+              }
+            </div>
+            <div class="field col-12 md:col-2 flex align-items-end mb-0">
+              <button type="submit" class="text-white bg-primary-500 border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Submit</button>
+            </div>
+          </div>
+          <span class="mt-2 block">Refund Available For : {{ telecoms }}</span>
+        </form>
+      </div>
+      @if (userfound) {
+        <div class="mb-6 mt-6">
+          @if (customerSubscriptionDetails) {
+            <p-fieldset legend="Subscription Details" >
+              <div class="grid">
+                <div class="col">
+                  <p class="m-0">
+                    <b>User msisdn :-</b> {{customerSubscriptionDetails.mobile | maskMsisdn}}
+                  </p>
+                  <p class="m-0">
+                    <b>Service :-</b> {{customerSubscriptionDetails.service_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Current Plan :-</b> {{customerSubscriptionDetails.plan_name}} ({{customerSubscriptionDetails.plan_validity}} days)
+                  </p>
+                  <p class="m-0">
+                    <b>Plan Start Date:-</b> {{customerSubscriptionDetails.start_at | date:'dd MMMM, yyyy' }}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Name:-</b> {{customerSubscriptionDetails.campaign_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Flow:-</b> {{customerSubscriptionDetails.campaign_flow | uppercase }}
+                  </p>
+                  <p class="m-0">
+                    <b>User IP :-</b> {{customerSubscriptionDetails.ip}}
+                  </p>
+                  <p class="m-0">
+                    <b>Device :-</b> {{customerSubscriptionDetails.user_agent}}
+                  </p>
+                </div>
+                <div class="col">
+                  <p class="m-0">
+                    <b>Current Status :-</b> {{customerSubscriptionDetails.current_status}}
+                  </p>
+                  <p class="m-0">
+                    <b>Operator Name :-</b> {{customerSubscriptionDetails.telecom_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Current Plan Amount :-</b> {{customerSubscriptionDetails.plan_amount}}
+                  </p>
+                  <p class="m-0">
+                    <b>Plan End Date:-</b> {{customerSubscriptionDetails.end_at | date:'dd MMMM, yyyy'}}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Type:-</b> {{customerSubscriptionDetails.campaign_type  | uppercase}}
+                  </p>
+                  <p class="m-0">
+                    <b>SME Order ID :-</b> {{customerSubscriptionDetails.sme_order_id}}
+                  </p>
+                  <p class="m-0">
+                    <b>Referer :-</b> {{customerSubscriptionDetails.referer}}
+                  </p>
+                </div>
+              </div>
+            </p-fieldset>
+          }
+        </div>
+      }
+      @if (userfound && userTransactionDetails.length!==0) {
+        <div class="grid">
+          @if (userTransactionDetails) {
+            <p-fieldset legend="Customer Transactions" >
+              <div class="grid">
+                <div class="col-12 flex justify-content-end align-items-center">
+                  <p-button (click)="refundTransactions()" title="Refund Selected Transactions" class="p-2">Refund Selected Transactions</p-button>
+                  <p-button (click)="exportData()" severity="success" pTooltip="XLS" tooltipPosition="bottom" class="px-2" icon="pi pi-file-excel" [iconOnly]="true"></p-button>
+                  <!-- <p-button (click)="exportData()" title="Export Transactions" class="p-2" severity="success" icon="pi pi-file-excel" [iconOnly]="true"></p-button> -->
+                </div>
+                <div class="col-12">
+                  <p-table #table [value]="userTransactionDetails" [selection]="selectedTransactions" selectionMode="multiple" dataKey="transaction_id" [tableStyle]="{'min-width': '50rem'}" (selectionChange)="onSelectionChange($event)" (onHeaderCheckboxToggle) ="updateCheckedState()">
+                    <ng-template #header>
+                      <tr >
+                        <th style="width: 4rem">
+                          <p-tableheadercheckbox #headerCheckBox></p-tableheadercheckbox>
+                        </th>
+                        <th>Transaction ID</th>
+                        <th>Transaction Date</th>
+                        <th>Transaction Status</th>
+                        <th>Plan</th>
+                        <th>Billed Amount</th>
+                        <th>Activation Date</th>
+                        <th>Is Refunded</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-rowData>
+                      <tr>
+                        <td>
+                          @if (!isRowDisabled(rowData)) {
+                            <p-tablecheckbox [value]="rowData"></p-tablecheckbox>
+                          }
+                        </td>
+                        <td>{{rowData.transaction_id}}</td>
+                        <td>{{rowData.transaction_date | date:'dd MMMM, yyyy'}}</td>
+                        <td>{{rowData.current_status}}</td>
+                        <td>{{rowData.plan_name}}
+                          @if (rowData.currency && rowData.plan_amount) {
+                            <span> &#64; {{rowData.currency}} {{rowData.plan_amount}}</span>
+                          }
+                        </td>
+                        <td>{{rowData.currency}} {{rowData.subscription_amount}}</td>
+                        <td>{{rowData.start_at | date:'dd MMMM, yyyy'}}</td>
+                        <td>
+                          @if (rowData.is_refund) {
+                            <p>Yes</p>
+                          }
+                          @if (!rowData.is_refund) {
+                            <p>No</p>
+                          }
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </p-fieldset>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

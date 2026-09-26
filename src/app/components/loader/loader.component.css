@@ -1,0 +1,115 @@
+.loading{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgb(0 0 0 / 30%);
+}
+
+figure {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 6.25em;
+  height: 6.25em;
+  animation: rotate 2.4s linear infinite;
+}
+.dot {
+  position: absolute;
+  margin: auto;
+  width: 2.4em;
+  height: 2.4em;
+  border-radius: 100%;
+  transition: all 1s ease;
+}
+.white {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  opacity: 0;
+}
+.dot:nth-child(2) {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: #dc013f;
+}
+.dot:nth-child(3) {
+  left: 0;
+  right: 0;
+  top: 0;
+  background: #fdaa04;
+}
+.dot:nth-child(4) {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #72b41c;
+}
+.dot:nth-child(5) {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0680b8;
+}
+.dotsX{
+  animation: dotsX 2.4s linear infinite;
+}
+.dotsY{
+  animation: dotsY 2.4s linear infinite;
+}
+.flash{
+  animation: flash 2.4s linear infinite;
+}
+@keyframes flash {
+  33% {
+      opacity: 0;
+      border-radius: 0%;
+  }
+  55% {
+      opacity: 0.6;
+      border-radius: 100%;
+  }
+  66% {
+      opacity: 0;
+  }
+}
+
+@keyframes dotsX {
+  66% {
+      opacity: 0.1;
+      width: 2.4em;
+  }
+  77% {
+      opacity: 1;
+      width: 0;
+  }
+}
+
+@keyframes rotate {
+  0% {
+      transform: rotate(0);
+  }
+  10% {
+      width: 6.25em;
+      height: 6.25em;
+  }
+  66% {
+      width: 2.4em;
+      height: 2.4em;
+  }
+  100% {
+      transform: rotate(360deg);
+      width: 6.25em;
+      height: 6.25em;
+  }
+}

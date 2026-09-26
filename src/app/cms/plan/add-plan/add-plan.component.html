@@ -1,0 +1,319 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Plan</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Plan</h5>
+      }
+      <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-12">
+            <div class="grid">
+              <!-- <div class="col-12 md:col-6">
+              <label htmlFor="plan_name">Plan Name</label>
+              <input pInputText id="plan_name" type="text" formControlName="plan_name" placeholder="Plan Name" />
+              <div *ngIf="submitted && !f['plan_name'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['plan_name'].hasError('required') ">
+                  Plan Name is required
+                </span>
+              </div>
+            </div>
+            <div class="col-12 md:col-6">
+              <label htmlFor="plan_code">Plan Code</label>
+              <input pInputText id="plan_code" type="text" formControlName="plan_code" placeholder="Plan Code" />
+              <div *ngIf="submitted && !f['plan_code'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['plan_code'].hasError('required') ">
+                  Plan Code is required
+                </span>
+              </div>
+            </div> -->
+          </div>
+          <p-fieldset legend="Plan Details">
+            <div class="grid">
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_service_id">Select Service<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <p-select id="plan_service_id" [options]="services" optionLabel="name" formControlName="plan_service_id" (onChange)="dropdownOnChange($event, 'plan_service_id')" placeholder="Select Service" optionValue="id" [filter]="true"></p-select>
+                @if (submitted && !f['plan_service_id'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_service_id'].hasError('required') ) {
+                      <span class="p-error">
+                        Service is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_region_id">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <p-select id="plan_region_id" [options]="regions" optionLabel="name" formControlName="plan_region_id" [filter]="true" (onChange)="dropdownOnChange($event, 'plan_region_id')" placeholder="Select Region" optionValue="id"></p-select>
+                @if (submitted && !f['plan_region_id'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_region_id'].hasError('required') ) {
+                      <span class="p-error">
+                        Region is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_telcom_id">Select Operator<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <p-select id="plan_telcom_id" [options]="telcoms" optionLabel="tel_name" [filter]="true" formControlName="plan_telcom_id" placeholder="Select Operator" optionValue="tel_id" (onChange)="telcomOnChange($event)"></p-select>
+                @if (submitted && !f['plan_telcom_id'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_telcom_id'].hasError('required') ) {
+                      <span class="p-error">
+                        Operator is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_amount">Plan Amount<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <input pInputText id="plan_amount" type="text" formControlName="plan_amount" placeholder="Plan Amount" />
+                @if (submitted && !f['plan_amount'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_amount'].hasError('required') ) {
+                      <span class="p-error">
+                        Plan Amount is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_validity">Plan Validity<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <p-select id="plan_validity" [options]="plan_validities" optionLabel="name" formControlName="plan_validity" placeholder="Select Plan Validity" optionValue="code" (onChange)="dropdownOnChange($event, 'plan_validity')"></p-select>
+                @if (submitted && !f['plan_validity'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_validity'].hasError('required') ) {
+                      <span class="p-error">
+                        Plan Validity is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label htmlFor="plan_smeplan_id">Service Plan ID<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <input pInputText id="plan_smeplan_id" type="text" formControlName="plan_smeplan_id" placeholder="Service Plan ID" />
+                @if (submitted && !f['plan_smeplan_id'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_smeplan_id'].hasError('required') ) {
+                      <span class="p-error">
+                        Service Plan ID is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="field col-12 md:col-2">
+                <div class="grid">
+                  <div class="col-12 pb-0">
+                    <label>Free Trial available?</label>
+                  </div>
+                  <div class="col">
+                    <p-toggleswitch formControlName="plan_is_free_trial"></p-toggleswitch>
+                  </div>
+                </div>
+                <!-- <div class="grid pt-2" >
+                <div class="col-12 md:col-12">
+                </div>
+              </div> -->
+            </div>
+            @if (planForm.controls['plan_is_free_trial'].value) {
+              <div class="field col-12 md:col-3">
+                <label htmlFor="plan_free_trial_days">Free Trial Days<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <input pInputText id="plan_free_trial_days" type="text" formControlName="plan_free_trial_days"  placeholder="Free Trial Days" />
+                @if (submitted && !f['plan_free_trial_days'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['plan_free_trial_days'].hasError('required') ) {
+                      <span class="p-error">
+                        Free Trial Days is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+            }
+            <div class="field col-12 md:col-3">
+              <div class="grid">
+                <div class="col-12 pb-0">
+                  <label>Activation SMS Keyword</label>
+                </div>
+                <div class="col">
+                  <input pInputText id="plan_activation_keyword" type="text" formControlName="plan_activation_keyword" placeholder="Activation SMS Keyword">
+                  <!-- <div *ngIf="submitted && !f['plan_activation_keyword'].valid" style="display: block; width: 100%;">
+                  <span class="p-error" *ngIf="f['plan_activation_keyword'].hasError('required') ">
+                    Activation SMS keyword required
+                  </span>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="field col-12 md:col-3">
+            <div class="grid">
+              <div class="col-12 pb-0">
+                <label>Deactivation SMS Keyword</label>
+              </div>
+              <div class="col">
+                <input pInputText id="plan_deactivation_keyword" type="text" formControlName="plan_deactivation_keyword" placeholder="Deactivation SMS Keyword" />
+                <!-- <div *ngIf="submitted && !f['plan_deactivation_keyword'].valid" style="display: block; width: 100%;">
+                <span class="p-error" *ngIf="f['plan_deactivation_keyword'].hasError('required') ">
+                  deactivation SMS keyword required
+                </span>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div formArrayName="plan_terms_conditions" class="grid col-12">
+          @for (language of plan_terms_conditions.controls; track language; let i = $index) {
+            <div class="field col-6 md:col-6"  [formGroupName]="i">
+              <label htmlFor="plan_terms_conditions">Terms & Conditions ({{language.get('terms_language')?.value}}) <span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-editor formControlName="terms_conditions" [style]="{ height: '320px' }">
+                <ng-template #header>
+                  <span class="ql-formats">
+                    <button type="button"
+                      class="ql-bold"
+                      aria-label="Bold">
+                    </button>
+                    <button type="button"
+                      class="ql-italic"
+                      aria-label="Italic">
+                    </button>
+                    <button type="button"
+                      class="ql-underline"
+                      aria-label="Underline">
+                    </button>
+                    <button type="button" class="ql-list" aria-label="List" value='ordered'></button>
+                    <button type="button" class="ql-list" aria-label="Bullet" value='bullet'></button>
+                  </span>
+                </ng-template>
+              </p-editor>
+              @if (submitted && !f['plan_terms_conditions'].controls[i].controls['terms_conditions'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['plan_terms_conditions'].controls[i].controls['terms_conditions'].hasError('required') ) {
+                    <span class="p-error">
+                      Terms & Conditions is required
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+  <div class="field col-12 md:col-12" >
+    <p-fieldset legend="SMS Template Configuration">
+      <div class="field" formArrayName="SmsConfigues">
+        <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"  dataKey="idd" [value]="SmsConfigues.controls" id="addPlatform">
+          <ng-template #header>
+            <tr>
+              <th style="width: 5%">#</th>
+              <th style="width: 25%">SMS Template Type</th>
+              <th style="width: 25%">Language</th>
+              <th style="width: 25%">Message</th>
+              <th style="width: 15%;">Options</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-control  let-i="rowIndex" let-first="first">
+            <tr [formGroupName]="i">
+              <td class="col-index">{{i+1}}</td>
+              <td class="col-type">
+                <div class="field m-0">
+                  <p-select id="sms_temp_type" [filter]="true" [options]="sms_temp_types" optionLabel="name" formControlName="sms_temp_type" placeholder="Select SMS Template Type" optionValue="code" (onChange)="onSmsConfigChange()"></p-select>
+                  <div>
+                    @if (submitted &&f['SmsConfigues'].controls[i].hasError('required') && (f['SmsConfigues'].controls[i].controls['sms_temp_type'].value==='')) {
+                      <span class="p-error">
+                        Please select SMS Template Type
+                      </span>
+                    }
+                    @if (f['SmsConfigues'].controls[i].hasError('duplicate')) {
+                      <span class="p-error">
+                        SMS Template Type already exist !
+                      </span>
+                    }
+                    @if (f['SmsConfigues'].controls[i].hasError('exist')) {
+                      <span class="p-error">
+                        SMS Template Type duplicate entry !
+                      </span>
+                    }
+                  </div>
+
+                </div>
+              </td>
+              <td class="col-lang">
+                <div class="field m-0">
+                  <p-select id="sms_temp_lang" [options]="languages" optionLabel="name" formControlName="sms_temp_lang" placeholder="Select Language" optionValue="name" [filter]="true" filterBy="name" (onChange)="onSmsConfigChange()"></p-select>
+                  <div>
+                    @if (submitted && f['SmsConfigues'].controls[i].hasError('required') && (f['SmsConfigues'].controls[i].controls['sms_temp_lang'].value==='')) {
+                      <span class="p-error">
+                        Please select Language
+                      </span>
+                    }
+                    @if (f['SmsConfigues'].controls[i].hasError('duplicate')) {
+                      <span class="p-error">
+                        Language already exist !
+                      </span>
+                    }
+                    @if (f['SmsConfigues'].controls[i].hasError('exist')) {
+                      <span class="p-error">
+                        Language duplicate entry !
+                      </span>
+                    }
+                  </div>
+
+                </div>
+              </td>
+              <td class="col-message">
+                <div class="field m-0">
+                  <textarea rows="4" cols="20"
+                    pTextarea
+                    id="sms_temp_msg"
+                    formControlName="sms_temp_msg"
+                  class="sms-textarea" (input)="onSmsConfigChange()"></textarea>
+
+                  <div>
+                    @if (submitted && f['SmsConfigues'].controls[i].hasError('required')
+                      && (f['SmsConfigues'].controls[i].controls['sms_temp_msg'].value==='')) {
+                      <span class="p-error"
+                        >
+                        Message is required
+                      </span>
+                    }
+                  </div>
+                </div>
+              </td>
+
+              <td class="col-actions">
+                <div class="field m-0">
+                  @if (SmsConfigues.controls.length > 1) {
+                    <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                  }
+                  @if (i==SmsConfigues.controls.length-1) {
+                    <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                  }
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-fieldset>
+  </div>
+</div>
+<!-- <div class="p-fluid formgrid grid"> -->
+<div class="field col-12 md:col-3">
+  <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+</div>
+<!-- </div> -->
+</form>
+</div>
+</div>
+</div>
+<p-toast></p-toast>

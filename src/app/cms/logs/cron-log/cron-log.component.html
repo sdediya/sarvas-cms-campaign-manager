@@ -1,0 +1,215 @@
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+			<div class="ml-1 grid">
+				<h5>Cron Logs</h5>
+				<!-- <div class="col-3"> -->
+					<p-select [(ngModel)]="selected_type" [options]="cron_type" optionLabel="name" (onChange)="ontypeSelect($event)" placeholder="Type" optionValue="name" class="ml-4"></p-select>
+				<!-- </div> -->
+			</div>
+            
+            <p-divider align="center">
+				<span class="p-tag text-base">Filters</span>
+			</p-divider>
+
+			<form [formGroup]="cronLogsForm" (ngSubmit)="onSubmit()">
+                <div class="p-fluid formgrid grid align-items-center">
+                   
+                    <div class="col-4 md:col-3">
+                        <div class="field col-12">
+                            <label htmlFor="cron_date_range">Select Date Range</label>
+                            <p-datepicker formControlName="cron_date_range" placeholder="Select date range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+                            </p-datepicker>
+                        </div>
+                    </div>
+					<div class="col-4 md:col-3">
+						<label htmlFor="cron_operator">Select Region<span label styleclass="label-required"
+								class="text-red-500">*</span></label>					
+						<p-select id="cron_region" [options]="regions" optionLabel="label" optionValue="value"
+							formControlName="cron_region" placeholder="Select Region" (onChange)="onRegionChange($event)">
+						</p-select>
+					</div>
+					 <div class="col-4 md:col-3">
+                        <label htmlFor="cron_operator">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+                        <p-select id="cron_operator" [options]="telecom_operators" [filter]="true" optionLabel="tel_name" formControlName="cron_operator" placeholder="Telcom" optionValue="value"  (onChange)="onOperatorChange($event)">"></p-select>
+                        
+                    </div>
+					<div class="col-4 md:col-3" *ngIf="showMasterAggregator">
+						<div class="field col-12">
+							<label htmlFor="cron_master_aggregator">Select Master Aggregator</label>
+							<p-select id="cron_master_aggregator" [options]="telecom_master_aggregator" optionLabel="label"
+								optionValue="value" formControlName="cron_master_aggregator" placeholder="Master Aggregator"
+								[showClear]="true">
+							</p-select>
+						</div>
+					</div>
+
+					<div class="col-4 md:col-3">
+                        <div class="field col-12">
+                            <label htmlFor="cron_status">Cron status</label>
+                            <p-select id="cron_status" [options]="cron_status" [filter]="true" optionLabel="status" formControlName="cron_status" placeholder="Select Telcom" [showClear]="true"  optionValue="status"></p-select>
+                        </div>
+                    </div>
+                    <div class="col-3 md:col-3 flex align-items-center">
+                        <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+                    </div>
+                </div>
+            </form>
+			<div class="p-fluid">
+				
+			</div>
+
+            <p-table #dt1 [value]="cron_logs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+                <ng-template #caption>
+                    <div class="flex justify-content-between align-items-center flex-column sm:flex-row">
+						<div class="">
+							<p *ngIf="cronlogs_type == 'RENEWAL'" style="color: red; font-weight: 600;">For Kenya Safaricom (Taimatuk), the Renewed Records column represents the number of records successfully attempted for charging. Please do not consider this as charged counts. For actual live renewals, refer to the Live Dashboard.</p>
+							<p *ngIf="cronlogs_type == 'PARKING'" style="color: red; font-weight: 600;">For Kenya Safaricom (Taimatuk), the Parking Records column represents the number of records successfully attempted for charging. Please do not consider this as charged counts. For actual live Parking to Activation, refer to the MSISDN Dump.</p>
+						</div>
+						<button *ngIf="cron_logs.length>0" type="button" pButton pRipple  (click)="exportToExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+					</div>
+                </ng-template>
+				<ng-template #header>
+					<tr>
+						<th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Cron status
+							</div>
+						</th>
+                        <th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Operator
+							</div>
+						</th>
+						<th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Master Aggregator
+							</div>
+						</th>
+						<th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Region
+							</div>
+						</th>
+                        <th style="min-width: 10rem" >
+							<div class="flex justify-content-between align-items-center">
+								Start Time
+							</div>
+						</th>
+                        <th style="min-width: 10rem" >
+							<div class="flex justify-content-between align-items-center">
+								End Time
+							</div>
+						</th>
+						<th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								isProcessed
+							</div>
+						</th>
+						<th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Total Records
+							</div>
+						</th>
+                       
+                        <th style="min-width: 12rem" *ngIf="cronlogs_type == 'RENEWAL'">
+							<div class="flex justify-content-between align-items-center">
+								Grace Records
+							</div>
+						</th>
+
+                        <th style="min-width: 12rem" *ngIf="cronlogs_type == 'RENEWAL'">
+							<div class="flex justify-content-between align-items-center">
+								Renewed Records
+							</div>
+						</th>
+						<th style="min-width: 12rem" *ngIf="cronlogs_type == 'PARKING'">
+							<div class="flex justify-content-between align-items-center">
+								Activation Records
+							</div>
+						</th>
+
+                        <th style="min-width: 12rem" *ngIf="cronlogs_type == 'PARKING'">
+							<div class="flex justify-content-between align-items-center">
+								Parking Records
+							</div>
+						</th>
+
+                        <th style="min-width: 12rem">
+							<div class="flex justify-content-between align-items-center">
+								Churn Records
+							</div>
+						</th>
+						
+					</tr>
+				</ng-template>
+				<ng-template #body let-cronLogs let-rowIndex="rowIndex">
+					<tr>
+						<!-- <td><i class="pi pi-clone cursor-pointer" title="Copy Campaign Link" (click)="copyToClipboard(campaigns.id, campaigns.campaigntype)"></i></td> -->
+						<td>
+							<span class="w-4 p-tag p-tag-rounded" [class]="{'p-tag-warning':  getStatusText(cronLogs) == 'In Progress', 'p-tag-danger': getStatusText(cronLogs) == 'Failed','p-tag-success': getStatusText(cronLogs) == 'Success' }" [innerHTML]="getStatusText(cronLogs)"></span>
+						</td>
+						<td>
+						    {{cronLogs.operator}}
+						</td>
+						<td>
+							{{cronLogs.ma}}
+						</td>
+						<td>
+							{{cronLogs.region}}
+						</td>
+						<td style="text-wrap: nowrap;">
+							{{cronLogs.start_time | date: 'yyyy-MM-dd HH:mm a':'IST'}}
+						</td>
+                        <td style="text-wrap: nowrap;">
+							{{cronLogs.end_time | date: 'yyyy-MM-dd HH:mm a':'IST'}}
+						</td>
+                        
+                        <td>
+                            {{cronLogs.is_processed}}
+                        </td>
+                        <td>
+                            <span *ngIf="cronLogs.cron_report; else noRecord"> {{cronLogs.cron_report.totalRecords}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+                        <td *ngIf="cronlogs_type == 'RENEWAL'">
+                            <span *ngIf="cronLogs.cron_report; else noRecord">{{cronLogs.cron_report.grace}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+		
+                        <td *ngIf="cronlogs_type == 'RENEWAL'">
+                            <span *ngIf="cronLogs.cron_report; else noRecord">{{cronLogs.cron_report.renewed}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+						<td *ngIf="cronlogs_type == 'PARKING'">
+                            <span *ngIf="cronLogs.cron_report; else noRecord">{{cronLogs.cron_report.activation}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+		
+                        <td *ngIf="cronlogs_type == 'PARKING'">
+                            <span *ngIf="cronLogs.cron_report; else noRecord">{{cronLogs.cron_report.parking}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+
+                        <td >
+                            <span *ngIf="cronLogs.cron_report; else noRecord">{{cronLogs.cron_report.churn}}</span>
+                            <ng-template #noRecord>0</ng-template>
+                        </td>
+					</tr>
+				</ng-template>
+				
+				<ng-template #emptymessage>
+					<tr>
+						<td colspan="8">No data found.</td>
+					</tr>
+				</ng-template>
+				<ng-template #loadingbody>
+					<tr>
+						<td colspan="8">Loading data. Please wait.</td>
+					</tr>
+				</ng-template>
+    		</p-table>
+        </div>
+    </div>
+</div>

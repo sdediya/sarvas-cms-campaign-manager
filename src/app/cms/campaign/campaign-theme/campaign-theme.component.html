@@ -1,0 +1,486 @@
+<div class="grid">
+  <div class="col-12">
+    <form [formGroup]="campaignThemeForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="card">
+        <div class="p-fluid formgrid grid align-content-center">
+          <div class="field col-4 m-0">
+            <h5 class="mb-3">Campaign Theme Design</h5>
+          </div>
+          <div class="field col-4">
+            <label htmlFor="campaign_id">Select Campaign</label>
+            <p-select id="campaign_id" [options]="campaignList" optionLabel="name" [filter]="true" (onChange)="onCampaignChange($event)" formControlName="theme_campaign_id" placeholder="Select Campaign" optionValue="id"></p-select>
+            @if (submitted && !f['theme_campaign_id'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['theme_campaign_id'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select Campaign
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-4">
+            <label htmlFor="language">Select Language</label>
+            <p-select id="language" [options]="language_list" optionLabel="value" formControlName="theme_language" placeholder="Select language" optionValue="key"></p-select>
+            @if (submitted && !f['theme_language'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['language'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select language
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <!--  -->
+      @if (f['theme_campaign_id'].valid && f['theme_language'].valid) {
+        <div class="card">
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-6">
+              <p-fieldset legend="Theme Design">
+                <!-- <p-fieldset legend="Theme Design"> -->
+                <div class="grid">
+                  <div class="field col-6 md:col-6">
+                    <div class="grid">
+                      <div class="col-8 pb-0">
+                        <label>Show ShemarooMe Logo</label>
+                      </div>
+                      <div class="col-2">
+                        <p-toggleswitch formControlName="theme_is_logo"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field col-6 md:col-6">
+                    <div class="grid">
+                      <div class="col-8 pb-0">
+                        <label>Show Operator Logo</label>
+                      </div>
+                      <div class="col-2">
+                        <p-toggleswitch formControlName="theme_operator_is_logo"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_image_urls">Theme Image</label>
+                    <div class="p-inputgroup w-full">
+                      <input pInputText id="theme_image_urls" #themeFileInput type="file" accept="image/*" (change)="onFileChange($event)" aria-describedby="theme_image"/>
+                      @if (selectedThemeImageFile && f['theme_image_urls'].valid) {
+                        <span (click)="uploadThemeImage($event, themeFileInput)" class="p-inputgroup-addon cursor-pointer">Upload</span>
+                      }
+                      @if (selectedThemeImageFile) {
+                        <span (click)="clearThemeImage(themeFileInput)" class="p-inputgroup-addon cursor-pointer">Clear</span>
+                      }
+                    </div>
+                    <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
+                    @if (!f['theme_image_urls'].valid && selectedThemeImageFile!==null) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_image_urls'].hasError('required') || f['theme_image_urls'].hasError('invalidDimensions') ) {
+                          <span class="p-error">
+                            Please upload theme image of dimensions (640px * 480px)
+                          </span>
+                        }
+                      </div>
+                    }
+                    @if (campaignThemeForm.get('theme_image_urls')?.errors; as errors) {
+                      <div>
+                        @if (errors.invalidFileType) {
+                          <p class="text-red-500">Only image files are allowed.</p>
+                        }
+                        @if (errors.fileTooLarge) {
+                          <p class="text-red-500">File size must be under 2MB.</p>
+                        }
+                        @if (errors.invalidDimensions) {
+                          <p class="text-red-500">Image must be 640x480.</p>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <p-table [value]="campaignImage">
+                      <ng-template #header>
+                        <tr>
+                          <th width="80%">Images</th>
+                          <th>Action</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template #body let-image let-rowIndex="rowIndex" let-first="first">
+                        <tr>
+                          <td><img src="{{image}}" width="100" height="50"></td>
+                          <td>
+                            {{first}}
+                            <a [href]="image" target="_blank"><button pButton pRipple type="button"><i class="pi pi-eye"></i></button> </a>
+                            <button pButton pRipple type="button" (click)="removeImages(rowIndex)"><i class="pi pi-trash"></i></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <tbody class="p-datatable-tbody">
+                        <tr>
+                          <td></td>
+                          <td>
+                            <button pButton pRipple type="button"><i class="pi pi-trash"></i></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </p-table>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_logo_title_text">Title before Logo</label>
+                    <p-editor formControlName="theme_logo_title_text" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold" aria-label="Bold"></button>
+                          <button type="button" class="ql-italic" aria-label="Italic"></button>
+                          <button type="button" class="ql-underline" aria-label="Underline"></button>
+                          <button type="button" class="ql-list" aria-label="List" value='ordered'></button>
+                          <button type="button" class="ql-list" aria-label="Bullet" value='bullet'></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                    @if (submitted && !f['theme_logo_title_text'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_logo_title_text'].hasError('required') ) {
+                          <span class="p-error">
+                            Before Logo Title is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_banner_title_text">Banner Title</label>
+                    <p-editor formControlName="theme_banner_title_text" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                          <button type="button" class="ql-list" aria-label="List" value='ordered'></button>
+                          <button type="button" class="ql-list" aria-label="Bullet" value='bullet'></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                    @if (submitted && !f['theme_banner_title_text'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_banner_title_text'].hasError('required') ) {
+                          <span class="p-error">
+                            Banner Title is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12">
+                    <label htmlFor="theme_title_text">Title Text</label>
+                    <input pInputText id="theme_title_text" type="text" formControlName="theme_title_text" placeholder="Title Text" />
+                    @if (submitted && !f['theme_title_text'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_title_text'].hasError('required') ) {
+                          <span class="p-error">
+                            Title Text is required
+                          </span>
+                        }
+                      </div>
+                    }
+                    <ul>
+                      <li><span (click)="addConstants('<plan_name>')">Plan Name</span></li>
+                      <li><span (click)="addConstants('<plan_validity>')">Plan Validity</span></li>
+                      <li><span (click)="addConstants('<plan_amount>')">Plan Amount</span></li>
+                      <li><span (click)="addConstants('<currency>')">Currency </span></li>
+                      <li><span (click)="addConstants('<service_name>')">Service Name</span></li>
+                    </ul>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_additional_text">Additional Text</label>
+                    <input pInputText id="theme_additional_text" type="text" formControlName="theme_additional_text" placeholder="Additional Text" />
+                    @if (submitted && !f['theme_additional_text'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_additional_text'].hasError('required') ) {
+                          <span class="p-error">
+                            Additional Text is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+                <!-- INPUTS AND BUTTON -->
+                <div class="grid">
+                  <div class="field col-12 md:col-6">
+                    <label htmlFor="theme_subscribe_button_text">Enter mobile number input label</label>
+                    <input pInputText id="theme_subscribe_button_text" type="text" formControlName="theme_enter_mobile_label_text" placeholder="Enter mobile number input label" />
+                  </div>
+                  <div class="field col-12 md:col-6">
+                    <label htmlFor="theme_subscribe_button_text">Subscribe Button Text (Click 1)</label>
+                    <input pInputText id="theme_subscribe_button_text" type="text" formControlName="theme_subscribe_button_text" placeholder="Subscribe Button Text" />
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_subscribe_button_before_text">Text Before Subscribe Button</label>
+                    <p-editor formControlName="theme_subscribe_button_before_text" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_subscribe_button_after_text">Text After Subscribe Button</label>
+                    <p-editor formControlName="theme_subscribe_button_after_text" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_subscribe_button_before_text_otp">Text Before Subscribe Button OTP Page</label>
+                    <p-editor formControlName="theme_subscribe_button_before_text_otp" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_subscribe_button_after_text_otp">Text After Subscribe Button OTP Page</label>
+                    <p-editor formControlName="theme_subscribe_button_after_text_otp" [style]="{ height: '100px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <div class="grid">
+                      <div class="col-4 pb-0">
+                        <label>Exit Button</label>
+                      </div>
+                      <div class="col-2">
+                        <p-toggleswitch formControlName="theme_exit_button"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  @if (campaignThemeForm.value.theme_exit_button) {
+                    <div class="field col-12 md:col-12">
+                      <label htmlFor="theme_exit_button_text">Exit Button Text</label>
+                      <input pInputText id="theme_exit_button_text" type="text" formControlName="theme_exit_button_text" placeholder="Exit Button Text" />
+                    </div>
+                  }
+                  @if (campaignThemeForm.value.theme_exit_button) {
+                    <div class="field col-12 md:col-12">
+                      <label htmlFor="theme_exit_button_url">Exit Button URL</label>
+                      <input pInputText id="theme_exit_button_url" type="url" formControlName="theme_exit_button_url" placeholder="Exit Button URL"/>
+                      @if (f.theme_exit_button_url.errors) {
+                        <div style="display: block; width: 100%;" class="ml-3 mt-1 mb-0">
+                          <span class="p-error">
+                            Invalid URL
+                          </span>
+                        </div>
+                      }
+                    </div>
+                  }
+                  @if (this.selectedCampaignData.campaign_flow == 'pin') {
+                    <div class="field col-12 md:col-6">
+                      <label htmlFor="theme_subscribe_button_text">Enter OTP input label</label>
+                      <input pInputText id="theme_subscribe_button_text" type="text" formControlName="theme_enter_otp_label_text" placeholder="Enter OTP input label" />
+                    </div>
+                  }
+                  @if (this.selectedCampaignData.campaign_flow == 'pin') {
+                    <div class="field col-12 md:col-6">
+                      <label htmlFor="theme_subscribe_button_text">Verify OTP Button Text (Click 2)</label>
+                      <input pInputText id="theme_subscribe_button_text" type="text" formControlName="theme_verify_otp_button_text" placeholder="Verify OTP Button Text" />
+                    </div>
+                  }
+                  @if (this.selectedCampaignData.campaign_flow == 'pin') {
+                    <div class="field col-12 md:col-6">
+                      <label htmlFor="theme_subscribe_button_text">Resend OTP link Text</label>
+                      <input pInputText id="theme_subscribe_button_text" type="text" formControlName="theme_resent_otp_text" placeholder="Resend OTP Text" />
+                    </div>
+                  }
+                </div>
+                <!-- END Of INPUTS and Button -->
+                <div class="grid">
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_page_background_color">Theme Background Color</label>
+                    <p-select id="theme_page_background_color" [options]="campaignThemeBgColors" optionLabel="name" formControlName="theme_page_background_color" placeholder="Select Theme Background Color" optionValue="code"></p-select>
+                    @if (submitted && !f['theme_page_background_color'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_page_background_color'].hasError('required') ) {
+                          <span class="p-error">
+                            Theme Background Color is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="theme_subscribe_button_color">Subscribe Button Color</label><br>
+                    <p-colorpicker formControlName="theme_subscribe_button_color"></p-colorpicker>
+                    @if (submitted && !f['theme_subscribe_button_color'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_subscribe_button_color'].hasError('required') ) {
+                          <span class="p-error">
+                            Subscribe Button Color is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  @if (campaignThemeForm.value.theme_exit_button) {
+                    <div class="field col-12 md:col-4">
+                      <label htmlFor="theme_exit_button_color">Exit Button Color</label><br>
+                      <p-colorpicker formControlName="theme_exit_button_color"></p-colorpicker>
+                      @if (submitted && !f['theme_exit_button_color'].valid) {
+                        <div style="display: block; width: 100%;">
+                          @if (f['theme_exit_button_color'].hasError('required') ) {
+                            <span class="p-error">
+                              Subscribe Button Color is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="theme_page_text_color">Page Text Color</label><br>
+                    <p-colorpicker formControlName="theme_page_text_color"></p-colorpicker>
+                    @if (submitted && !f['theme_page_text_color'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_page_text_color'].hasError('required') ) {
+                          <span class="p-error">
+                            Page Text Color is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-12">
+                    <label htmlFor="theme_terms_conditions">Terms & Conditions</label>
+                    <p-editor formControlName="theme_terms_conditions" [style]="{ height: '320px' }">
+                      <ng-template #header>
+                        <span class="ql-formats">
+                          <button type="button" class="ql-bold"  aria-label="Bold"></button>
+                          <button type="button" class="ql-italic"  aria-label="Italic"></button>
+                          <button type="button" class="ql-underline"  aria-label="Underline"></button>
+                          <button type="button" class="ql-list" aria-label="List" value='ordered'></button>
+                          <button type="button" class="ql-list" aria-label="Bullet" value='bullet'></button>
+                        </span>
+                      </ng-template>
+                    </p-editor>
+                    @if (submitted && !f['theme_terms_conditions'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['theme_terms_conditions'].hasError('required') ) {
+                          <span class="p-error">
+                            Terms & Conditions is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12">
+                    <label htmlFor="theme_powered_by_text">Powered By Text</label>
+                    <input pInputText id="theme_powered_by_text" type="text" formControlName="theme_powered_by_text" placeholder="Powered By Text" />
+                  </div>
+                </div>
+              </p-fieldset>
+            </div>
+            <!--  -->
+            <div class="field col-12 md:col-6">
+              <p-fieldset legend="Theme Preview">
+                <div class="card edit-pencil theme_preview" [ngClass]="'currentTheme'| i18n" data-fieldName ="background_color" [style]="{'background-color':campaignThemeForm.value.theme_page_background_color}">
+                  <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
+                    <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_logo_title_text" [style]="{'color':campaignThemeForm.value.theme_logo_title_text || 'black'}"></div>
+                  </div>
+                  <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
+                    <div class="edit-pencil" data-fieldName ="shemaroo_logo">
+                      @if (campaignThemeForm.value.theme_is_logo) {
+                        <img  src="../../../../assets/images/shemaroo_logo.svg" alt="Shemaroo ME" width="150px" height="50px">
+                      }
+                    </div>
+                    <div class="edit-pencil" data-fieldName ="operator_logo">
+                      @if (campaignThemeForm.value.theme_operator_is_logo) {
+                        <img [ngClass]="{'operator-name': campaignThemeForm.value.theme_is_logo}" class="ml-2" [src]="'../../../../assets/images/operator/' + selectedCampaignData.tel_name + '_' + selectedCampaignData.region_name + '_logo.png'" [alt] = "selectedCampaignData.tel_name + '_' + selectedCampaignData.region_name" height="50px">
+                      }
+                    </div>
+                    @if (!campaignThemeForm.value.theme_operator_is_logo) {
+                      <p [ngClass]="{'operator-name': campaignThemeForm.value.theme_is_logo}" class="text-2xl text-cyan-900 font-semibold uppercase edit-pencil" data-fieldName="operator_name">{{selectedCampaignData.tel_name}}</p>
+                    }
+                  </div>
+                  <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center">
+                    <div class="card bg-blue-50 col-12 flex flex-column align-items-center">
+                      <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_banner_title_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
+                      <img [src]="selectedThemeImage || '../../../../assets/images/campaign/campaign_default_banner.svg'" alt="" class="banner_img">
+                      <p class="m-3 text-xl text-cyan-700" >{{titleText? titleText: 'Your selected plan is '+selectedCampaignData.plan_name +' | '+ selectedCampaignData.region_currency_code +' ' +selectedCampaignData.plan_amount+ ' for '+selectedCampaignData.plan_validity+' days'}}</p>
+                      <p class="text-sm mt-1">{{campaignThemeForm.value.theme_additional_text}}</p>
+                      <div class="col-8 flex flex-column justify-content-center align-items-center">
+                        <p class="m-0 text-sm" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">{{campaignThemeForm.value.theme_enter_mobile_label_text || 'ENTER_MOBILE_NUMBER' | i18n}}</p>
+                        <div class="p-inputgroup">
+                          <span class="p-inputgroup-addon"> XX</span>
+                          <input  type="text"  pInputText  class="p-inputtext-sm" placeholder="XXXXXXXXXX" />
+                        </div>
+                        <div class="flex flex-column align-items-center mt-3 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_before_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
+                        <div class="flex align-items-center">
+                          @if (selectedCampaignData.campaign_flow == 'pin') {
+                            <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_subscribe_button_color || '#22C55E'">{{campaignThemeForm.value.theme_subscribe_button_text ||   "SEND_OTP" | i18n }}</button>
+                          }
+                          @if (selectedCampaignData.campaign_flow != 'pin') {
+                            <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_subscribe_button_color || '#22C55E'">{{campaignThemeForm.value.theme_subscribe_button_text ||'SUBSCRIBE' | i18n }}</button>
+                          }
+                          @if (campaignThemeForm.value.theme_exit_button) {
+                            <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_exit_button_color || '#df2a2a'">{{campaignThemeForm.value.theme_exit_button_text || 'Exit' | i18n}}</button>
+                          }
+                        </div>
+                        <div class="flex flex-column align-items-center m-0 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_after_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
+                      </div>
+                      @if (selectedCampaignData.campaign_flow == 'pin') {
+                        <div class="col-8 flex flex-column justify-content-center align-items-center">
+                          <p class="m-0 text-sm" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">{{campaignThemeForm.value.theme_enter_otp_label_text || 'ENTER_OTP' | i18n }}</p>
+                          <div class="p-inputtext-sm">
+                            <input  type="text"  pInputText  class="p-inputtext-sm" placeholder="XXXXXXXXXX" />
+                          </div>
+                          <div class="flex flex-column align-items-center mt-3 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_before_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
+                          <div class="flex align-items-center">
+                            <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_subscribe_button_color || '#22C55E'">{{campaignThemeForm.value.theme_validate_otp_text || 'SUBSCRIBE' | i18n}}</button>
+                            @if (campaignThemeForm.value.theme_exit_button) {
+                              <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_exit_button_color || '#df2a2a'">{{campaignThemeForm.value.theme_exit_button_text || 'Exit' | i18n}}</button>
+                            }
+                          </div>
+                          <p-button [label]="campaignThemeForm.value.theme_resent_otp_text || 'RESEND_OTP' | i18n" class="p-button-link pt-0 mt-2 pb-0" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                          <div class="flex flex-column align-items-center m-0 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_after_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
+                        </div>
+                      }
+                      <p class="text-xl text-orange-600 mt-4 mb-0">{{'TERMS_CONDITION' | i18n}}</p>
+                      <div class="flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_terms_conditions" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
+                      </div>
+                      <p class="m-6 text-sm">{{this.f['theme_powered_by_text'].value? this.f['theme_powered_by_text'].value: "Powered By: Shemaroo Entertainment Limited"}}</p>
+                    </div>
+                  </div>
+                </div>
+              </p-fieldset>
+            </div>
+          </div>
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-6 pl-5">
+              <button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            </div>
+          </div>
+        </div>
+      }
+
+    </form>
+  </div>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,86 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="m-1 grid justify-content-between">
+        <span class="flex">
+          <h5 style="text-wrap: nowrap;">Whitelist Configuration List</h5>
+        </span>
+        @if (write) {
+          <p-button [routerLink]="['/campaign/add-whitelist']">Add Whitelist</p-button>
+        }
+      </div>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid mx-1">
+        <div class="col-3 pl-0">
+          <p-select [(ngModel)]="filter.whitelist_type" id="whitelist_type" [options]="whitelist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'whitelist_type')" placeholder="Whitelist Type" optionValue="code"></p-select>
+        </div>
+        <div class="col-3">
+          @if (filter.whitelist_type) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+          }
+        </div>
+      </div>
+      <p-divider></p-divider>
+
+      <p-table #dt1 [value]="whitelist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Mobile or Series" class="w-full"/></p-iconfield>
+            @if (whitelist_confs.length > 0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Whitelist Type
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Configuration Value
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-whitelist_confs let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{whitelist_confs.type | uppercase}}
+            </td>
+            <td>
+              {{whitelist_confs.value}}
+            </td>
+            <td>
+              @if (delete) {
+                <p-button (onClick)="toggleConf(whitelist_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

@@ -1,0 +1,176 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Cron</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Cron</h5>
+      }
+      <form [formGroup]="cronForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_name">Cron Name<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="cron_name" type="text" formControlName="cron_name"
+              placeholder="eg. in_airtel renewal cron" />
+            @if (submitted && !f['cron_name'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_name'].hasError('required') ) {
+                  <span class="p-error">
+                    Cron Name is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-3 md:col-3">
+
+            <label htmlFor="cron_countryCode">Select Region</label>
+            <p-select id="cron_countryCode" [options]="regions" [filter]="true" optionLabel="name" formControlName="cron_countryCode" placeholder="Select Region" [showClear]="true" (onChange)="filterOnChange($event,'region')" optionValue="name"></p-select>
+
+          </div>
+          <div class="field col-3 md:col-3">
+
+            <label htmlFor="cron_operator">Select Operator</label>
+            <p-select id="cron_operator" [options]="telecom_operators" [filter]="true" optionLabel="name" formControlName="cron_operator" placeholder="Select Operator" [showClear]="true" (onChange)="filterOnChange($event,'operator')" optionValue="name"></p-select>
+
+          </div>
+
+
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_httpMode">
+              HTTP Mode
+              <span class="text-red-500">*</span>
+            </label>
+
+            <p-select id="cron_httpMode" [options]="httpModes" formControlName="cron_httpMode"
+            optionLabel="label" optionValue="value" placeholder="GET/POST/BATCH"></p-select>
+
+            @if (submitted && !f['cron_httpMode'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_httpMode'].hasError('required')) {
+                  <span class="p-error">
+                    HTTP Mode is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_startTime">Cron Execution Time<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input type="time" pInputText id="cron_startTime" formControlName="cron_startTime"
+              placeholder="" />
+            @if (submitted && !f['cron_startTime'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_startTime'].hasError('required') ) {
+                  <span class="p-error">
+                    Time is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="intervalMinutes">Schedule Interval Minutes<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="Schedule Interval" type="number" formControlName="intervalMinutes"
+              placeholder="1440 =24hrs" />
+            @if (submitted && !f['intervalMinutes'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['intervalMinutes'].hasError('required') ) {
+                  <span class="p-error">
+                    required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <div class="grid">
+              <div class="col-12 pb-0">
+                <label>Is Retry on failure<span label styleclass="label-required"
+                class="text-red-500">*</span></label>
+              </div>
+              <div class="col flex align-items-center gap-1">
+                <p-checkbox formControlName="cron_isRetryOnFailure" [binary]="true"></p-checkbox>
+                <label for="ny">Retry</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="field col-12 md:col-12">
+            <label htmlFor="cron_url">Cron URL<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="cron_url" type="text" formControlName="cron_url" placeholder="" />
+            @if (submitted && !f['cron_url'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_url'].hasError('required') ) {
+                  <span class="p-error">
+                    URL is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_retryMinute">Retry In Minutes<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="cron_retryMinute" type="number" formControlName="cron_retryMinute"
+              placeholder="" />
+            @if (submitted && !f['cron_retryMinute'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_retryMinute'].hasError('required') ) {
+                  <span class="p-error">
+                    required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_maxRetryCount">Max Retry Attempt<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="cron_maxRetryCount" type="number" formControlName="cron_maxRetryCount"
+              placeholder="" />
+            @if (submitted && !f['cron_maxRetryCount'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_maxRetryCount'].hasError('required') ) {
+                  <span class="p-error">
+                    required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="field col-6 md:col-6">
+            <label htmlFor="cron_code">Unique Cron code<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="cron_code" type="text" formControlName="cron_code" placeholder="in_airtel_renewal_1" />
+            @if (submitted && !f['cron_code'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['cron_code'].hasError('required') ) {
+                  <span class="p-error">
+                    required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+
+        </div>
+        <div class="p-fluid formgrid grid field ">
+          <div class="col-12 md:col-3 pt-0">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,517 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Operator</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Operator</h5>
+      }
+      <form [formGroup]="telcomForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-12">
+            <div class="grid">
+              <div class="field col-12 md:col-6">
+                <label htmlFor="tel_name">Operator Name<sup>*</sup></label>
+                <input pInputText id="tel_name" type="text" formControlName="tel_name" placeholder="Operator Name" />
+                @if (submitted && !f['tel_name'].valid) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['tel_name'].hasError('required') ) {
+                      <span class="p-error">
+                        Operator Name is required
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="pt-2">
+              <p-fieldset legend="Operator Details">
+                <div class="grid">
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_region_id">Select Region<sup>*</sup></label>
+                    <p-select id="tel_region_id" [options]="regions" optionLabel="name" [filter]="true" formControlName="tel_region_id" placeholder="Select Region" optionValue="id"></p-select>
+                    @if (submitted && !f['tel_region_id'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_region_id'].hasError('required') ) {
+                          <span class="p-error">
+                            Region is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_flows">Select Operator Flows<sup>*</sup></label>
+                    <p-multiselect [options]="telcom_flows_list" [filter]="false" formControlName="tel_flows" (onChange)="onTelFlowChange($event)" defaultLabel="Select Operator Flows" optionLabel="name" optionValue="code" display="chip"></p-multiselect>
+                    @if (submitted && !f['tel_flows'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_flows'].hasError('required') ) {
+                          <span class="p-error">
+                            Please Select Operator Flows
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_default_flow">Select Operator Default Flow<sup>*</sup></label>
+                    <p-select id="tel_default_flow" [options]="telcom_default_flows_list" optionLabel="name" formControlName="tel_default_flow" placeholder="Select Operator Default Flow" optionValue="code" [readonly]="telcom_default_flows_readonly"></p-select>
+                    @if (submitted && !f['tel_default_flow'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_default_flow'].hasError('required') ) {
+                          <span class="p-error">
+                            Operator Default Flow is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_lifecycle_managed_by">Select Lifecycle Managed by<sup>*</sup></label>
+                    <p-select id="tel_lifecycle_managed_by" [options]="lifecycle_managed_by_list" optionLabel="name" formControlName="tel_lifecycle_managed_by" placeholder="Select Lifecycle Managed by" optionValue="code"></p-select>
+                    @if (submitted && !f['tel_lifecycle_managed_by'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_lifecycle_managed_by'].hasError('required') ) {
+                          <span class="p-error">
+                            Please Select Lifecycle Managed by
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  @if (f['tel_flows'].value.includes('pin') || f['tel_flows'].value.includes('pin_fraud')) {
+                    <div class="field col-12 md:col-3">
+                      <label htmlFor="tel_max_otp_req">Max OTP Requests/Day<sup>*</sup></label>
+                      <input pInputText id="tel_max_otp_req" type="text" formControlName="tel_max_otp_req" placeholder="Max OTP Requests/Day" />
+                      @if (submitted && !f['tel_max_otp_req'].valid) {
+                        <div style="display: block; width: 100%;">
+                          @if (f['tel_max_otp_req'].hasError('required') ) {
+                            <span class="p-error">
+                              Max OTP Requests/Day is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                  @if (f['tel_flows'].value.includes('pin') || f['tel_flows'].value.includes('pin_fraud')) {
+                    <div class="field col-12 md:col-2">
+                      <label htmlFor="tel_otp_length">OTP Length<sup>*</sup></label>
+                      <input pInputText id="tel_otp_length" type="text" formControlName="tel_otp_length" placeholder="OTP Length" />
+                      @if (submitted && !f['tel_otp_length'].valid) {
+                        <div style="display: block; width: 100%;">
+                          @if (f['tel_otp_length'].hasError('required') ) {
+                            <span class="p-error">
+                              OTP length is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                  <div class="field col-12 md:col-3">
+                    <label htmlFor="tel_repeat_usr_blacklist_days">No. of blacklist days for repeat user</label>
+                    <input pInputText id="tel_repeat_usr_blacklist_days" type="text" formControlName="tel_repeat_usr_blacklist_days" placeholder="No. of blacklist days for repeat user" />
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_languages">Select Language<sup>*</sup></label>
+                    <p-multiselect [options]="languages" [filter]="true" (onChange)="onTellanguageChange($event)" formControlName="tel_languages" defaultLabel="Select Language" optionLabel="name" optionValue="name" display="chip"></p-multiselect>
+
+                    @if (submitted && !f['tel_languages'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_languages'].hasError('required') ) {
+                          <span class="p-error">
+                            Please select language
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                  <div class="field col-12 md:col-4">
+                    <label htmlFor="tel_default_language">Select Default Language<sup>*</sup></label>
+                    <p-select id="tel_default_language" [readonly]="telcom_default_language_readonly" [options]="telcom_default_language_list" optionLabel="name" [filter]="true" formControlName="tel_default_language" placeholder="Select Default Language" optionValue="name"></p-select>
+                    @if (submitted && !f['tel_default_language'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['tel_default_language'].hasError('required') ) {
+                          <span class="p-error">
+                            Default Language is required
+                          </span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="grid">
+                  <div class="field col-12 md:col-4">
+                    <div class="grid">
+                      <div class="col-12 pb-0">
+                        <label>Is Short code available?</label>
+                      </div>
+                      <div class="col">
+                        <p-toggleswitch formControlName="tel_is_shortcode"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  @if (f['tel_is_shortcode'].value) {
+                    <div class="field col-12 md:col-3">
+                      <div class="grid">
+                        <div class="col-12 pb-0">
+                          <label>Short code Number<sup>*</sup></label>
+                        </div>
+                        <div class="col">
+                          <input pInputText id="tel_telcom_revenue" type="text" formControlName="tel_service_shortcode" placeholder="Short code number" />
+                          @if (submitted && !f['tel_service_shortcode'].valid) {
+                            <div style="display: block; width: 100%;">
+                              @if (f['tel_service_shortcode'].hasError('required') ) {
+                                <span class="p-error">
+                                  Short code required
+                                </span>
+                              }
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+                <div class="grid">
+                  <div class="field col-12 md:col-2">
+                    <div class="grid">
+                      <div class="col-12 pb-0">
+                        <label>Is Partner Available?</label>
+                      </div>
+                      <div class="col">
+                        <p-toggleswitch formControlName="tel_is_partner"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-2">
+                    <div class="grid">
+                      <div class="col-12 pb-0">
+                        <label>He available?</label>
+                      </div>
+                      <div class="col">
+                        <p-toggleswitch formControlName="tel_is_he"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-2">
+                    <div class="grid">
+                      <div class="col-12 pb-0">
+                        <label>Fallback available?</label>
+                      </div>
+                      <div class="col">
+                        <p-toggleswitch formControlName="tel_is_fallback"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field col-12 md:col-2">
+                    <div class="grid">
+                      <div class="col-12 pb-0">
+                        <label>Is Refund available?</label>
+                      </div>
+                      <div class="col">
+                        <p-toggleswitch formControlName="tel_is_refundable"></p-toggleswitch>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid">
+                  <div class="field col-12 pb-0 mb-0">
+                    <label>Add Service/Partner/Operator Revenue/Shemaroo Revenue</label>
+                  </div>
+                  <div class="field col-12 md:col-12 pt-0">
+                    <div formArrayName="tel_services">
+                      <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines"  dataKey="idd" [value]="tel_services.controls"  [scrollable]="false" id="addPlatform">
+                        <ng-template #header>
+                          <tr>
+                            <th style="width: 3rem">#</th>
+                            <th style="width: 20%">Service<span label styleclass="label-required" class="text-red-500">*</span></th>
+                            <th style="width: 20%">Partner</th>
+                            <th style="width: 20%">Shemaroo Revenue (%)<span label styleclass="label-required" class="text-red-500">*</span></th>
+                            <th style="width: 20%">Operator Revenue (%)<span label styleclass="label-required" class="text-red-500">*</span></th>
+                            <th style="width: 100px;">Options</th>
+                          </tr>
+                        </ng-template>
+                        <ng-template #body let-control let-expanded="expanded" let-i="rowIndex" let-last="last">
+                          <tr [formGroupName]="i">
+                            <td>
+                              {{i+1}}
+                            </td>
+                            <td style="width: 10rem">
+                              <div class="field m-0">
+                                <p-select [options]="services" formControlName="telcom_service_id" placeholder="Select Service" optionLabel="name" optionValue="id"></p-select>
+                                @if (submitted && !f['tel_services'].controls[i].controls['telcom_service_id'].valid) {
+                                  <div style="display: block; width: 100%;">
+                                    @if (f['tel_services'].controls[i].controls['telcom_service_id'].hasError('required') ) {
+                                      <span class="p-error">
+                                        Please select service
+                                      </span>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </td>
+                            <td style="width: 10rem">
+                              <div class="field m-0">
+                                <p-select id="tel_services" [options]="master_aggregators" optionLabel="maggregator_name" formControlName="telcom_partner_id" placeholder="Select Partner" optionValue="maggregator_id"></p-select>
+                              </div>
+                            </td>
+                            <td style="width: 10rem">
+                              <div class="field m-0">
+                                <input pInputText id="shemaroo_revenue" type="text" formControlName="shemaroo_revenue" placeholder="Shemaroo Revenue (%)" />
+                                @if (submitted && !f['tel_services'].controls[i].controls['shemaroo_revenue'].valid) {
+                                  <div style="display: block; width: 100%;">
+                                    @if (f['tel_services'].controls[i].controls['shemaroo_revenue'].hasError('required') ) {
+                                      <span class="p-error">Shemaroo Revenue is required</span>
+                                    }
+                                    @if (f['tel_services'].controls[i].controls['shemaroo_revenue'].errors?.highRevenueShare) {
+                                      <span class="p-error">Revenue Share is higher that 100%</span>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </td>
+                            <td style="width: 10rem">
+                              <div class="field m-0">
+                                <input pInputText id="telcom_revenue" type="text" formControlName="telcom_revenue" placeholder="Operator Revenue (%)" />
+                                @if (submitted && !f['tel_services'].controls[i].controls['telcom_revenue'].valid) {
+                                  <div style="display: block; width: 100%;">
+                                    @if (f['tel_services'].controls[i].controls['telcom_revenue'].hasError('required') ) {
+                                      <span class="p-error">Operator Revenue is required</span>
+                                    }
+                                    @if (f['tel_services'].controls[i].controls['telcom_revenue'].errors?.highRevenueShare) {
+                                      <span class="p-error">Revenue Share is higher that 100%</span>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </td>
+                            <td style="width: 10rem">
+                              <div class="field m-0">
+                                @if (i!==0) {
+                                  <p-button (click)="removePartner(i)" class="mr-2" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                                }
+                                @if (i==tel_services.controls.length-1) {
+                                  <p-button (click)="addService()" size="small" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                                }
+                              </div>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </p-fieldset>
+            </div>
+            <div class="grid pt-4">
+              <div class="col-12 md:col-6">
+                <p-fieldset legend="Parking Details">
+                  <div class="grid">
+                    <div class="col-12 pb-0">
+                      <label>Parking Status</label>
+                    </div>
+                    <div class="col">
+                      <p-toggleswitch formControlName="tel_parking_status"></p-toggleswitch>
+                    </div>
+                  </div>
+                  @if (telcomForm.controls['tel_parking_status'].value) {
+                    <div class="grid">
+                      <div class="col-5 field">
+                        <label htmlFor="tel_parking_days">Parking Days<sup>*</sup></label>
+                        <input pInputText id="tel_parking_days" type="text" formControlName="tel_parking_days" placeholder="Parking Days" />
+                        @if (submitted && !f['tel_parking_days'].valid) {
+                          <div style="display: block; width: 100%;">
+                            @if (f['tel_parking_days'].hasError('required') ) {
+                              <span class="p-error">
+                                Parking Days is required
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo') {
+                        <div class="col-5 field">
+                          <label htmlFor="tel_parking_retry_perday">Parking retry per day<span label styleclass="label-required" class="text-red-500">*</span></label>
+                          <input pInputText id="tel_parking_retry_perday" type="text" formControlName="tel_parking_retry_perday" placeholder="Parking retry per day" />
+                          @if (submitted && !f['tel_parking_retry_perday'].valid) {
+                            <div style="display: block; width: 100%;">
+                              @if (f['tel_parking_retry_perday'].hasError('required') ) {
+                                <span class="p-error">
+                                  Parking retry per day is required
+                                </span>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo' && tel_parking_time.controls.length!==0) {
+                        <div class="col-12 field" formArrayName="tel_parking_times">
+                          <label>Schedule Time <small>(24 hours format)</small><span label styleclass="label-required" class="text-red-500">*</span></label>
+                          <div class="grid field">
+                            @for (parking_time of tel_parking_time.controls; track parking_time; let i = $index; let first = $first) {
+                              <div class="col-4">
+                                <div class="mb-2" [formGroupName] = "i">
+                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="time"></p-datepicker>
+                                  @if (submitted && !f['tel_parking_times'].controls[i].controls['time'].valid) {
+                                    <div style="display: block; width: 100%;">
+                                      @if (f['tel_parking_times'].controls[i].controls['time'].hasError('required') ) {
+                                        <span class="p-error">
+                                          Schedule time is required
+                                        </span>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+                              </div>
+                            }
+                          </div>
+                          @if (submitted) {
+                            <div class="grid field mb-0">
+                              <div class="col-12">
+                                @if (f['tel_parking_times'].errors?.duplicate) {
+                                  <span class="p-error">
+                                    Schedule time must be unique
+                                  </span>
+                                }
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </p-fieldset>
+              </div>
+              <div class="col-12 md:col-6">
+                <p-fieldset legend="Grace Details">
+                  <div class="grid">
+                    <div class="col-12 pb-0">
+                      <label>Grace Status</label>
+                    </div>
+                    <div class="col">
+                      <p-toggleswitch formControlName="tel_grace_status"></p-toggleswitch>
+                    </div>
+                  </div>
+                  @if (telcomForm.controls['tel_grace_status'].value) {
+                    <div class="grid">
+                      <div class="col-5 field">
+                        <label htmlFor="tel_grace_days">Grace Days<sup>*</sup></label>
+                        <input pInputText id="tel_grace_days" type="text" formControlName="tel_grace_days" placeholder="Grace Days" />
+                        @if (submitted && !f['tel_grace_days'].valid) {
+                          <div style="display: block; width: 100%;">
+                            @if (f['tel_grace_days'].hasError('required') ) {
+                              <span class="p-error">
+                                Grace Days is required
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo') {
+                        <div class="col-5 field">
+                          <label htmlFor="tel_grace_retry_perday">Grace retry per day<span label styleclass="label-required" class="text-red-500">*</span></label>
+                          <input pInputText id="tel_grace_retry_perday" type="text" formControlName="tel_grace_retry_perday" placeholder="Grace retry per day" />
+                          @if (submitted && !f['tel_grace_retry_perday'].valid) {
+                            <div style="display: block; width: 100%;">
+                              @if (f['tel_grace_retry_perday'].hasError('required') ) {
+                                <span class="p-error">
+                                  Grace retry per day is required
+                                </span>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo'  && tel_grace_time.controls.length!==0) {
+                        <div class="col-12 field" formArrayName="tel_grace_times">
+                          <label>Schedule Time <small>(24 hours format)</small><span label styleclass="label-required" class="text-red-500">*</span></label>
+                          <div class="grid field">
+                            @for (grace_time of tel_grace_time.controls; track grace_time; let i = $index; let first = $first) {
+                              <div class="col-4">
+                                <div class="mb-2" [formGroupName] = "i">
+                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="time"></p-datepicker>
+                                  @if (submitted && !f['tel_grace_times'].controls[i].controls['time'].valid) {
+                                    <div style="display: block; width: 100%;">
+                                      @if (f['tel_grace_times'].controls[i].controls['time'].hasError('required') ) {
+                                        <span class="p-error">
+                                          Schedule time is required
+                                        </span>
+                                      }
+                                    </div>
+                                  }
+                                </div>
+                              </div>
+                            }
+                          </div>
+                          @if (submitted) {
+                            <div class="grid field mb-0">
+                              <div class="col-12">
+                                @if (f['tel_grace_times'].errors?.duplicate) {
+                                  <span class="p-error">
+                                    Schedule time must be unique
+                                  </span>
+                                }
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </p-fieldset>
+              </div>
+            </div>
+            <div class="pt-2">
+              <p-fieldset legend="Reports">
+                <div class="field col-12 md:col-12">
+                  <div class="grid">
+                    @if (hasService('sme')) {
+                      <div class="field col-6 md:col-2">
+                        <label htmlFor="tel_ageing_sme_calculation">Ageing Calculation for SME<sup>*</sup></label>
+                        <p-select id="tel_ageing_sme_calculation" [options]="ageingCalculationType" optionLabel="name" optionValue="code" formControlName="tel_ageing_sme_calculation" placeholder="Select type" ></p-select>
+                        @if (submitted && !f['tel_ageing_sme_calculation'].valid) {
+                          <div style="display: block; width: 100%;">
+                            @if (f['tel_ageing_sme_calculation'].hasError('required') ) {
+                              <span class="p-error">
+                                Region is required
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                    @if (hasService('legacy')) {
+                      <div class="field col-6 md:col-2">
+                        <label htmlFor="tel_ageing_legacy_calculation">Ageing Calculation for Legacy<sup>*</sup></label>
+                        <p-select id="tel_ageing_legacy_calculation" [options]="ageingCalculationType" optionLabel="name" optionValue="code" formControlName="tel_ageing_legacy_calculation" placeholder="Select type" ></p-select>
+                        @if (submitted && !f['tel_ageing_legacy_calculation'].valid) {
+                          <div style="display: block; width: 100%;">
+                            @if (f['tel_ageing_legacy_calculation'].hasError('required') ) {
+                              <span class="p-error">
+                                Region is required
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+
+                </div>
+              </p-fieldset>
+            </div>
+          </div>
+        </div>
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-3">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

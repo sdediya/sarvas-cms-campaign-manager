@@ -1,0 +1,186 @@
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="oneshotForm">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-3">
+            <h5 class="m-0" style="text-wrap: nowrap;">One Shot View Dashboard Report</h5>
+          </div>
+        </div>
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label>Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="date" selectionMode="single" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate"></p-datepicker>
+              @if (submitted && !f['date'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['date'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select date
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label htmlFor="telcom_id">Select Operator<span label styleclass="label-required" class="text-red-500"></span></label>
+              <p-multiselect id="revenue_telcom_region" [options]="telcoms" [filter]="false" optionLabel="name" optionValue="id" formControlName="tel_ids" placeholder="Select Operator" [showClear]="true" class="w-full md:w-80"></p-multiselect>
+
+            </div>
+          </div>
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label>Select Product</label>
+              <p-multiselect id="product_id" [options]="products" optionLabel="name" optionValue="id" formControlName="service_id" placeholder="Select Product" [filter]="false" [showClear]="true" class="w-full md:w-80"></p-multiselect>
+            </div>
+          </div>
+          <div class="col-4 md:col-3 pt-0">
+            <div class="field col-12">
+              <label>Select Plan</label>
+              <!-- <p-multiselect id="plan_id" [options]="plan" optionLabel="name" formControlName="plan_id" placeholder="Select Plan" optionValue="code" [filter]="false" [showClear]="true" class="w-full md:w-80"></p-multiselect> -->
+              <p-select id="plan_id" [options]="plan" optionLabel="name" optionValue="code" formControlName="plan_id" placeholder="Select Plan" [filter]="false" [showClear]="true" class="w-full md:w-80"></p-select>
+
+            </div>
+          </div>
+          <div class="col-4 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple (click)="onSubmit()" class="w-6 text-xl " [disabled]="loading" size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      <!-- <p-tab-view [activeIndex]="defaultTabIndex" (onChange)="fetchData($event.index)" > -->
+      <p-tabs [(value)]="defaultTabIndex" (valueChange)="defaultTabIndex = +($event ?? 0); fetchData(+($event ?? 0))">
+        <p-tablist>
+          <p-tab [value]="0">Revenue Report</p-tab>
+          <p-tab [value]="1">DRR Report</p-tab>
+          <p-tab [value]="2">Advt. Partner (Productwise) Report</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+<p-tabpanel [value]="0">
+          <p-table [columns]="revenue_cols" [value]="revenue_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+            <ng-template #caption>
+              <div class="flex">
+                @if (revenue_report.length>0) {
+                  <button type="button" pButton pRipple (click)="downloadrevenueExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                }
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr> @for (col of columns; track col) {
+                <th width="15%"> {{col.header}} </th>
+              }</tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr> @for (col of columns; track col) {
+                <td > {{rowData[col.key]}} </td>
+              } </tr>
+            </ng-template>
+            @if (revenue_footer; as columns) {
+              <ng-template #footer let-columns>
+                <tr> @for (col of columns; track col) {
+                  <td>{{revenue_footer[col.key]}}</td>
+                } </tr>
+              </ng-template>
+            }
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="18">
+                  {{ loading ? 'Loading data. Please wait.' : 'No data found.' }}
+                </td>
+              </tr>
+            </ng-template>
+            <!-- <ng-template #loadingbody>
+            <tr>
+              <td colspan="18">Loading data. Please wait.</td>
+            </tr>
+          </ng-template> -->
+        </p-table>
+      </p-tabpanel>
+      <p-tabpanel [value]="1">
+        <p-table [columns]="drr_cols" [value]="drr_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+          <ng-template #caption>
+            <div class="flex">
+              @if (drr_report.length>0) {
+                <button type="button" pButton pRipple (click)="downloadDRRExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+            </div>
+          </ng-template>
+          <ng-template #header let-columns>
+            <tr> @for (col of columns; track col) {
+              <th width="15%"> {{col.header}} </th>
+            }</tr>
+          </ng-template>
+          <ng-template #body let-rowData let-columns="columns">
+            <tr> @for (col of columns; track col) {
+              <td > {{rowData[col.key]}} </td>
+            } </tr>
+          </ng-template>
+          @if (drr_footer; as columns) {
+            <ng-template #footer let-columns>
+              <tr> @for (col of columns; track col) {
+                <td>{{drr_footer[col.key]}}</td>
+              } </tr>
+            </ng-template>
+          }
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="18">
+                {{ loading ? 'Loading data. Please wait.' : 'No data found.' }}
+              </td>
+            </tr>
+          </ng-template>
+          <!-- <ng-template #loadingbody>
+          <tr>
+            <td colspan="18">Loading data. Please wait.</td>
+          </tr>
+        </ng-template> -->
+      </p-table>
+    </p-tabpanel>
+
+    <p-tabpanel [value]="2">
+      <p-table [columns]="adpartner_cols" [value]="adpartner_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+        <ng-template #caption>
+          <div class="flex">
+            @if (adpartner_report.length>0) {
+              <button type="button" pButton pRipple (click)="downloadadPartnerExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+            }
+          </div>
+        </ng-template>
+        <ng-template #header let-columns>
+          <tr> @for (col of columns; track col) {
+            <th > {{col.header}} </th>
+          }</tr>
+        </ng-template>
+        <ng-template #body let-rowData let-columns="columns">
+          <tr> @for (col of columns; track col) {
+            <td > {{rowData[col.key]}} </td>
+          } </tr>
+        </ng-template>
+        @if (adpartner_footer; as columns) {
+          <ng-template #footer let-columns>
+            <tr> @for (col of columns; track col) {
+              <td>{{adpartner_footer[col.key]}}</td>
+            } </tr>
+          </ng-template>
+        }
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="18">
+              {{ loading ? 'Loading data. Please wait.' : 'No data found.' }}
+            </td>
+          </tr>
+        </ng-template>
+        <!-- <ng-template #loadingbody>
+        <tr>
+          <td colspan="18">Loading data. Please wait.</td>
+        </tr>
+      </ng-template> -->
+    </p-table>
+  </p-tabpanel>
+</p-tabpanels>
+</p-tabs>
+</div>
+</div>
+</div>

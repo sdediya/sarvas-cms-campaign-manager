@@ -1,0 +1,81 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5>Add Whitelist</h5>
+      <div class="mb-1 mt-6">
+        <form [formGroup]="addWhitelistForm" (ngSubmit)="onSubmit()">
+          <div class="p-fluid formgrid grid">
+            <div class="field col-3 mb-0">
+              <label htmlFor="whitelist_type">Select Whitelist Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="whitelist_type" [options]="whitelist_types" optionLabel="name" formControlName="whitelist_type" (onChange)="onWhitelistTypeChange($event)" placeholder="Select Whitelist Type" optionValue="code"></p-select>
+              @if (submitted && !f['whitelist_type'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['whitelist_type'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select Whitelist Type
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+            @if (f['whitelist_type'].value == 'number') {
+              <div class="field col-3 md:col-2">
+                <div class="grid">
+                  <div class="field col-12">
+                    <label htmlFor="blacklist_type">Is bulk upload</label>
+                    <br>
+                      <p-toggleswitch formControlName="whitelist_is_bulk"></p-toggleswitch>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <div class="field col-3 md:col-3" [class]="f['whitelist_is_bulk'].value ? 'md:col-7' : ''">
+                @if (this.whitelistType=='series') {
+                  <label htmlFor="whitelist_value">Enter Whitelist Series<span label styleclass="label-required" class="text-red-500">*</span></label>
+                }
+                @if (this.whitelistType!=='series') {
+                  <label htmlFor="whitelist_value">Enter Mobile@if (f['whitelist_is_bulk'].value) {
+                    <span>s</span>
+                    } (with country code)<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  }
+
+
+                  @if (!f['whitelist_is_bulk'].value) {
+                    <input pInputText id="whitelist_value" type="text" formControlName="whitelist_value" [placeholder]="this.whitelistType=='series' ? 'Please enter series':'Please enter mobile number'"  />
+                  }
+
+                  @if (f['whitelist_is_bulk'].value) {
+                    <textarea placeholder="Please enter mobile numbers with comma separate" class="p-inputtext" rows="5"  formControlName="whitelist_value"></textarea>
+                  }
+                  @if (f['whitelist_is_bulk'].value) {
+                    <small>Enter mobile numbers with comma separated</small>
+                  }
+
+                  @if (submitted && !f['whitelist_value'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['whitelist_value'].hasError('required') ) {
+                        <span class="p-error">
+                          Please enter whitelist value
+                        </span>
+                      }
+                      @if (f['whitelist_value'].hasError('pattern')) {
+                        <span class="p-error">
+                          Please enter valid whitelist value
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+                <div class="field col-12 md:col-12">
+                  <div class="field col-3 pl-0">
+                    <button type="submit" pButton pRipple class="w-6 text-sm " size="small">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-toast></p-toast>

@@ -1,0 +1,120 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="p-fluid formgrid grid align-items-center	">
+        <div class="col-12 md:col-3">
+          <h5 class="m-0">Ageing Summary Report</h5>
+        </div>
+      </div>
+      <form [formGroup]="ageingSummaryReportForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center	">
+          <div class="col-6 md:col-3">
+            <label htmlFor="date">Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-datepicker formControlName="date" [readonlyInput]="true" inputId="range" selectionMode="range" view="date" [showIcon]="true" [maxDate]="maxDate">
+            </p-datepicker>
+            @if (submitted && !f['date'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['date'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select date range
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="col-6 md:col-3">
+            <label htmlFor="telcom_id">Select Operator<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="telcom_id" id="telcom_id" placeholder="Operator" [options]="telcoms" optionLabel="name" [filter]="true"  optionValue="id"></p-select>
+            @if (submitted && !f['telcom_id'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['telcom_id'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select operator
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="col-6 md:col-3">
+            <label htmlFor="platform_id">Select Service<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="service" id="service" placeholder="Service" [options]="service" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
+            @if (submitted && !f['service'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['service'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select Service
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="col-6 md:col-3">
+            <label htmlFor="platform_id">Select Ad-Platform</label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="platform_id" id="platform_id" placeholder="Ad-Platform" [options]="advertising_platforms" optionLabel="name" [filter]="true"  optionValue="id"></p-select>
+            @if (submitted && !f['platform_id'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['platform_id'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select ad-platform
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="col-6 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="700px">
+            @if (reports?.length > 0) {
+              <ng-template #caption >
+                <div class="flex">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
+              </ng-template>
+            }
+            <ng-template #header let-columns>
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <th pFrozenColumn [frozen]="dateColumn">
+                    {{col.header}}
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn" >
+                    {{rowData[col.key]}}
+                  </td>
+                }
+              </tr>
+            </ng-template>
+            @if (footerData; as columns) {
+              <ng-template #footer let-columns>
+                <tr> @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+                } </tr>
+              </ng-template>
+            }
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="13">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="13">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

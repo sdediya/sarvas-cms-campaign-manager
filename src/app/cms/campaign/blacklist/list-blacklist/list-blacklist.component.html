@@ -1,0 +1,96 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="m-1 grid justify-content-between">
+        <h5>Blacklist Configuration List</h5>
+        @if (write) {
+          <p-button [routerLink]="['/campaign/add-blacklist']">Add Blacklist</p-button>
+        }
+      </div>
+      <p-divider align="center">
+        <span class="p-tag text-base">Filters</span>
+      </p-divider>
+      <div class="grid">
+        <div class="col-3">
+          <p-select  [(ngModel)]="filter.blacklist_duration_type" id="duration_type" [options]="blacklist_duration_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'duration_type')" placeholder="Blacklist duration type" optionValue="code"></p-select>
+        </div>
+        <div class="col-3">
+          <p-select  [(ngModel)]="filter.blacklist_type" id="type" [options]="blacklist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'type')" placeholder="Type" optionValue="code"></p-select>
+        </div>
+        <div class="col-3">
+          @if (filter.blacklist_duration_type || filter.blacklist_type) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+          }
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <p-table #dt1 [value]="blacklist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+        <ng-template #caption>
+          <div class="flex justify-content-between flex-column sm:flex-row">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Mobile" class="w-full"/></p-iconfield>
+            @if (blacklist_confs.length > 0) {
+              <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-3" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+            }
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Mobile
+              </div>
+            </th>
+            <th style="min-width: 12rem">
+              <div class="flex justify-content-between align-items-center">
+                Blacklist Duration
+              </div>
+            </th>
+            <th style="min-width: 10rem">
+              <div class="flex justify-content-between align-items-center">
+                Options
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-blacklist_confs let-rowIndex="rowIndex">
+          <tr>
+            <td>
+              {{blacklist_confs.mobile}}
+            </td>
+            <td>
+              @if (blacklist_confs.duration=='permanent') {
+                <div>
+                  {{blacklist_confs.duration | uppercase}}
+                </div>
+              }
+              @if (blacklist_confs.duration=='temporary') {
+                <div>
+                  {{blacklist_confs.startdate | date:'dd-MM-YYYY'}} to {{blacklist_confs.enddate | date:'dd-MM-YYYY'}}
+                  <!-- ({{blacklist_confs.blacklisted_days}} days) -->
+                </div>
+              }
+            </td>
+            <td>
+              @if (delete) {
+                <p-button (onClick)="toggleConf(blacklist_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+              }
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="8">No data found.</td>
+          </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+          <tr>
+            <td colspan="8">Loading data. Please wait.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmActiveInactive"></p-confirmdialog>

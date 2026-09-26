@@ -1,0 +1,151 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="dbcNotificationLogsForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12">
+            <h5 class="m-0">DBC Notification Logs</h5>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="log_date_range">Select Date Range<span class="text-red-500">*</span></label>
+              <p-datepicker formControlName="log_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
+              @if (submitted && !f['log_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['log_date_range'].hasError('required')) {
+                    <span class="p-error">
+                      Please select date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="client_id">Client</label>
+              <p-select id="client_id" [options]="clients" [filter]="true" [showClear]="true" optionLabel="name" optionValue="id" formControlName="client_id" placeholder="Select Client" class="w-full"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="service_id">Service</label>
+              <p-select id="service_id" [options]="services" [filter]="true" [showClear]="true" optionLabel="name" optionValue="id" formControlName="service_id" placeholder="Select Service" class="w-full" [disabled]="!f['client_id'].value"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="plan_id">Plan</label>
+              <p-select id="plan_id" [options]="plans" [filter]="true" [showClear]="true" optionLabel="name" optionValue="id" formControlName="plan_id" placeholder="Select Plan" class="w-full" [disabled]="!f['service_id'].value"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="transaction_id">Notification Txn ID</label>
+              <input pInputText id="transaction_id" formControlName="transaction_id" placeholder="Notification Transaction ID" class="w-full" />
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="partner_transaction_id">Partner Transaction ID</label>
+              <input pInputText id="partner_transaction_id" formControlName="partner_transaction_id" placeholder="Partner Transaction ID" class="w-full" />
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="action">Action</label>
+              <p-select id="action" [options]="actionOptions" [showClear]="true" optionLabel="label" optionValue="value" formControlName="action" placeholder="Select Action" class="w-full"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="lifecycle_status">Lifecycle Status</label>
+              <p-select id="lifecycle_status" [options]="lifecycleStatusOptions" [showClear]="true" optionLabel="label" optionValue="value" formControlName="lifecycle_status" placeholder="Select Lifecycle Status" class="w-full"></p-select>
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="delivery_status">Delivery Status</label>
+              <p-select id="delivery_status" [options]="deliveryStatusOptions" [showClear]="true" optionLabel="label" optionValue="value" formControlName="delivery_status" placeholder="Select Delivery Status" class="w-full"></p-select>
+            </div>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table #dt1 [value]="logs" [scrollable]="true" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="50" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]="true" [globalFilterFields]="['msisdn']">
+            <ng-template #caption>
+              <div class="flex justify-content-between flex-column sm:flex-row">
+                <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+                  <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search By MSISDN" class="w-full"/></p-iconfield>
+                @if (logs.length > 0) {
+                    <button type="button" pButton pRipple (click)="downloadExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                  }
+              </div>
+            </ng-template>
+            <ng-template #header>
+              <tr>
+                <th style="min-width: 8rem">Date</th>
+                <th style="min-width: 6rem">Client ID</th>
+                <th style="min-width: 8rem">MSISDN</th>
+                <th style="min-width: 8rem">Partner Txn ID</th>
+                <th style="min-width: 5rem">Action</th>
+                <th style="min-width: 5rem">Lifecycle</th>
+                <th style="min-width: 5rem">Delivery</th>
+                <th style="min-width: 5rem">HTTP Status</th>
+                <th style="min-width: 4rem">Retry</th>
+                <th style="min-width: 6rem">Response Time</th>
+                <th style="min-width: 4rem">Region</th>
+                <th style="min-width: 6rem">Operator</th>
+                <th style="min-width: 12rem">Details</th>
+              </tr>
+            </ng-template>
+            <ng-template #body let-log>
+              <tr>
+                <td style="text-wrap: nowrap;">{{ log.istDate }}</td>
+                <td>{{ log.client_id }}</td>
+                <td>
+                  <div class="flex align-items-center gap-2">
+                    <span>{{ log.showFull ? log.msisdn : (log.msisdn | maskMsisdn) }}</span>
+                    @if (log.msisdn) {
+                      <button
+                        pButton
+                        type="button"
+                        class="p-button-text p-0"
+                        (click)="showMsisdn(log)"><i [ngClass]="log.showFull ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                      </button>
+                    }
+                  </div>
+                </td>
+                <td>{{ log.partner_transaction_id }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.lifecycle_status }}</td>
+                <td>{{ log.delivery_status }}</td>
+                <td>{{ log.http_status }}</td>
+                <td>{{ log.retry_count }}</td>
+                <td>{{ log.response_time }}</td>
+                <td>{{ log.region }}</td>
+                <td>{{ log.operator }}</td>
+                <td [innerHTML]="getMaskedRequestBody(log.details, log.msisdn)"></td>
+              </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="13">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="13">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

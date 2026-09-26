@@ -1,0 +1,15 @@
+.cron-failed{
+    background-color:rgb(224 104 104) !important;
+    color: aliceblue !important;
+}
+::ng-deep .p-select.p-component{
+    width: 100% !important;
+}
+
+::ng-deep .p-datepicker{
+    width: 100%;
+}
+
+::ng-deep .p-tag{
+    font-size: 1.0rem !important;
+}

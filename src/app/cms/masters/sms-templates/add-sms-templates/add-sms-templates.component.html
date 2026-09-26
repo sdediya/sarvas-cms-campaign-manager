@@ -1,0 +1,82 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add SMS Template</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Template</h5>
+      }
+      <form [formGroup]="smsTempForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-4">
+            <label htmlFor="sms_temp_type">Select SMS Template Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="sms_temp_type" [filter]="true" [options]="sms_temp_types" optionLabel="name" formControlName="sms_temp_type" placeholder="Select SMS Template Type" optionValue="code" [readonly]="editable"></p-select>
+            @if (submitted && !f['sms_temp_type'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['sms_temp_type'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select template type
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-4">
+            <label htmlFor="sms_temp_telcom_id">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="sms_temp_telcom_id" [filter]="true" [options]="telecom_operators" optionLabel="name" formControlName="sms_temp_telcom_id" (onChange)="telcomOnChange($event)" placeholder="Select Telcom" optionValue="id" [readonly]="editable"></p-select>
+            @if (submitted && !f['sms_temp_telcom_id'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['sms_temp_telcom_id'].hasError('required') ) {
+                  <span class="p-error">
+                    Please select telcom
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          @if (smsTempForm.controls['sms_temp_telcom_id'].value && languages.length!==0) {
+            <div class="field col-12 md:col-4" >
+              <label htmlFor="sms_temp_lang">Select Language<sup>*</sup></label>
+              <p-select id="sms_temp_lang" [options]="languages" optionLabel="name" formControlName="sms_temp_lang" placeholder="Select Language" optionValue="name" [filter]="true" filterBy="name"></p-select>
+              @if (submitted && !f['sms_temp_lang'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['sms_temp_lang'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select language
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          }
+          <div class="field col-12 md:col-6">
+            <label htmlFor="sms_temp_msg">Message</label>
+            <!-- <input pInputText id="sms_temp_msg" type="text" formControlName="sms_temp_msg" placeholder="Message" /> -->
+            <textarea rows="5" cols="30" pTextarea id="sms_temp_msg"  formControlName="sms_temp_msg"></textarea>
+            @if (submitted && !f['sms_temp_msg'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['sms_temp_msg'].hasError('required') ) {
+                  <span class="p-error">
+                    Please enter message
+                  </span>
+                }
+              </div>
+            }
+            <ul>
+              @for (variable of temp_variable; track variable) {
+                <li><span (click)="addConstants('<'+variable+'>')">{{variable.replace('_', ' ')}}</span></li>
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="p-fluid formgrid grid field ">
+          <div class="col-12 md:col-6 pt-0">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,247 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add Ad-Partner</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit Ad-Partner</h5>
+      }
+      <form [formGroup]="adPartnerForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="col-4 md:col-4 pb-0">
+            <label htmlFor="platform_name">Ad-Partner Name<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input pInputText id="platform_name" type="text" formControlName="platform_name" placeholder="Ad-Partner Name" />
+            @if (submitted && !f['platform_name'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['platform_name'].hasError('required') ) {
+                  <span class="p-error">
+                    Ad-Partner Name is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-4">
+            <div class="grid">
+              <div class="col-12 pb-0">
+                <label>Select Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+              </div>
+              <div class="col flex align-items-center gap-1" >
+                <p-checkbox formControlName="platform_type_service" [binary]="true" inputId="service"></p-checkbox>
+                <label for="ny">Service</label>
+              </div>
+              <div class="col flex align-items-center gap-1">
+                <p-checkbox formControlName="platform_type_wap" [binary]="true" inputId="wap"  ></p-checkbox>
+                <label for="wap">WAP</label>
+              </div>
+              <div class="col-12 pb-0 pt-0 pr-0">
+                @if (submitted && (!f['platform_type_service'].valid || !f['platform_type_wap'].valid)) {
+                  <div style="display: block; width: 100%;">
+                    @if (f['platform_type_service'].hasError('incorrect') || f['platform_type_wap'].hasError('incorrect') ) {
+                      <span class="p-error">
+                        Please select type
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+          <div class="field col-12 md:col-4">
+            <div class="grid">
+              <div class="col-12 pb-0">
+                <label>Reports<span label styleclass="label-required" class="text-red-500">*</span></label>
+              </div>
+              <div class="col flex align-items-center gap-1" >
+                <p-checkbox formControlName="platform_GCLID_report" [binary]="true" inputId="GCLID"></p-checkbox>
+                <label for="ny">GCLID Report</label>
+              </div>
+            </div>
+          </div>
+          @if (f['platform_type_service'].value) {
+            <div class="field col-12 md:col-12 pb-0">
+              @if (f['platform_type_service'].value) {
+                <p-fieldset legend="Service API">
+                  <div class="grid">
+                    <div class="field md:col-4 pb-0">
+                      <label htmlFor="platform_api_username">Ad-Partner's API Username<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <input pInputText id="platform_api_username" type="text" formControlName="platform_api_username" placeholder="Ad-Partner's API Username" />
+                      @if (submitted && !f['platform_api_username'].valid) {
+                        <div style="display: block; width: 100%;">
+                          @if (f['platform_api_username'].hasError('required') ) {
+                            <span class="p-error">
+                              Ad-Partner's API Username is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    <div class="field md:col-4 pb-0">
+                      <label htmlFor="platform_api_password">Ad-Partner's API Password<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <input pInputText id="platform_api_password" type="text" formControlName="platform_api_password" placeholder="Ad-Partner's API Password" />
+                      @if (submitted && !f['platform_api_password'].valid) {
+                        <div style="display: block; width: 100%;">
+                          @if (f['platform_api_password'].hasError('required') ) {
+                            <span class="p-error">
+                              Ad-Partner's API Password is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </p-fieldset>
+              }
+            </div>
+          }
+          <div class="field col-12 md:col-12 pb-0">
+            @if (f['platform_type_wap'].value) {
+              <p-fieldset legend="WAP">
+                <div class="col-12 md:col-12">
+                  <div class="p-fluid formgrid grid mb-5">
+                    <div class="col-12 md:col-12 pb-0">
+                      <label htmlFor="platform_name">Add S2S URL</label>
+                      <input pInputText id="platform_name" type="text" formControlName="s2s_raw_url" placeholder="S2S URL" />
+                    </div>
+                  </div>
+                  <div formArrayName="platform_s2s_url">
+                    <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines"  dataKey="idd" [value]="platform_s2s_url.controls"  [scrollable]="false" id="addPlatform">
+                      <ng-template #header>
+                        <tr>
+                          <th style="width: 3rem">#</th>
+                          <th style="width: 10rem">S2S URL Method<span label styleclass="label-required" class="text-red-500">*</span></th>
+                          <th>S2S URL<span label styleclass="label-required" class="text-red-500">*</span></th>
+                          <th>S2S URL parmas<span label styleclass="label-required" class="text-red-500">*</span></th>
+                          <th style="width: 100px;"></th>
+                        </tr>
+                      </ng-template>
+                      <ng-template #body let-control let-expanded="expanded" let-i="rowIndex">
+                        <tr  [formGroupName]="i" [class.p-highlight]="highlighted && i == platform_s2s_url.controls.length - 1">
+                          <td>
+                            <div class="col-12 md:col-12">
+                              <div class="formgrid grid">
+                                {{i+1}}
+                              </div>
+                            </div>
+                          </td>
+                          <td style="width: 10rem">
+                            <div class="col-12 md:col-12 grid">
+                              <p-select  id="s2s_request_method" [options]="s2sMethodList" optionLabel="name" formControlName="s2s_request_method"  placeholder="Select Method" optionValue="value"></p-select>
+                              @if (submitted && !f['platform_s2s_url'].controls[i].controls['s2s_request_method'].valid) {
+                                <div style="display: block; width: 100%;">
+                                  @if (f['platform_s2s_url'].controls[i].controls['s2s_request_method'].hasError('required') ) {
+                                    <span class="p-error">
+                                      S2S Url Method is required
+                                    </span>
+                                  }
+                                </div>
+                              }
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-12 md:col-12">
+                              <div class="formgrid grid">
+                                <input pInputText id="s2s_url" type="text" placeholder="S2S Url" formControlName="s2s_url"/>
+                                @if (submitted && !f['platform_s2s_url'].controls[i].controls['s2s_url'].valid) {
+                                  <div style="display: block; width: 100%;">
+                                    @if (f['platform_s2s_url'].controls[i].controls['s2s_url'].hasError('required') ) {
+                                      <span class="p-error">
+                                        S2S Url is required
+                                      </span>
+                                    }
+                                  </div>
+                                }
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-12 md:col-12" formArrayName="s2s_url_params" >
+                              @for (params of s2s_url_params(i).controls; track params; let j = $index; let last = $last) {
+                                <div>
+                                  <div class="p-fluid formgrid grid" [formGroupName]="j">
+                                    <div class="col-12 md:col-5">
+                                      <input pInputText id="s2s_value" baseZIndex="2" type="text" placeholder="S2S parameter name in s2s url" formControlName="values"/>
+                                      @if (submitted && !f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['values'].valid) {
+                                        <div style="display: block; width: 100%;">
+                                          @if (f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['values'].hasError('required') ) {
+                                            <span class="p-error">
+                                              S2S parameter name is required
+                                            </span>
+                                          }
+                                        </div>
+                                      }
+                                    </div>
+                                    @if (checkValue(f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].value)) {
+                                      <div class="col-12 md:col-5">
+                                        <p-select id="s2s_url_params" [options]="s2sParamsList" optionLabel="name" formControlName="params" placeholder="Select Params" optionValue="value" [required]="true"></p-select>
+                                        @if (submitted && !f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].valid) {
+                                          <div style="display: block; width: 100%;">
+                                            @if (f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].hasError('required') ) {
+                                              <span class="p-error">
+                                                S2S URL params is required
+                                              </span>
+                                            }
+                                            @if (f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].hasError('invalid') ) {
+                                              <span class="p-error">
+                                                Please select valid S2S URL params
+                                              </span>
+                                            }
+                                          </div>
+                                        }
+                                      </div>
+                                    }
+                                    @if (!checkValue(f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].value)) {
+                                      <div class="col-12 md:col-5">
+                                        <input pInputText id="s2s_url_params" type="text" placeholder="S2S Params value in s2s" formControlName="params"/>
+                                        @if (submitted && !f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].valid) {
+                                          <div style="display: block; width: 100%;">
+                                            @if (f['platform_s2s_url'].controls[i].controls['s2s_url_params'].controls[j].controls['params'].hasError('required') ) {
+                                              <span class="p-error">
+                                                S2S URL params is required
+                                              </span>
+                                            }
+                                          </div>
+                                        }
+                                      </div>
+                                    }
+                                    <div class="col-12 md:col-1">
+                                      <button pButton pRipple type="button" (click)="removeS2SParms(s2s_url_params(i),j)"><i class="pi pi-trash"></i></button>
+                                    </div>
+                                    @if (last) {
+                                      <div class="col-12 md:col-1">
+                                        <button pButton pRipple type="button" (click)="addS2SUrlParams(s2s_url_params(i))"><i class="pi pi-plus"></i></button>
+                                      </div>
+                                    }
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                          </td>
+                          <td>
+                            <div class="col-12 md:col-12">
+                              <div class="formgrid grid">
+                                <p-button (click)="removeS2S(i, $event, f['platform_s2s_url'].controls[i].controls['s2s_id'].value)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+              </p-fieldset>
+            }
+          </div>
+        </div>
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-3 pt-5">
+            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog [style]="confirmDialogStyle"></p-confirmdialog>

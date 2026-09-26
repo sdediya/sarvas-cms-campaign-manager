@@ -1,0 +1,267 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <form [formGroup]="getUserCCDetailsForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-12 md:col-12">
+            <h5 class="m-0">Customer Care Interface</h5>
+          </div>
+          <div class="field col-12 md:col-2">
+            <label for="msisdn">MSISDN <span label styleclass="label-required" class="text-red-500">*</span></label>
+            <input id="msisdn" type="text" formControlName="msisdn" class="text-base text-color surface-overlay p-inputtext border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary" placeholder="MSISDN">
+            @if (submitted && !f['msisdn'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['msisdn'].hasError('required') ) {
+                  <span class="p-error">MSISDN is required</span>
+                }
+                @if (f['msisdn'].hasError('pattern') ) {
+                  <span class="p-error">Please enter valid MSISDN</span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-2">
+            <label for="operator">Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="operator" [options]="telecom_operators" optionLabel="name" formControlName="operator" placeholder="Select Operator" optionValue="tel_id" [filter]="true"
+            filterBy="name" class="sm" [showClear]="true"></p-select>
+            @if (submitted && !f['operator'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['operator'].hasError('required') ) {
+                  <span class="p-error">Please select operator</span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-2">
+            <label for="master_aggregator">Master Aggregator <span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="master_aggregator" [options]="masterAggregator" optionLabel="maggregator_name" formControlName="master_aggregator" placeholder="Select Master Aggregator" optionValue="maggregator_id" [filter]="true" filterBy="maggregator_name" class="sm" [showClear]="true"></p-select>
+            @if (submitted && !f['master_aggregator'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['master_aggregator'].hasError('required') ) {
+                  <span class="p-error"> Please select master aggregator  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-12 md:col-2">
+            <label for="service_id">Service <span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="service_id" [options]="filteredServices" optionLabel="service_name" formControlName="service_id" placeholder="Select Service" optionValue="service_id" [filter]="true" filterBy="service_name" class="sm"></p-select>
+            @if (submitted && !f['service_id'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['service_id'].hasError('required') ) {
+                  <span class="p-error">Please select service</span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-3 md:col-3 flex align-items-center">
+            <button type="submit" class="text-white bg-primary-500 border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (userfound) {
+        <div class="mb-6 mt-6">
+          @if (customerSubscriptionDetails) {
+            <p-fieldset legend="Subscription Details" >
+              <div class="grid">
+                <div class="col">
+                  <p class="m-0">
+                    <b>User msisdn :-</b>{{ customerSubscriptionDetails.mobile | maskMsisdn }}
+                  </p>
+                  <p class="m-0">
+                    <b>Service :-</b> {{customerSubscriptionDetails.service_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Current Plan :-</b> {{customerSubscriptionDetails.plan_name}} ({{customerSubscriptionDetails.plan_validity}} days)
+                  </p>
+                  <p class="m-0">
+                    <b>Plan Start Date:-</b> {{customerSubscriptionDetails.start_at | date:'dd MMMM, yyyy' }}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Name:-</b> {{customerSubscriptionDetails.campaign_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Flow:-</b> {{customerSubscriptionDetails.campaign_flow | uppercase }}
+                  </p>
+                  <p class="m-0">
+                    <b>User IP :-</b> {{customerSubscriptionDetails.ip}}
+                  </p>
+                  <p class="m-0">
+                    <b>Device :-</b> {{customerSubscriptionDetails.user_agent}}
+                  </p>
+                </div>
+                <div class="col">
+                  <p class="m-0">
+                    <b>Current Status :-</b> {{customerSubscriptionDetails.current_status}}
+                  </p>
+                  <p class="m-0">
+                    <b>Operator Name :-</b> {{customerSubscriptionDetails.telecom_name}}
+                  </p>
+                  <p class="m-0">
+                    <b>Current Plan Amount :-</b> {{customerSubscriptionDetails.plan_amount}}
+                  </p>
+                  <p class="m-0">
+                    <b>Plan End Date:-</b> {{customerSubscriptionDetails.end_at | date:'dd MMMM, yyyy'}}
+                  </p>
+                  <p class="m-0">
+                    <b>Campaign Type:-</b> {{customerSubscriptionDetails.campaign_type  | uppercase}}
+                  </p>
+                  <p class="m-0">
+                    <b>SME Order ID :-</b> {{customerSubscriptionDetails.sme_order_id}}
+                  </p>
+                  <p class="m-0">
+                    <b>Referer :-</b> {{customerSubscriptionDetails.referer}}
+                  </p>
+                  <p class="m-0">
+                    <b>Ad Partner :-</b> {{customerSubscriptionDetails.ad_partner}}
+                  </p>
+                </div>
+              </div>
+            </p-fieldset>
+          }
+        </div>
+      }
+      @if (userfound) {
+        <div class="mb-6 mt-6">
+          @if (userTransactionDetails) {
+            <p-fieldset legend="Transaction History" >
+              <div class="grid">
+                <div class="col-12">
+                  <p-table [value]="userTransactionDetails">
+                    <ng-template #header>
+                      <tr>
+                        <th>Service</th>
+                        <th>Operator</th>
+                        <th>Current Status</th>
+                        <th>Plan</th>
+                        <th>Billed Amount</th>
+                        <th>Activation Date</th>
+                        <th>Options</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-usrTransactionDetails>
+                      <tr>
+                        <td>{{usrTransactionDetails.service_name}}</td>
+                        <td>{{usrTransactionDetails.telecom_name}}</td>
+                        <td>{{usrTransactionDetails.current_status}}</td>
+                        <td>{{usrTransactionDetails.plan_name}}
+                          @if (usrTransactionDetails.currency && usrTransactionDetails.plan_amount) {
+                            <span> &#64; {{usrTransactionDetails.currency}} {{usrTransactionDetails.plan_amount}}</span>
+                          }
+                        </td>
+                        <td>{{usrTransactionDetails.currency}} {{usrTransactionDetails.subscription_amount}}</td>
+                        <td>{{usrTransactionDetails.start_at | date:'dd MMMM, yyyy'}}</td>
+                        <td>
+                          @if (usrTransactionDetails.current_status=='ACTIVATION' || usrTransactionDetails.current_status=='RENEWAL' || usrTransactionDetails.current_status=='GRACE_TO_RENEWAL'|| usrTransactionDetails.current_status=='PARKING_TO_ACTIVATION' || usrTransactionDetails.current_status=='GRACE' ) {
+                            <button pButton type="button" (click)="unSubCustomer(usrTransactionDetails.mobile, usrTransactionDetails.service_id)" severity="danger">Unsubscribe</button>
+                          }
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </p-fieldset>
+          }
+        </div>
+      }
+      @if (userfound) {
+        <div class="mb-6 mt-6">
+          @if (userParkingDetails) {
+            <p-fieldset legend="Parking Details" >
+              <div class="grid">
+                <div class="col-12">
+                  <p-table [value]="userParkingDetails" >
+                    <ng-template #header>
+                      <tr>
+                        <th>Service</th>
+                        <th>Operator</th>
+                        <th>Plan</th>
+                        <th>Options</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-usrParkingDetails>
+                      <tr>
+                        <td>{{usrParkingDetails.service_name}}</td>
+                        <td>{{usrParkingDetails.telecom_name}}</td>
+                        <td>{{usrParkingDetails.plan_name}}
+                          @if (usrParkingDetails.currency && usrParkingDetails.plan_amount) {
+                            <span> &#64; {{usrParkingDetails.currency}} {{usrParkingDetails.plan_amount}}</span>
+                          }
+                        </td>
+                        <td>
+                          <button type="button" (click)="unSubCustomer(usrParkingDetails.mobile, usrParkingDetails.service_id)" class="text-white bg-primary-500 border-primary-500 px-3 py-2 text-base border-1 border-solid border-round cursor-pointer transition-all transition-duration-200 hover:bg-primary-600 hover:border-primary-600 active:bg-primary-700 active:border-primary-700">Unsubscribe</button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </p-fieldset>
+          }
+        </div>
+      }
+
+      @if (userfound) {
+        <div class="grid">
+          @if (userLifecycle) {
+            <div class="col-6">
+              <div class="flex align-items-center justify-content-between pb-2">
+                <h4>Customer Lifecycle</h4>
+                <p-button (click)="exportDataCustomer()" title="Export Customer Lifecycle" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+              </div>
+              <p-table [value]="userLifecycle" [paginator]="true" [rows]="5">
+                <ng-template #header>
+                  <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-usrLifecycle>
+                  <tr>
+                    <td>{{usrLifecycle.created_at | date:'dd MMMM, yyyy H:mm:ss' }}</td>
+                    <td>{{usrLifecycle.status}}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          }
+          @if (showCustomerLogs && userLogs) {
+            <div class="col-6">
+              <div class="flex align-items-center justify-content-between pb-2">
+                <h4>Customer Logs</h4>
+                <p-button (click)="exportData()" title="Export User Logs" icon="pi pi-file-excel" [iconOnly]="true" severity="success"></p-button>
+              </div>
+              <!-- <button (click)="exportData()">Export to Excel</button> -->
+              <p-table [value]="userLogs" [paginator]="true" [rows]="5">
+                <ng-template #header>
+                  <tr>
+                    <th>Date</th>
+                    <th>Event Name</th>
+                    <th>Options</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-usrLog let-rowIndex="rowIndex">
+                  <tr>
+                    <td>{{usrLog.timestamp | date:'dd MMMM, yyyy H:mm:ss' :'IST'}}</td>
+                    <td>{{usrLog.eventName}} </td>
+                    <td><p-button (click)="showDialog(rowIndex)" size="small" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button></td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
+<p-toast></p-toast>
+<p-confirmdialog key="confirmBox"></p-confirmdialog>
+
+<!-- SHOW USERLOG DETAIL DIALOG STARTS -->
+<p-dialog header="User Log Event Details" [(visible)]="showUserLogDetail" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <pre>{{selectedUserLogDetail | json}}</pre>
+</p-dialog>
+<!-- SHOW USERLOG DETAIL DIALOG ENDS -->

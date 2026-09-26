@@ -1,0 +1,742 @@
+{
+    "items": [
+      {
+        "item_key": "dashboard",
+        "item_action": "read",
+        "items": [
+          {
+            "label": "Dashboard",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-home",
+            "routerLink": [
+              "/dashboard"
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "customer_management",
+        "item_action":"read",
+        "label": "Customer Management",
+        "info": "Enabling this module will allow user to access 'Customer Care Interface' and 'Customer Refund' modules.",
+        "items":[
+          {
+            "label": "Customer",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-users",
+            "items": [
+              {
+                "label": "Customer Care Interface",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-users",
+                "routerLink": [
+                  "/customer/customer-care-interface"
+                ]
+              },
+              {
+                "label": "Customer Refund",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-users",
+                "routerLink": [
+                  "/customer/refund"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "campaigns",
+        "item_action": "read",
+        "label": "Campaign Management",
+        "items": [
+          {
+            "label": "Campaigns",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-megaphone",
+            "items": [
+              {
+                "label": "Add Campaign",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-megaphone",
+                "routerLink": [
+                  "/campaign/add"
+                ]
+              },
+              {
+                "label": "Campaign List",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-megaphone",
+                "routerLink": [
+                  "/campaign/list"
+                ]
+              },
+              {
+                "label": "Campaign Theme Configuration",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-megaphone",
+                "routerLink": [
+                  "/campaign/theme"
+                ]
+              },
+              {
+                "label": "Service API Document",
+                "item_action": "read",
+                "icon": "pi pi-download",
+                "routerLink":["/campaign/service-api-doc"]
+              },
+              {
+                "label": "Smart Url",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-megaphone",
+                "items": [
+                  {
+                    "label": "Add Smart Url",
+                    "item_action": "write",
+                    "icon": "pi pi-fw pi-megaphone",
+                    "routerLink": [
+                      "/campaign/smart-url/add"
+                    ]
+                  },
+                  {
+                    "label": "Smart Url List",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-megaphone",
+                    "routerLink": [
+                      "/campaign/smart-url/list"
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "Common landing page",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-megaphone",
+                "items": [
+                  {
+                    "label": "Add Common landing page",
+                    "item_action": "write",
+                    "icon": "pi pi-fw pi-megaphone",
+                    "routerLink": [
+                      "/campaign/landing-page-configuration/add"
+                    ]
+                  },
+                  {
+                    "label": "Common landing page List",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-megaphone",
+                    "routerLink": [
+                      "/campaign/landing-page-configuration/list"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "campaign_configurations",
+        "item_action": "read",
+        "items": [
+          {
+            "label": "Campaign Configuration",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-id-card",
+            "items": [
+              {
+                "label": "Add Campaign Configuration",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-id-card",
+                "routerLink": [
+                  "/campaign/add-configuration"
+                ]
+              },
+              {
+                "label": "Campaign Configuration",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-id-card",
+                "routerLink": [
+                  "/campaign/configuration-list"
+                ]
+              },
+              {
+                "label": "Blacklist",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-id-card",
+                "routerLink": [
+                  "/campaign/blacklist"
+                ]
+              },
+              {
+                "label": "Whitelist",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-id-card",
+                "routerLink": [
+                  "/campaign/whitelist"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "blacklist_management",
+        "item_action": "read",
+        "label": "Blacklist Management",
+        "items": [
+          {
+            "label": "Blacklist",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-ban",
+            "items": [
+              {
+                "label": "Blacklist List",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/blacklist/list"
+                ]
+              },
+              {
+                "label": "Add Blacklist",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-plus",
+                "routerLink": [
+                  "/blacklist/add"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "realtime_mis",
+        "item_action":"read",
+        "label": "Realtime MIS & Reports",
+        "items": [
+          {
+            "label": "Realtime MIS",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-chart-bar",
+            "items": [
+              {
+                "label": "WAP",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-bar",
+                "routerLink": [
+                  "/reports/realtime-mis/wap"
+                ]
+              },
+              {
+                "label": "Service API",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-bar",
+                "routerLink": [
+                  "/reports/realtime-mis/service-api"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "reports",
+        "item_action":"read",
+       
+        "items": [
+          {
+            "label": "Reports",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-chart-line",
+            "items": [
+              {
+                "label": "Revenue Report Service Wise",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-dollar",
+                "routerLink": [
+                  "/reports/revenue-report-v2"
+                ]
+              },
+              {
+                "label": "Ageing Report Service Wise",
+                "item_action": "read",
+                "icon": "pi pi-fw pi pi-hourglass",
+                "items":[
+                  {
+                    "label": "Summary Report",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-file",
+                    "routerLink": [
+                      "/reports/v2/ageing/summary"
+                    ]
+                  },
+                  {
+                    "label": "Partner wise summary Report",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-file",
+                    "routerLink": [
+                      "/reports/v2/ageing/partner-wise-summary"
+                    ]
+                  },
+                  {
+                    "label": "MSISDN Level Dump",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-download",
+                    "routerLink": [
+                      "/reports/v2/ageing/dump"
+                    ]
+                  }
+                ]
+              },
+              {
+                "label": "IP Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/reports/ip-report"
+                ]
+              },
+              {
+                "label": "DRR Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-calendar",
+                "routerLink": [
+                  "/reports/drr-report"
+                ]
+              },
+              {
+                "label": "S2S Summary Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-bar",
+                "routerLink": [
+                  "/reports/summary/s2s"
+                ]
+              },
+              {
+                "label": "Service API Summary Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-bar",
+                "routerLink": [
+                  "/reports/summary/service-api"
+                ]
+              },
+              {
+                "label": "Top Publisher",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-users",
+                "routerLink": [
+                  "/reports/publisher-report"
+                ]
+              },
+              {
+                "label": "Payout Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-credit-card",
+                "routerLink": [
+                  "/reports/payout-report"
+                ]
+              },
+              {
+                "label": "Live Dashboard Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-line",
+                "routerLink": [
+                  "/reports/livedashboard-report"
+                ]
+              },
+              {
+                "label": "MSISDN Level Dump",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-download",
+                "routerLink": [
+                  "/reports/msisdnwise"
+                ]
+              },
+              {
+                "label": "API Error Dashboard",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-exclamation-triangle",
+                "routerLink": [
+                  "/reports/apierrordashboard"
+                ]
+              },
+              {
+                "label": "One Shot View Dashboard",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-eye",
+                "routerLink": [
+                  "/reports/oneshot-view-dashboard"
+                ]
+              },
+              {
+                "label": "Charging Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-money-bill",
+                "routerLink": [
+                  "/reports/charging-report"
+                ]
+              },
+              {
+                "label": "ShemarooME OTP Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-line",
+                 "routerLink": [
+                      "/reports/smeotp/otp-report"
+                    ]              
+              },
+               {
+                "label": "Investor Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-line",
+                 "routerLink": [
+                      "/reports/investor-report"
+                    ]              
+              },
+              {
+                "label": "Service API vs Operator API Report",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-arrow-right-arrow-left",
+                "routerLink": [
+                  "/reports/service-operator-response-report"
+                ]
+              },
+              {
+                "label": "Target vs Achievement",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-flag",
+                "items":[
+                  {
+                    "label": "Revenue",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-dollar",
+                    "routerLink": [ "/reports/target-vs-achievement/revenue"]
+                  },
+                  {
+                    "label": "Activation",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-user-plus",
+                    "routerLink": ["/reports/target-vs-achievement/activation"]
+                  },
+                  {
+                    "label": "DRR",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-calendar",
+                    "routerLink": ["/reports/target-vs-achievement/drr"]
+                  }
+                ]
+              },
+              {
+                "label": "Revenue Report Old",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-dollar",
+                "routerLink": [
+                  "/reports/revenue-report"
+                ]
+              },
+              {
+                "label": "Ageing Report Old",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-chart-line",
+                "items":[
+                  {
+                    "label": "Summary Report",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/reports/ageing/summary"
+                    ]
+                  },
+                  {
+                    "label": "Partner wise summary Report",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/reports/ageing/partner-wise-summary"
+                    ]
+                  },
+                  {
+                    "label": "MSISDN Level Dump",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/reports/ageing/dump"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "operators",
+        "item_action":"read",
+        "label": "Operator Management",
+        "items": [
+          {
+            "label": "Operators",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-list",
+            "items": [
+              {
+                "label": "Operator List",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/operator/list"
+                ]
+              },
+              {
+                "label": "Add Operator",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/operator/add"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "operator_plans",
+        "item_action":"read",
+        "items": [
+          {
+            "label": "Plans",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-list",
+            "items": [
+              {
+                "label": "Plans List",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/plan/list"
+                ]
+              },
+              {
+                "label": "Add Plan",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/plan/add"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "masters",
+        "item_action": "read",
+        "label": "Masters",
+        "items": [
+          {
+            "label": "Masters",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-database",
+            "items": [
+              {
+                "label": "Region",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/region"
+                ]
+              },
+              {
+                "label": "Master Aggregator",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/master-aggregators"
+                ]
+              },
+              {
+                "label": "Services",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/services"
+                ]
+              },
+              {
+                "label": "Ad Partners",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/ad-partners"
+                ]
+              },
+              {
+                "label": "Custom Responses",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/custom-responses"
+                ]
+              },
+              {
+                "label": "SMS Templates",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/sms-templates"
+                ]
+              },
+              {
+                "label": "Currency Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/currency-logs"
+                ]
+              },
+              {
+                "label": "Google Cost Campaign wise",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/google-cost"
+                ]
+              },
+              {
+                "label": "Short Link",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-database",
+                "routerLink": [
+                  "/masters/short-link"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "user_management",
+        "item_action":"read",
+        "label": "User Management",
+        "items": [
+          {
+            "label": "Users",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-users",
+            "items": [
+              {
+                "label": "User List",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-users",
+                "routerLink": [
+                  "/users/user-list"
+                ]
+              },
+              {
+                "label": "Add User",
+                "item_action": "write",
+                "icon": "pi pi-fw pi-users",
+                "routerLink": [
+                  "/users/add-user"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "item_key": "logs",
+        "item_action":"read",
+        "label": "Logs",
+        "items": [
+          {
+            "label": "Logs",
+            "item_action": "read",
+            "icon": "pi pi-fw pi-list",
+            "items": [
+              {
+                "label": "Cron Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/logs/cron_log"
+                ]
+              },
+              {
+                "label": "Callback Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/logs/callback-log"
+                ]
+              },
+              {
+                "label": "Operator Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/logs/operator-logs"
+                ]
+              },
+              {
+                "label": "Service API Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/logs/service-api-logs"
+                ]
+              },
+              {
+                "label": "Third Party Redirection Logs",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-list",
+                "routerLink": [
+                  "/logs/third-party-logs"
+                ]
+              },
+               {
+                    "label": "ShemarooME OTP Logs",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/reports/smeotp/service-logs"
+                    ]
+                  },
+                   {
+                    "label": "Short Link Logs" ,
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/logs/shortlink-logs"
+                    ]
+                  },
+                  {
+                    "label": "Failed Callback Logs",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-chart-line",
+                    "routerLink": [
+                      "/logs/failed-callback-logs"
+                    ]
+                  },
+                  {
+                    "label": "DBC Request Logs",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-list",
+                    "routerLink": [
+                      "/logs/dbc-request-logs"
+                    ]
+                  },
+                  {
+                    "label": "DBC Notification Logs",
+                    "item_action": "read",
+                    "icon": "pi pi-fw pi-list",
+                    "routerLink": [
+                      "/logs/dbc-notification-logs"
+                    ]
+                  }
+            ]
+          }
+        ]
+      }
+    ]
+  }

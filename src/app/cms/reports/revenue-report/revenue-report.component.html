@@ -1,0 +1,87 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <h5 class="m-0" style="text-wrap: nowrap;">Revenue Report</h5>
+      <p-divider></p-divider>
+      <form [formGroup]="revenueReportForm">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="revenue_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-datepicker formControlName="revenue_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+              </p-datepicker>
+              @if (submitted && !f['revenue_date_range'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['revenue_date_range'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select report date range
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <div class="field col-12">
+              <label htmlFor="revenue_telcom_region">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+              <p-select id="revenue_telcom_region" [options]="telcoms" [filter]="true" optionLabel="name" formControlName="revenue_telcom_region" placeholder="Select Telcom" optionValue="id"></p-select>
+              @if (submitted && !f['revenue_telcom_region'].valid) {
+                <div style="display: block; width: 100%;">
+                  @if (f['revenue_telcom_region'].hasError('required') ) {
+                    <span class="p-error">
+                      Please select telcom
+                    </span>
+                  }
+                </div>
+              }
+
+            </div>
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="revenue_service_type">Select Service</label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="revenue_service_type" id="revenue_service_type" placeholder="Service" [options]="service" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+            <ng-template #caption>
+              <div class="flex">
+                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <th pFrozenColumn [frozen]="dateColumn">
+                    {{col.header}}
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn" >
+                    {{rowData[col.key]}}
+                  </td>
+                }
+              </tr>
+            </ng-template>
+            @if (footerData; as columns) {
+              <ng-template #footer let-columns>
+                <tr> @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+                } </tr>
+              </ng-template>
+            }
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

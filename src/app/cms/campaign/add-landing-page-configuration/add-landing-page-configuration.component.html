@@ -1,0 +1,567 @@
+<div class="grid">
+  <div class="col-12">
+    <form [formGroup]="campaignThemeForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="card">
+        <div class="p-fluid formgrid grid align-content-center">
+          <!-- <div class="field col-2 m-0">
+          <h5 class="mb-3">Add Landing Page</h5>
+        </div> -->
+        <div class="field col-3">
+          <label htmlFor="theme_region">Select Region</label>
+          <p-select id="theme_region" [options]="regions" optionLabel="name" [filter]="true"
+            (onChange)="dropdownOnChange($event, 'theme_region')" formControlName="theme_region"
+          placeholder="Select Region" optionValue="id" [disabled]="!editable"></p-select>
+          @if (submitted && !f['theme_region'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['theme_region'].hasError('required') ) {
+                <span class="p-error">
+                  Region is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-3">
+          <label htmlFor="theme_telecom_id">Select Operator</label>
+          <p-select id="theme_telecom_id" [options]="telecoms" optionLabel="name" [filter]="true"
+            (onChange)="dropdownOnChange($event, 'theme_telecom_id')" formControlName="theme_telecom_id"
+          placeholder="Select Operator" optionValue="id" [disabled]="!editable"></p-select>
+          @if (submitted && !f['theme_telecom_id'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['theme_telecom_id'].hasError('required') ) {
+                <span class="p-error">
+                  Operator is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-3">
+          <label htmlFor="theme_service_id">Select Service</label>
+          <p-select id="theme_service_id" [options]="services" optionLabel="name"
+            (onChange)="dropdownOnChange($event, 'theme_service_id')" formControlName="theme_service_id"
+          placeholder="Select Service" optionValue="id" [disabled]="!editable"></p-select>
+          @if (submitted && !f['theme_service_id'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['theme_service_id'].hasError('required') ) {
+                <span class="p-error">
+                  Service is required
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-3">
+          <label htmlFor="theme_campaign_id">Select Campaign</label>
+          <p-multiselect id="theme_campaign_id" [options]="campaignList" optionLabel="name"
+            [filter]="true" (onChange)="onCampaignChange($event)" formControlName="theme_campaign_id"
+          [showClear]="true" placeholder="Select Campaign" optionValue="id"></p-multiselect>
+          @if (submitted && !f['theme_campaign_id'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['theme_campaign_id'].hasError('required') ) {
+                <span class="p-error">
+                  Please select Campaign
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-3 md:col-3">
+          <label htmlFor="default_campaign_id">Select Default Campaign</label>
+          <p-select id="default_campaign_id" [options]="matchedCampaigns" optionLabel="name"
+            [filter]="true" formControlName="default_campaign_id" placeholder="Select Default Campaign"
+          optionValue="id"></p-select>
+          @if (submitted && !f['default_campaign_id'].valid) {
+            <div style="display: block; width: 100%;">
+              @if (f['default_campaign_id'].hasError('required') ) {
+                <span class="p-error">
+                  Please select default Campaign
+                </span>
+              }
+            </div>
+          }
+        </div>
+        <div class="field col-3 md:col-3">
+          <label htmlFor="campaign_ga_tag"> GA Tag ID </label>
+          <input pInputText id="campaign_ga_tag" type="text" formControlName="campaign_ga_tag"
+            placeholder="G-xxxxxxx" />
+        </div>
+        <div class="field col-3 md:col-3">
+          <label htmlFor="campaign_gtm_id"> GTM ID </label>
+          <input pInputText id="campaign_gtm_id" type="text" formControlName="campaign_gtm_id"
+            placeholder="G-xxxxxxx" />
+        </div>
+        <div class="field col-3 md:col-3">
+          <div class="grid">
+            <div class="col-3 pb-0">
+              <label>Skip Consent</label>
+            </div>
+            <div class="col">
+              <p-checkbox formControlName="campaign_c1" value="c1" label="C1"
+              [binary]="true"></p-checkbox>
+            </div>
+          </div>
+        </div>
+        @if (f['campaign_c1'].value) {
+          <div class="field col-2 md:col-2">
+            <label>Skip Time Type<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <p-select id="campaign_skip_time_type" [options]="skip_type" optionLabel="name"
+              formControlName="campaign_skip_type" placeholder="Select Skip Time"
+            optionValue="value"></p-select>
+            @if (submitted && !f['campaign_skip_type'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['campaign_skip_type'].hasError('required') ) {
+                  <span class="p-error">
+                    Skip time type is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (f['campaign_c1'].value) {
+          <div class="field col-3 md:col-3">
+            <label htmlFor="campaign_dt">Data Flow in seconds<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="campaign_dt" type="text" formControlName="campaign_dt"
+              placeholder="Data Flow in seconds" />
+            @if (submitted && !f['campaign_dt'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['campaign_dt'].hasError('numeric')) {
+                  <span class="p-error">
+                    Please enter valid DT
+                  </span>
+                }
+                @if (f['campaign_dt'].hasError('required')) {
+                  <span class="p-error">
+                    Please enter Data flow time
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (f['campaign_c1'].value) {
+          <div class="field col-3 md:col-3">
+            <label htmlFor="campaign_wf">Wifi Flow in seconds<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="campaign_wf" type="text" formControlName="campaign_wf"
+              placeholder="Wifi Flow in seconds" />
+            @if (submitted && !f['campaign_wf'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['campaign_wf'].hasError('numeric')) {
+                  <span class="p-error">
+                    Please enter valid WF
+                  </span>
+                }
+                @if (f['campaign_wf'].hasError('required')) {
+                  <span class="p-error">
+                    Please enter Wifi flow time
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (f['campaign_c1'].value) {
+          <div class="field col-3">
+            @if (f['campaign_skip_type'].value == 'multiple_times') {
+              <div
+                class="field card col-12 md:col-12" formArrayName="campaign_skip_times">
+                <table class="w-100 text-center">
+                  <thead>
+                    <th width="45%">Start Time</th>
+                    <th width="45%">End Time</th>
+                    <th style="width: 15rem; padding: 20px"></th>
+                  </thead>
+                  <tbody>
+                    @for (form of campaignSkipTimes.controls; track form; let last = $last; let first = $first; let index = $index) {
+                      <tr
+                        >
+                        <td [formGroupName]="index">
+                          <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm"
+                          formControlName="start_time"></p-datepicker>
+                          @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
+                            <div
+                              style="display: block; width: 100%;">
+                              @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required') ) {
+                                <span class="p-error"
+                                  >
+                                  Start time is required
+                                </span>
+                              }
+                            </div>
+                          }
+                        </td>
+                        <td [formGroupName]="index">
+                          <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm"
+                          formControlName="end_time"></p-datepicker>
+                          @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
+                            <div
+                              style="display: block; width: 100%;">
+                              @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required') ) {
+                                <span class="p-error"
+                                  >
+                                  end time is required
+                                </span>
+                              }
+                            </div>
+                          }
+                        </td>
+                        <td class="flex justify-content-start">
+                          @if (index > 0) {
+                            <button pButton pRipple type="button" (click)="removeTimes(index)"><i class="pi pi-trash"></i></button>
+                          }
+                          @if (last) {
+                            <button pButton pRipple type="button" (click)="addTimes()"><i class="pi pi-plus"></i></button>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        }
+
+      </div>
+    </div>
+    <!--  -->
+    @if (f['theme_campaign_id'].valid && f['theme_language'].valid) {
+      <div class="card">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-12 md:col-6">
+            <p-fieldset legend="Theme Design">
+              <!-- <p-fieldset legend="Theme Design"> -->
+              <div class="grid">
+                <div class="field col-6 md:col-6">
+                  <div class="grid">
+                    <div class="col-8 pb-0">
+                      <label>Show ShemarooMe Logo</label>
+                    </div>
+                    <div class="col-2">
+                      <p-toggleswitch formControlName="theme_is_logo"></p-toggleswitch>
+                    </div>
+                  </div>
+                </div>
+                <div class="field col-6 md:col-6">
+                  <div class="grid">
+                    <div class="col-8 pb-0">
+                      <label>Show Operator Logo</label>
+                    </div>
+                    <div class="col-2">
+                      <p-toggleswitch formControlName="theme_operator_is_logo"></p-toggleswitch>
+                    </div>
+                  </div>
+                </div>
+                <div class="field col-12 md:col-12">
+                  <label htmlFor="theme_image_urls">Theme Image</label>
+                  <div class="p-inputgroup w-full">
+                    <input pInputText id="theme_image_urls" #themeFileInput type="file"
+                      accept="image/*" (change)="onFileChange($event)"
+                      aria-describedby="theme_image" />
+                    @if (selectedThemeImageFile && f['theme_image_urls'].valid) {
+                      <span
+                        (click)="uploadThemeImage($event, themeFileInput)"
+                      class="p-inputgroup-addon cursor-pointer">Upload</span>
+                    }
+                    @if (selectedThemeImageFile) {
+                      <span (click)="clearThemeImage(themeFileInput)"
+                      class="p-inputgroup-addon cursor-pointer">Clear</span>
+                    }
+                  </div>
+                  <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
+                  @if (!f['theme_image_urls'].valid && selectedThemeImageFile!==null) {
+                    <div
+                      style="display: block; width: 100%;">
+                      @if (f['theme_image_urls'].hasError('required') || f['theme_image_urls'].hasError('invalidDimensions') ) {
+                        <span class="p-error"
+                          >
+                          Please upload theme image of dimensions (640px * 480px)
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+                <div class="field col-12 md:col-12">
+                  <p-table [value]="campaignImage">
+                    <ng-template #header>
+                      <tr>
+                        <th width="80%">Images</th>
+                        <th>Action</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-image let-rowIndex="rowIndex"
+                      let-first="first">
+                      <tr>
+                        <td><img src="{{image}}" width="100" height="50"></td>
+                        <td>
+                          {{first}}
+                          <a [href]="image" target="_blank"><button pButton pRipple type="button"><i class="pi pi-eye"></i></button>
+                        </a>
+                        <button pButton pRipple type="button" (click)="removeImages(rowIndex)"><i class="pi pi-trash"></i></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                  <tbody class="p-datatable-tbody">
+                    <tr>
+                      <td></td>
+                      <td>
+                        <button pButton pRipple type="button"><i class="pi pi-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </p-table>
+              </div>
+            </div>
+            <ng-container formArrayName="languages">
+              @for (lang of languages.controls; track lang; let i = $index) {
+                <div [formGroupName]="i">
+                  <div class="col-12 mt-4">
+                    <h5 class="mb-3">Language: {{ lang.get('value')?.value }}</h5>
+                    <div class="grid">
+                      <div class="field col-12 md:col-12">
+                        <label htmlFor="theme_additional_text_before">Additional Text
+                        Before</label>
+                        <input pInputText id="theme_additional_text_before" type="text"
+                          formControlName="theme_additional_text_before"
+                          placeholder="Additional Text" />
+                      </div>
+                      <div class="field col-12">
+                        <label htmlFor="theme_title_text">Title Text</label>
+                        <input pInputText id="theme_title_text" type="text"
+                          formControlName="theme_title_text" placeholder="Title Text" />
+                      </div>
+                      <div class="field col-12 md:col-12">
+                        <label htmlFor="theme_additional_text_after">Additional Text
+                        After</label>
+                        <input pInputText id="theme_additional_text_after" type="text"
+                          formControlName="theme_additional_text_after"
+                          placeholder="Additional Text" />
+                      </div>
+                    </div>
+                    <!-- INPUTS AND BUTTON -->
+                    <div class="grid">
+                      <div class="field col-12 md:col-12">
+                        <label htmlFor="theme_subscribe_button_after_text">Text After
+                        Plans</label>
+                        <p-editor formControlName="theme_subscribe_button_after_text"
+                          [style]="{ height: '100px' }">
+                          <ng-template #header>
+                            <span class="ql-formats">
+                              <button type="button" class="ql-bold"
+                              aria-label="Bold"></button>
+                              <button type="button" class="ql-italic"
+                              aria-label="Italic"></button>
+                              <button type="button" class="ql-underline"
+                              aria-label="Underline"></button>
+                              <button type="button" class="ql-list" aria-label="List"
+                              value='ordered'></button>
+                              <button type="button" class="ql-list" aria-label="Bullet"
+                              value='bullet'></button>
+                            </span>
+                          </ng-template>
+                        </p-editor>
+                      </div>
+                    </div>
+                    <!-- END Of INPUTS and Button -->
+                    <div class="grid">
+                      <div class="field col-12 md:col-12">
+                        <label htmlFor="theme_terms_conditions">Terms & Conditions</label>
+                        <p-editor formControlName="theme_terms_conditions"
+                          [style]="{ height: '100px' }">
+                          <ng-template #header>
+                            <span class="ql-formats">
+                              <button type="button" class="ql-bold"
+                              aria-label="Bold"></button>
+                              <button type="button" class="ql-italic"
+                              aria-label="Italic"></button>
+                              <button type="button" class="ql-underline"
+                              aria-label="Underline"></button>
+                              <button type="button" class="ql-list" aria-label="List"
+                              value='ordered'></button>
+                              <button type="button" class="ql-list" aria-label="Bullet"
+                              value='bullet'></button>
+                            </span>
+                          </ng-template>
+                        </p-editor>
+                      </div>
+                      <div class="field col-12">
+                        <label htmlFor="theme_powered_by_text">Powered By Text</label>
+                        <input pInputText id="theme_powered_by_text" type="text"
+                          formControlName="theme_powered_by_text"
+                          placeholder="Powered By Text" />
+                      </div>
+                      <!-- Plan Text Section -->
+                      <div class="field col-12">
+                        <table class="table table-bordered w-full">
+                          <thead>
+                            <tr>
+                              <th>Campaign Name</th>
+                              <th>Text</th>
+                              <th>Buttun Text</th>
+                            </tr>
+                          </thead>
+                          <tbody formArrayName="plan_text">
+                            @for (plan of getPlanTextControls(lang); track plan; let j = $index) {
+                              <tr
+                                [formGroupName]="j">
+                                <td>{{ plan.get('campaign_name')?.value }}</td>
+                                <td>
+                                  <input pInputText type="text" formControlName="text"
+                                    placeholder="Enter Campaign text" class="w-full" />
+                                </td>
+                                <td>
+                                  <input pInputText type="text"
+                                    formControlName="button_text"
+                                    placeholder="Enter Buttun Text" class="w-full" />
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </ng-container>
+          </p-fieldset>
+        </div>
+        <!--  -->
+        <div class="field col-12 md:col-6">
+          <p-fieldset legend="Theme Preview" [style]="{ position: 'relative' }">
+            <!-- Language dropdown at top-right -->
+            <div [style]="{ position: 'absolute', top: '-2.5rem', right: '1rem' }">
+              <p-select id="language" [options]="language_list" optionLabel="value"
+                formControlName="theme_language" placeholder="Select Default language"
+                optionValue="key" [panelStyle]="{ 'max-height': '200px', 'width': 'auto' }">
+              </p-select>
+            </div>
+            <div class="card edit-pencil theme_preview relative" [ngClass]="'currentTheme'| i18n"
+              data-fieldName="background_color"
+              [style]="{'background-color':campaignThemeForm.value.theme_page_background_color}">
+              <div
+                class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
+                <div class="edit-pencil" data-fieldName="shemaroo_logo">
+                  @if (campaignThemeForm.value.theme_is_logo) {
+                    <img
+                      src="../../../../assets/images/shemaroo_logo.svg" alt="Shemaroo ME"
+                      width="150px" height="50px">
+                  }
+                </div>
+                <div class="edit-pencil" data-fieldName="operator_logo">
+                  @if (campaignThemeForm.value.theme_operator_is_logo) {
+                    <img [ngClass]="{'operator-name': campaignThemeForm.value.theme_is_logo}"
+                      class="ml-2"
+                      [src]="'../../../../assets/images/operator/' + selectedCampaignData.name + '_' + selectedCampaignData.region_name + '_logo.png'"
+                      [alt]="selectedCampaignData.name + '_' + selectedCampaignData.region_name"
+                      height="50px">
+                  }
+                </div>
+                @if (!campaignThemeForm.value.theme_operator_is_logo) {
+                  <p
+                    [ngClass]="{'operator-name': campaignThemeForm.value.theme_is_logo}"
+                    class="text-2xl text-cyan-900 font-semibold uppercase edit-pencil"
+                  data-fieldName="operator_name">{{selectedCampaignData.name}}</p>
+                }
+              </div>
+              <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center p-0 inner_card"
+                [ngClass]="'currentTheme' | i18n">
+                <div
+                  class="card bg-blue-50 col-12 p-0 flex flex-column align-items-center border-noround border-none md:border-round border-0">
+                  <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center"
+                    [innerHTML]="campaignThemeForm.value.theme_banner_title_text"
+                    [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
+                  </div>
+                  <img [src]="selectedThemeImage || '../../../../assets/images/campaign/campaign_default_banner.svg'"
+                    alt="" class="banner_img">
+                  @for (langGroup of languages.controls; track langGroup) {
+                    @if (langGroup.get('key')?.value === f['theme_language'].value) {
+                      <p class="text-sm mt-1"
+                        [innerHTML]="langGroup.get('theme_additional_text_before')?.value">
+                      </p>
+                      <p class="m-3 text-xl font-semibold text-cyan-700 text-center"
+                                                    [innerHTML]="langGroup.get('theme_title_text')?.value 
+                                                                ? langGroup.get('theme_title_text')?.value 
+                                                                : getTranslatedText('CHOOSE_YOU_PLAN', 'Choose Your Plan')">
+                      </p>
+                      <p class="text-sm mt-1"
+                        [innerHTML]="langGroup.get('theme_additional_text_after')?.value">
+                      </p>
+                    }
+                  }
+                  <div class="col-10 flex flex-column justify-content-center align-items-center">
+                    <div class="plan-list md:col-10 col-12 p-0 mb-6">
+                      <ul class="list-none p-0 m-0">
+                        @for (plan of plans; track plan; let i = $index) {
+                          <li class="surface-card p-2 md:mb-3 shadow-1 md:border-round"
+                            >
+                            <div
+                              class="plan flex justify-content-between align-items-center p-2">
+                              <h6 class="col-8 m-0 p-0 text-left">
+                                @if (getPlanTextForCurrentLanguage(i)) {
+                                  <span
+                                  [innerHTML]="getPlanTextForCurrentLanguage(i)"></span>
+                                } @else {
+                                  {{'PAGE_PRICE' | i18n}}: {{plan.currency}}
+                                  {{plan.amount}}<br />
+                                  <small>{{'PAGE_VALIDITY' | i18n}} :
+                                    {{plan.validity}}
+                                  {{'PAGE_DAY' | i18n}}</small>
+                                }
+                              </h6>
+                              <p-button [routerLink]="['/landingpage']" [queryParams]="{ cid: plan.cid }" [style]="{ 'background-color': '#22C55E', 'color': '#ffffff', 'outline': 'none', 'box-shadow': 'none' }" type="button" class="border-0" size="small">
+                                @if (getPlanButtonTextForCurrentLanguage(i)) {
+                                  <span
+                                  [innerHTML]="getPlanButtonTextForCurrentLanguage(i)"></span>
+                                } @else {
+                                  <span [innerHTML]="'PAGE_SUBSCRIBE' | i18n"></span>
+                                }
+                              </p-button>
+                            </div>
+                          </li>
+                        }
+                      </ul>
+                      @for (langGroup of languages.controls; track langGroup) {
+                        @if (langGroup.get('key')?.value === f['theme_language'].value) {
+                          <div class="flex flex-column align-items-center m-0 text-sm"
+                            [innerHTML]="langGroup.get('theme_subscribe_button_after_text')?.value"
+                            [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
+                          </div>
+                        }
+                      }
+                    </div>
+                  </div>
+                  @for (langGroup of languages.controls; track langGroup) {
+                    @if (langGroup.get('key')?.value === f['theme_language'].value) {
+                      <p class="text-xl text-orange-600 mt-0 mb-0">{{'TERMS_CONDITION' |
+                      i18n}}</p>
+                      <div class="flex flex-column align-items-center"
+                        [innerHTML]="langGroup.get('theme_terms_conditions')?.value"
+                        [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
+                      </div>
+                                                <p class="m-2 text-sm" [innerHTML]="langGroup.get('theme_powered_by_text')?.value
+                                                    || 'Powered By: Shemaroo Entertainment Limited'"></p>
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+          </p-fieldset>
+        </div>
+      </div>
+      <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-6 pl-5">
+          <button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</form>
+</div>
+</div>
+<p-toast></p-toast>

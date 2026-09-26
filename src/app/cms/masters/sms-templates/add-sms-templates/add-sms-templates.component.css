@@ -1,0 +1,18 @@
+ul{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+ul li{
+    display: flex;
+    margin-bottom: 7px;
+}
+ul li span{
+    padding: 5px 10px;
+    cursor: pointer;
+    background: var(--blue-100);
+    /* margin-right: 10px; */
+    border-radius: 20px;
+}

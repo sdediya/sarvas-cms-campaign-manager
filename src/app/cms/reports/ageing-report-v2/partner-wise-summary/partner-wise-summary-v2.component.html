@@ -1,0 +1,103 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="p-fluid formgrid grid align-items-center	">
+        <div class="col-12 md:col-3">
+          <h5 class="m-0">Ageing Partner wise Summary Report</h5>
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <form [formGroup]="ageingSummaryReportForm">
+        <div class="p-fluid formgrid grid align-items-center">
+          <div class="col-4 md:col-3">
+            <label htmlFor="date">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-datepicker formControlName="date" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
+            @if (submitted && !f['date'].valid) {
+              <div style="display: block; width: 100%;">@if (f['date'].hasError('required') ) {
+                <span class="p-error">  Please select report date range  </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="tel_id">Select Telcom<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="tel_id" [options]="telcoms" [filter]="true" optionLabel="tel_name" formControlName="tel_id" placeholder="Telcom" optionValue="tel_id"></p-select>
+            @if (submitted && !f['tel_id'].valid) {
+              <div style="display: block; width: 100%;">@if (f['tel_id'].hasError('required') ) {
+                <span class="p-error"> Please select telcom </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="partner_id">Select Master Aggregator<span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select id="partner_id" [options]="masterAggregator" [filter]="true" optionLabel="maggregator_name" formControlName="partner_id" placeholder="Master Aggregator" optionValue="maggregator_id"></p-select>
+            @if (submitted && !f['partner_id'].valid) {
+              <div style="display: block; width: 100%;">@if (f['partner_id'].hasError('required') ) {
+                <span class="p-error">  Please select master aggregator </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="service">Select Product <span label styleclass="label-required" class="text-red-500">*</span></label>
+            <p-select class="col-3 p-0" formControlName="service" id="service" placeholder="Product" [options]="products" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
+            @if (submitted && !f['service'].valid) {
+              <div style="display: block; width: 100%;">@if (f['service'].hasError('required') ) {
+                <span class="p-error">Please select product </span>
+              }</div>
+            }
+          </div>
+          <div class="col-4 md:col-3">
+            <label htmlFor="service_id">Select Service</label>
+            <p-select class="col-3 p-0" [showClear]="true" formControlName="service_id" id="service_id" placeholder="Service" [options]="services" optionLabel="service_name" [filter]="true"  optionValue="service_id"></p-select>
+          </div>
+          <div class="col-3 md:col-3 flex align-items-center">
+            <button type="submit" (click)="onSubmit()" [disabled]="processing" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          </div>
+        </div>
+      </form>
+      @if (submitted && isValidForm) {
+        <div>
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="700px">
+            <ng-template #caption >
+              <div class="flex">
+                <button type="button" pButton pRipple [disabled]="processing" (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              </div>
+            </ng-template>
+            <ng-template #header let-columns>
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <th pFrozenColumn [frozen]="dateColumn">
+                    {{col.header}}
+                  </th>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #body let-rowData let-columns="columns">
+              <tr>
+                @for (col of columns; track col; let dateColumn = $first) {
+                  <td pFrozenColumn [frozen]="dateColumn" >
+                    {{rowData[col.key]}}
+                  </td>
+                }
+              </tr>
+            </ng-template>
+            <ng-template #footer let-columns>
+              <tr> @for (col of columns; track col; let dateColumn = $first) {
+                <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+              } </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+              <tr>
+                <td colspan="13">No data found.</td>
+              </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+              <tr>
+                <td colspan="13">Loading data. Please wait.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      }
+    </div>
+  </div>
+</div>

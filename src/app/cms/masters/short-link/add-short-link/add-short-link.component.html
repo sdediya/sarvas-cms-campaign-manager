@@ -1,0 +1,125 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      @if (!editable) {
+        <h5 class="mb-5">Add ShortLink</h5>
+      }
+      @if (editable) {
+        <h5 class="mb-5">Edit ShortLink</h5>
+      }
+      <form [formGroup]="shortlinkForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid">
+          <div class="field col-6 md:col-6">
+            <label htmlFor="shortlink_name">ShortLink Name<span label styleclass="label-required"
+            class="text-red-500">*</span></label>
+            <input pInputText id="shortlink_name" type="text" formControlName="shortlink_name"
+              placeholder="eg. India Airtel Charge SMS Link" />
+            @if (submitted && !f['shortlink_name'].valid) {
+              <div style="display: block; width: 100%;">
+                @if (f['shortlink_name'].hasError('required') ) {
+                  <span class="p-error">
+                    shortlink Name is required
+                  </span>
+                }
+              </div>
+            }
+          </div>
+          <div class="field col-6 md:col-6"></div>
+          <div class="field col-6 md:col-6">
+            <div>
+              <label>
+                <input type="radio" formControlName="codeMode" value="manual" /> Manual
+              </label>
+              <label>
+                <input type="radio" formControlName="codeMode" value="auto" /> Auto-generate
+              </label>
+            </div>
+
+            <!-- <div *ngIf="shortlinkForm.get('codeMode')?.value === 'manual'">
+            <input type="text" formControlName="code" placeholder="Enter your code" />
+          </div> -->
+
+          @if (shortlinkForm.get('codeMode')?.value === 'auto') {
+            <div>
+              <div>
+                <label>Length:</label>
+                <input type="number" formControlName="codeLength" min="1" />
+                <label>
+                  <input type="radio" formControlName="codeType" value="numeric" /> Numeric
+                </label>
+                <label>
+                  <input type="radio" formControlName="codeType" value="alphanumeric" /> Alphanumeric
+                </label>
+                <button type="button" (click)="generateCode()">Generate Code</button>
+              </div>
+              <!-- <div>
+              <strong>Generated Code:</strong> {{ shortlinkForm.get('code')?.value }}
+            </div> -->
+          </div>
+        }
+      </div>
+
+      <div class="field col-6 md:col-6"></div>
+      <div class="field col-6 md:col-6">
+        <label htmlFor="shortlink_url">ShortLink Code<span label styleclass="label-required"
+        class="text-red-500">*</span></label>
+        <input pInputText id="shortlink_url" type="text" formControlName="shortlink_url"
+          placeholder="eg. 1234" />
+        @if (submitted && !f['shortlink_url'].valid) {
+          <div style="display: block; width: 100%;">
+            @if (f['shortlink_url'].hasError('required') ) {
+              <span class="p-error">
+                ShortLink code is required
+              </span>
+            }
+            @if (f['shortlink_url'].hasError('maxlength')) {
+              <span class="p-error">
+                Please enter valid code length.
+              </span>
+            }
+          </div>
+        }
+      </div>
+      <div class="field col-6 md:col-6">
+        <label htmlFor="shortlink_redirect_url">Redirect URL<span label styleclass="label-required"
+        class="text-red-500">*</span></label>
+        <input pInputText id="shortlink_redirect_url" type="text"
+          formControlName="shortlink_redirect_url" placeholder="eg. www.example.com/abc" />
+        @if (submitted && !f['shortlink_redirect_url'].valid) {
+          <div
+            style="display: block; width: 100%;">
+            @if (f['shortlink_redirect_url'].hasError('required') ) {
+              <span class="p-error">
+                Redirect URL is required
+              </span>
+            }
+            <!-- <span class="p-error" *ngIf="f['shortlink_redirect_url'].hasError('pattern') || f['shortlink_redirect_url'].hasError('minLength') || f['shortlink_redirect_url'].hasError('maxLength')">
+            Please enter valid call code
+          </span> -->
+        </div>
+      }
+
+    </div>
+
+    <div class="field col-4 md:col-4">
+      @if (submitted && !f['shortlink_url'].valid) {
+        <div style="display: block; width: 100%;">
+          @if (f['shortlink_url'].hasError('required') ) {
+            <span class="p-error">
+              shortlink name is required
+            </span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <div class="p-fluid formgrid grid field ">
+    <div class="col-12 md:col-3 pt-0">
+      <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+</div>
+<p-toast></p-toast>
