@@ -25,8 +25,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@openng/icons/openng-icons.css",
-              "src/assets/layout/styles/theme/legacy-layout-tokens.css",
               "src/styles.css"
             ],
             "scripts": [],
@@ -129,8 +127,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@openng/icons/openng-icons.css",
-              "src/assets/layout/styles/theme/legacy-layout-tokens.css",
               "src/styles.css"
             ],
             "scripts": []

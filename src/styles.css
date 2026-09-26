@@ -5,8 +5,10 @@
 @import "@spartan-ng/brain/hlm-tailwind-preset.css";
 @import "./styles/spartan-theme.css";
 
-/* OpenNG icons + legacy tokens are listed in angular.json styles[] so Tailwind
-   PostCSS does not rewrite their font/url() paths incorrectly. */
+/* Optimus/legacy after Tailwind so cascade matches brief Step 5.
+   OpenNG icons via local wrapper: package css url() breaks under Tailwind PostCSS. */
+@import "./styles/openng-icons.css";
+@import "./assets/layout/styles/theme/legacy-layout-tokens.css";
 
 .customBtn{
     color: #fff !important;
@@ -139,8 +141,5 @@ p-button {
 @layer base {
   * {
     @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
