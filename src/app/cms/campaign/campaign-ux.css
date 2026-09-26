@@ -1,0 +1,108 @@
+/* Campaign module UX pattern kit — scoped under .cms-campaign */
+.cms-campaign.cms-page {
+  display: block;
+}
+
+.cms-campaign .cms-page-title {
+  margin: 0 0 1.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.cms-campaign .card {
+  padding: 1.25rem 1.5rem;
+}
+
+.cms-campaign .cms-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--surface-border, #dfe7ef);
+  border-radius: var(--border-radius, 6px);
+  background: var(--surface-ground, #eff3f8);
+}
+
+.cms-campaign .cms-filter-bar .p-select,
+.cms-campaign .cms-filter-bar p-select {
+  flex: 1 1 10rem;
+  min-width: 10rem;
+}
+
+.cms-campaign .cms-list-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.cms-campaign .cms-form-section {
+  margin-bottom: 1.25rem;
+}
+
+.cms-campaign .cms-form-section .p-panel-content,
+.cms-campaign .cms-form-section .p-panel-content-container {
+  padding-top: 1rem;
+}
+
+.cms-campaign .field > label,
+.cms-campaign .cms-control-row > label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+}
+
+.cms-campaign .field {
+  margin-bottom: 1rem;
+}
+
+.cms-campaign .cms-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cms-campaign .cms-control-row__options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  min-height: 2.5rem;
+}
+
+.cms-campaign .cms-sticky-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 0 0.25rem;
+  margin-top: 0.5rem;
+  background: linear-gradient(to top, var(--surface-card, #fff) 70%, transparent);
+}
+
+.cms-campaign .cms-sticky-actions .p-button,
+.cms-campaign .cms-sticky-actions p-button {
+  min-width: 8rem;
+}
+
+.cms-campaign .cms-table-dense .p-datatable-thead > tr > th,
+.cms-campaign .cms-table-dense .p-datatable-tbody > tr > td {
+  padding: 0.75rem 0.85rem;
+}
+
+.cms-campaign .cms-table-dense .p-datatable-tbody .field {
+  margin-bottom: 0;
+}
+
+.cms-campaign .cms-s2s-meta {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--surface-border, #dfe7ef);
+  line-height: 1.6;
+}

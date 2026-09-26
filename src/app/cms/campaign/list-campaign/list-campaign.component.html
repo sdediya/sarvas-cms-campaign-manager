@@ -1,38 +1,32 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5>Campaigns</h5>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <p-select class="col" [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Services" optionValue="id"></p-select>
+      <h5 class="cms-page-title">Campaigns</h5>
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Services" optionValue="id"></p-select>
 
-        <p-select class="col" [(ngModel)]="telcom_id" id="tel_id" [options]="telecom_operators" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
+        <p-select [(ngModel)]="telcom_id" id="tel_id" [options]="telecom_operators" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
 
-        <!-- <p-select class="col" [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select> -->
+        <p-select [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
 
-        <p-select class="col" [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
+        <p-select [(ngModel)]="filter.campaign_type" id="campaign_type" [options]="campaign_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'campaign_type')" placeholder="Campaign Type" optionValue="code"></p-select>
 
-        <p-select class="col" [(ngModel)]="filter.campaign_type" id="campaign_type" [options]="campaign_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'campaign_type')" placeholder="Campaign Type" optionValue="code"></p-select>
+        <p-select [(ngModel)]="filter.status" id="campaign_status" [options]="campaign_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Campaign Status" optionValue="code"></p-select>
 
-        <p-select class="col" [(ngModel)]="filter.status" id="campaign_status" [options]="campaign_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Campaign Status" optionValue="code"></p-select>
-
-      </div>
-      <div class="flex">
         @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
-          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
         }
       </div>
-      <p-divider></p-divider>
-      <p-table #dt1 [value]="campaigns"  [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+      <p-table #dt1 styleClass="cms-table-dense" [value]="campaigns" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
-            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
-              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Campaign" class="w-full"/></p-iconfield>
+          <div class="cms-list-tools">
+            <p-iconfield>
+              <p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Campaign" class="w-full"/>
+            </p-iconfield>
             @if (campaigns.length>0) {
-                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
-              }
+              <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+            }
           </div>
         </ng-template>
         <ng-template #header>
@@ -52,32 +46,32 @@
             </th>
             <th pSortableColumn="name"  style="min-width: 20rem">
               <div class="flex justify-content-between align-items-center">
-                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="service" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Service <p-sort-icon class="mx-4" field="service"></p-sort-icon>
+                Service <p-sortIcon class="mx-4" field="service"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="region"  style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+                Region <p-sortIcon class="mx-4" field="region"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="plan" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Plan <p-sort-icon class="mx-4" field="plan"></p-sort-icon>
+                Plan <p-sortIcon class="mx-4" field="plan"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="platform" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Platform <p-sort-icon class="mx-4" field="platform"></p-sort-icon>
+                Platform <p-sortIcon class="mx-4" field="platform"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="operator" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+                Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
               </div>
             </th>
             <th style="min-width: 12rem">
@@ -122,7 +116,7 @@
           <tr>
             <td >
               @if (write) {
-                <p-button [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil"></p-button>
               }
             </td>
             <td class="text-center">

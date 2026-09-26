@@ -1,6 +1,7 @@
 /* Global styles — legacy-layout-tokens.css is the frozen light CMS baseline (pre-Optimus). */
 @import "primeicons/primeicons.css";
 @import "./assets/layout/styles/theme/legacy-layout-tokens.css";
+@import "./app/cms/campaign/campaign-ux.css";
 
 .customBtn{
     color: #fff !important;

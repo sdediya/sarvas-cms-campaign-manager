@@ -32,6 +32,34 @@ export class AddCampaignComponent implements OnInit{
   isValidForm : boolean = false;
   Sidebarsubmitted : boolean = false;
   selected_report_tosend = false;
+
+  sectionCollapsed: Record<string, boolean> = {
+    details: false,
+    wap: true,
+    adPartner: true,
+    reports: true,
+    configuration: true,
+  };
+
+  private sectionControls: Record<string, string[]> = {
+    details: [
+      'campaign_region', 'campaign_telecom_id', 'campaign_service_id', 'campaign_plan_id',
+      'campaign_type', 'campaign_service_options', 'campaign_flow', 'campaign_owner_id',
+    ],
+    wap: [
+      'campaign_c1', 'campaign_c2', 'campaign_skip_msisdn', 'campaign_skip_type',
+      'campaign_dt', 'campaign_wf', 'campaign_tpid', 'campaign_redirection_capping',
+      'campaign_redirection_blocking', 'campaign_redirection_404', 'campaign_ga_tag',
+      'campaign_ga_events', 'campaign_is_silent_redirect',
+    ],
+    adPartner: [
+      'campaign_platform_id', 'campaign_callback_url', 'campaign_cost_per_aquisition',
+      'campaign_cost_per_click', 'campaign_is_google_campaign', 'campaign_exclude_cost',
+      'campaign_google_campaign_id',
+    ],
+    reports: ['campaign_report_alerts', 'campaign_report_type'],
+    configuration: ['CampaignConfigues'],
+  };
   
   campaignData : any = {};
   telecom_operators = [];
@@ -592,6 +620,10 @@ export class AddCampaignComponent implements OnInit{
   async onSubmit(){    
     this.submitted = true;
     console.log(this.campaignForm);
+    if (this.campaignForm.status === 'INVALID') {
+      this.expandInvalidSections();
+      return false;
+    }
     if(this.campaignForm.status!=='INVALID'){
       this.isValidForm = true;
       this.campaign_name = await this.getCampaignName(this.campaignForm.get('campaign_region').value, this.campaignForm.get('campaign_telecom_id').value, this.campaignForm.get('campaign_plan_id').value, this.campaignForm.get('campaign_type').value)
@@ -678,6 +710,27 @@ export class AddCampaignComponent implements OnInit{
     //   console.log("Form Invalid", this.campaignForm)
     // }
     return false;
+  }
+
+  expandInvalidSections(): void {
+    let firstKey: string | null = null;
+    for (const [section, controls] of Object.entries(this.sectionControls)) {
+      const invalid = controls.some((name) => {
+        const c = this.campaignForm.get(name);
+        return !!c && c.invalid;
+      });
+      if (invalid) {
+        this.sectionCollapsed[section] = false;
+        if (!firstKey) {
+          firstKey = section;
+        }
+      }
+    }
+    if (firstKey) {
+      queueMicrotask(() => {
+        document.getElementById(`campaign-section-${firstKey}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
   }
 
   onCampaignConfSubmit(){

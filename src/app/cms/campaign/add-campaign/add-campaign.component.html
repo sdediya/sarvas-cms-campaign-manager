@@ -1,16 +1,16 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
       @if (!editable) {
-        <h5 class="mb-5">Add Campaign</h5>
+        <h5 class="cms-page-title">Add Campaign</h5>
       }
       @if (editable) {
-        <h5 class="mb-5">Edit Campaign</h5>
+        <h5 class="cms-page-title">Edit Campaign</h5>
       }
       <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid">
           <div class="field col-12 md:col-12">
-            <p-fieldset legend="Campaign Details">
+            <p-panel id="campaign-section-details" header="Campaign Details" [toggleable]="true" [(collapsed)]="sectionCollapsed['details']" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-3">
                   <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -65,58 +65,50 @@
                     </div>
                   }
                 </div>
-                <div class="field col-12 md:col-3">
-                  <div class="grid">
-                    <div class="col-12 pb-0">
-                      <label>Campaign Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    </div>
-                    <div class="col">
-                      <p-radiobutton formControlName="campaign_type" value="service"  inputId="service"></p-radiobutton>
-                      <label for="service" class="ml-2">Service API</label>
-                    </div>
-                    <div class="col">
-                      <p-radiobutton formControlName="campaign_type" value="wap"  inputId="wap"></p-radiobutton>
-                      <label for="wap" class="ml-2">WAP</label>
-                    </div>
-                    <div class="col-12 pb-0 pt-0 pr-0">
-                      @if (submitted && !f['campaign_type'].valid) {
-                        <div style="display: block; width: 100%;">
-                          @if (f['campaign_type'].hasError('required') ) {
-                            <span class="p-error">
-                              Campaign Type is required
-                            </span>
-                          }
-                        </div>
+                <div class="field col-12 md:col-3 cms-control-row">
+                  <label>Campaign Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <div class="cms-control-row__options">
+                    <span class="flex align-items-center gap-2">
+                      <p-radiobutton formControlName="campaign_type" value="service" inputId="service"></p-radiobutton>
+                      <label for="service" class="m-0">Service API</label>
+                    </span>
+                    <span class="flex align-items-center gap-2">
+                      <p-radiobutton formControlName="campaign_type" value="wap" inputId="wap"></p-radiobutton>
+                      <label for="wap" class="m-0">WAP</label>
+                    </span>
+                  </div>
+                  @if (submitted && !f['campaign_type'].valid) {
+                    <div style="display: block; width: 100%;">
+                      @if (f['campaign_type'].hasError('required') ) {
+                        <span class="p-error">
+                          Campaign Type is required
+                        </span>
                       }
                     </div>
-                  </div>
+                  }
                 </div>
                 @if (f['campaign_type'].value=='service' || f['campaign_type'].value=='wap') {
-                  <div class="field col-12 md:col-3">
-                    <div class="grid">
-                      <div class="col-12 pb-0">
-                        <label>Billing Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                      </div>
-                      <div class="col">
-                        <p-radiobutton formControlName="campaign_service_options" value="billing"  inputId="billing"></p-radiobutton>
-                        <label for="billing" class="ml-2">Billing</label>
-                      </div>
-                      <div class="col">
-                        <p-radiobutton formControlName="campaign_service_options" value="optin"  inputId="optin"></p-radiobutton>
-                        <label for="optin" class="ml-2">Optin</label>
-                      </div>
-                      <div class="col-12 pb-0 pt-0 pr-0">
-                        @if (submitted && !f['campaign_service_options'].valid) {
-                          <div style="display: block; width: 100%;">
-                            @if (f['campaign_service_options'].hasError('required') ) {
-                              <span class="p-error">
-                                Please select service options
-                              </span>
-                            }
-                          </div>
+                  <div class="field col-12 md:col-3 cms-control-row">
+                    <label>Billing Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+                    <div class="cms-control-row__options">
+                      <span class="flex align-items-center gap-2">
+                        <p-radiobutton formControlName="campaign_service_options" value="billing" inputId="billing"></p-radiobutton>
+                        <label for="billing" class="m-0">Billing</label>
+                      </span>
+                      <span class="flex align-items-center gap-2">
+                        <p-radiobutton formControlName="campaign_service_options" value="optin" inputId="optin"></p-radiobutton>
+                        <label for="optin" class="m-0">Optin</label>
+                      </span>
+                    </div>
+                    @if (submitted && !f['campaign_service_options'].valid) {
+                      <div style="display: block; width: 100%;">
+                        @if (f['campaign_service_options'].hasError('required') ) {
+                          <span class="p-error">
+                            Please select service options
+                          </span>
                         }
                       </div>
-                    </div>
+                    }
                   </div>
                 }
                 <div class="field col-12 md:col-3">
@@ -137,26 +129,18 @@
                   <p-select id="campaign_owner_id" [options]="campaign_owners" optionLabel="name" [filter]="true" formControlName="campaign_owner_id" placeholder="Select Campaign Owner" optionValue="id"></p-select>
                 </div>
               </div>
-            </p-fieldset>
+            </p-panel>
           </div>
           @if (f['campaign_type'].value == 'wap') {
             <div class="field col-12">
-              <p-fieldset legend="Campaign Setting for WAP">
+              <p-panel id="campaign-section-wap" header="Campaign Setting for WAP" [toggleable]="true" [(collapsed)]="sectionCollapsed['wap']" styleClass="cms-form-section">
                 <div class="grid">
-                  <div class="field col-12 md:col-4">
-                    <div class="grid">
-                      <div class="col-12 pb-0">
-                        <label>Skip Consent</label>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_c1" value="c1" label="C1" [binary]="true"></p-checkbox>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_c2" value="c2" label="C2" [binary]="true"></p-checkbox>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_skip_msisdn" value="skip_msisdn" label="Skip Msisdn" [binary]="true"></p-checkbox>
-                      </div>
+                  <div class="field col-12 md:col-4 cms-control-row">
+                    <label>Skip Consent</label>
+                    <div class="cms-control-row__options">
+                      <p-checkbox formControlName="campaign_c1" value="c1" label="C1" [binary]="true"></p-checkbox>
+                      <p-checkbox formControlName="campaign_c2" value="c2" label="C2" [binary]="true"></p-checkbox>
+                      <p-checkbox formControlName="campaign_skip_msisdn" value="skip_msisdn" label="Skip Msisdn" [binary]="true"></p-checkbox>
                     </div>
                   </div>
                   @if (f['campaign_c1'].value || f['campaign_c2'].value) {
@@ -337,29 +321,30 @@
                     <label htmlFor="campaign_ga_tag"> GA Tag ID </label>
                     <input pInputText id="campaign_ga_tag" type="text" formControlName="campaign_ga_tag"  placeholder="G-xxxxxxx" />
                   </div>
-                  @for (event of ga_events; track event) {
-                    <div class="field col-12 md:col-3 flex align-items-center justify-content-center">
-                      <div class="field-checkbox m-0 mt-4">
-                        <p-checkbox name="campaign_ga_events" [value]="event.value"  [formControl]="f['campaign_ga_events']" [inputId]="event.value"></p-checkbox>
-                        <label [for]="event.value">{{ event.name }}</label>
-                      </div>
+                  <div class="field col-12 md:col-9 cms-control-row">
+                    <label>GA Events</label>
+                    <div class="cms-control-row__options">
+                      @for (event of ga_events; track event) {
+                        <span class="flex align-items-center gap-2">
+                          <p-checkbox name="campaign_ga_events" [value]="event.value"  [formControl]="f['campaign_ga_events']" [inputId]="event.value"></p-checkbox>
+                          <label [for]="event.value" class="m-0">{{ event.name }}</label>
+                        </span>
+                      }
                     </div>
-                  }
+                  </div>
                 </div>
                 <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="col-12 pb-0">
-                    <label>Is Silent Redirect</label>
-                  </div>
-                  <div class="col">
+                <div class="field col-12 cms-control-row">
+                  <label>Is Silent Redirect</label>
+                  <div class="cms-control-row__options">
                     <p-checkbox formControlName="campaign_is_silent_redirect" value="silent_redirect" label="Silent Redirect" [binary]="true"></p-checkbox>
                   </div>
                 </div>
-              </p-fieldset>
+              </p-panel>
             </div>
           }
           <div class="field col-12 md:col-12">
-            <p-fieldset legend="Ad Partner">
+            <p-panel id="campaign-section-adPartner" header="Ad Partner" [toggleable]="true" [(collapsed)]="sectionCollapsed['adPartner']" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-4">
                   <label htmlFor="campaign_platform_id">Select Platform<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -441,29 +426,33 @@
                   </div>
                 }
               </div>
-              <div class="field col-3 align-item-center m-0" style="display: flex; align-items: center;">
-                <label class="m-0">Is Google Campaign</label>
-                <p-toggleswitch formControlName="campaign_is_google_campaign" class="ml-5"></p-toggleswitch>
+              <div class="field col-12 md:col-3 cms-control-row">
+                <label>Is Google Campaign</label>
+                <div class="cms-control-row__options">
+                  <p-toggleswitch formControlName="campaign_is_google_campaign"></p-toggleswitch>
+                </div>
               </div>
-              <div class="field col-12 md:col-3 align-item-center m-0" style="display: flex; align-items: center;">
-                <label for="campaign_exclude_cost" >Exclude cost (Consider cost from Google Sheet)</label>
-                <p-toggleswitch formControlName="campaign_exclude_cost" class="ml-5"></p-toggleswitch>
+              <div class="field col-12 md:col-3 cms-control-row">
+                <label for="campaign_exclude_cost">Exclude cost (Consider cost from Google Sheet)</label>
+                <div class="cms-control-row__options">
+                  <p-toggleswitch formControlName="campaign_exclude_cost"></p-toggleswitch>
+                </div>
               </div>
               <div class="field col-12 md:col-3">
-                <label for="campaign_tpid">Google Campaign ID</label>
+                <label for="campaign_google_campaign_id">Google Campaign ID</label>
                 <input pInputText id="campaign_google_campaign_id" type="text" formControlName="campaign_google_campaign_id" placeholder="Google Campaign ID" />
               </div>
-              <div class="field col-12">
-                <p>
+              <div class="field col-12 cms-s2s-meta">
+                <p class="m-0">
                   <b>Campaign S2S URL:</b> {{f['campaign_callback_url'].value}}<br>
                   <b>Campaign S2S URL method:</b> {{f['campaign_callback_method'].value}}
                 </p>
               </div>
             </div>
-          </p-fieldset>
+          </p-panel>
         </div>
         <div class="field col-12 md:col-12" style="display: none" >
-          <p-fieldset legend="Reports Alert">
+          <p-panel id="campaign-section-reports" header="Reports Alert" [toggleable]="true" [(collapsed)]="sectionCollapsed['reports']" styleClass="cms-form-section">
             <div class="grid">
               <div class="field col-5 align-item-center m-0" style="display: flex; align-items: center;">
                 <label class="m-0">Enable Report alerts</label>
@@ -524,12 +513,12 @@
               </div>
             }
           </div>
-        </p-fieldset>
+        </p-panel>
       </div>
       <div class="field col-12 md:col-12" >
-        <p-fieldset legend="Campaign Configuration">
+        <p-panel id="campaign-section-configuration" header="Campaign Configuration" [toggleable]="true" [(collapsed)]="sectionCollapsed['configuration']" styleClass="cms-form-section">
           <div class="field" formArrayName="CampaignConfigues">
-            <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"  dataKey="idd" [value]="CampaignConfigues.controls" id="addPlatform">
+            <p-table styleClass="cms-table-dense" tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"  dataKey="idd" [value]="CampaignConfigues.controls" id="addPlatform">
               <ng-template #header>
                 <tr>
                   <th style="width: 5%">#</th>
@@ -617,10 +606,10 @@
                   <td style="width: 10rem">
                     <div class="field m-0">
                       @if (i > 0 ) {
-                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash"></p-button>
                       }
                       @if (i==CampaignConfigues.controls.length-1) {
-                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" severity="success"></p-button>
                       }
                     </div>
                   </td>
@@ -651,7 +640,7 @@
                       <td><p>{{campaign_confs.type == 'capping' ? ((campaign_confs.conf_is_optin_capping==true) ? 'Optin' : 'Billing'): ''  }}</p> </td>
                       <td>
                         @if (write && (campaign_confs.type =='drop' || campaign_confs.type =='capping')) {
-                          <p-button (click)="getConfigurationById(campaign_confs)" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                          <p-button (click)="getConfigurationById(campaign_confs)" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil"></p-button>
                         }
                       </td>
                     </tr>
@@ -660,17 +649,13 @@
               </p-table>
             </div>
           }
-        </p-fieldset>
+        </p-panel>
       </div>
 
     </div>
-    <div class="p-fluid formgrid grid">
-      <div class="field col-12 md:col-2">
-        <p-button type="submit" label="Submit" [raised]="true"></p-button>
-      </div>
-      <div class="field col-12 md:col-2">
-        <p-button [routerLink]="['/campaign/list']" label="Cancel" severity="danger"></p-button>
-      </div>
+    <div class="cms-sticky-actions">
+      <p-button type="submit" label="Submit" [raised]="true"></p-button>
+      <p-button [routerLink]="['/campaign/list']" label="Cancel" severity="danger"></p-button>
     </div>
   </form>
 </div>

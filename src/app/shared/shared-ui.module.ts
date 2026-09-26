@@ -18,6 +18,7 @@ import { DialogModule } from 'primeng/dialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
+import { PanelModule } from 'primeng/panel';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -58,6 +59,7 @@ const SHARED = [
   MultiSelectModule,
   CheckboxModule,
   FieldsetModule,
+  PanelModule,
   DividerModule,
   TooltipModule,
   RadioButtonModule,
