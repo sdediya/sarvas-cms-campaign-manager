@@ -18,6 +18,10 @@ label sup {
     color: red;
 }
 
+.p-error {
+    color: #e24c4c;
+}
+
 /* Card surface used by CMS pages */
 .card {
     background: var(--surface-card);

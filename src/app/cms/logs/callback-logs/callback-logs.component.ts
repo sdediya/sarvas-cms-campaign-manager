@@ -17,7 +17,7 @@ export class CallbackLogsComponent {
   CMS_API = environment.CMS_API
   filter:any = { operator:null, region:null, start_date:null, end_date:null}
   callbacklogs: any;
-  totalTableRecords: number = 0;
+  totalRecords: number = 0;
   loading: boolean = false;
   lazyLoadEvent: any;
   callbackLogsForm: any = FormGroup;
@@ -153,7 +153,7 @@ export class CallbackLogsComponent {
             showFull: false 
           }));
 
-          this.totalTableRecords = res.data.count;
+          this.totalRecords = res.data.count;
         }
 
       },

@@ -17,7 +17,6 @@ import { environment } from 'src/environments/environment';
 export class TopbarComponent implements OnInit {
     CMS_API = environment.CMS_API;
     items!: MenuItem[];
-    darkTheme:boolean = true;
     loggedInUser:any
     @ViewChild('menubutton') menuButton!: ElementRef;
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
@@ -56,12 +55,10 @@ export class TopbarComponent implements OnInit {
               command: ()=> this.logout()
           },
       ];
-      let colorScheme = localStorage.getItem('colorScheme')
-      let theme = localStorage.getItem('theme')
-      this.darkTheme = colorScheme=='dark'?true:false;
-      if(colorScheme && theme){
-        this.changeTheme(theme, colorScheme)
-      }
+      localStorage.setItem('theme', 'saga-blue');
+      localStorage.setItem('colorScheme', 'light');
+      this.layoutService.config.theme = 'saga-blue';
+      this.layoutService.config.colorScheme = 'light';
       this.setScale('12')
     }
 
@@ -104,48 +101,6 @@ export class TopbarComponent implements OnInit {
     // onConfigButtonClick() {
     //     this.layoutService.showConfigSidebar();
     // }
-
-    switchTheme(ev:any){
-        if(ev.checked){
-            this.changeTheme('vela-blue', 'dark')
-        }
-        else{
-            this.changeTheme('saga-blue', 'light')
-        }
-      }
-
-    changeTheme(theme: string, colorScheme: string) {
-        const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
-      
-        // Set Active theme in Localstorage
-        localStorage.setItem('theme', theme);
-        localStorage.setItem('colorScheme', colorScheme);
-  
-  
-        const newHref = themeLink.getAttribute('href')!.replace(this.layoutService.config.theme, theme);
-        this.replaceThemeLink(newHref, () => {
-            this.layoutService.config.theme = theme;
-            this.layoutService.config.colorScheme = colorScheme;
-            this.layoutService.onConfigUpdate();
-        });
-    }
-  
-    replaceThemeLink(href: string, onComplete: Function) {
-        const id = 'theme-css';
-        const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
-        const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
-  
-        cloneLinkElement.setAttribute('href', href);
-        cloneLinkElement.setAttribute('id', id + '-clone');
-  
-        themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
-  
-        cloneLinkElement.addEventListener('load', () => {
-            themeLink.remove();
-            cloneLinkElement.setAttribute('id', id);
-            onComplete();
-        });
-    }
 
     logout() {
         this.userActivityService.addLog('logOut', 'TopbarComponent')

@@ -54,7 +54,7 @@
       </form>
       @if (freezTableValue) {
         <div>
-          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
             <ng-template #caption>
               <div class="flex justify-content-between flex-column sm:flex-row">
                 <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>

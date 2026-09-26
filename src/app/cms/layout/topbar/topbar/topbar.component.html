@@ -8,7 +8,6 @@
     </button>
 
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <p-togglebutton id="themeSwitchBtn" styleClass="p-button-lg" [(ngModel)]="darkTheme" onIcon="pi pi-moon" offIcon="pi pi-sun" [style]="{ width: 'auto', background: 'none', border: 'none' }" (onChange)="switchTheme($event)"></p-togglebutton>
         <button #btn type="button" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
             <i class="pi pi-user"></i>
         </button>
