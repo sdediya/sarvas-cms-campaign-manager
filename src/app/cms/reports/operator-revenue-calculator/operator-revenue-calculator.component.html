@@ -81,8 +81,8 @@
                       </div>
                     </td>
                     <td>
-                      <p-button (click)="addNewRow(i)" class="mr-3" [text]="true" size="small" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
-                      <p-button (click)="removeRow(i)" [disabled]="!row.get('editable').value" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                      <p-button (click)="addNewRow(i)" class="mr-3" [text]="true" size="small" icon="pi pi-plus" styleClass="p-button-icon-only" severity="success"></p-button>
+                      <p-button (click)="removeRow(i)" [disabled]="!row.get('editable').value" severity="danger" size="small" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
                     </td>
                   </tr>
                 </ng-template>

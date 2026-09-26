@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { Router } from '@angular/router';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';

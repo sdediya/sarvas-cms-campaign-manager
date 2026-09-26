@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Table } from 'primeng/table';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table } from '@openng/optimus-ui/table';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http/http.service';
 import { CrudService } from 'src/app/services/common/crud.service';

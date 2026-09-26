@@ -40,7 +40,6 @@ ul li span{
 }
 .edit-pencil::before{
     content: "\e942";
-    font-family: "primeicons";
     display: none;
     position: absolute;
     top: 0;

@@ -53,7 +53,7 @@
               <tr>
                 <td>
                   @if (write) {
-                    <p-button (click)="showDialog(rowData.id)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                    <p-button (click)="showDialog(rowData.id)" severity="success" size="small" icon="pi pi-plus" styleClass="p-button-icon-only"></p-button>
                   }
                 </td>
                 @for (col of columns; track col; let dateColumn = $first) {

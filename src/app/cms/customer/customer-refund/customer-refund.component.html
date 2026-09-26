@@ -129,15 +129,15 @@
               <div class="grid">
                 <div class="col-12 flex justify-content-end align-items-center">
                   <p-button (click)="refundTransactions()" title="Refund Selected Transactions" class="p-2">Refund Selected Transactions</p-button>
-                  <p-button (click)="exportData()" severity="success" pTooltip="XLS" tooltipPosition="bottom" class="px-2" icon="pi pi-file-excel" [iconOnly]="true"></p-button>
-                  <!-- <p-button (click)="exportData()" title="Export Transactions" class="p-2" severity="success" icon="pi pi-file-excel" [iconOnly]="true"></p-button> -->
+                  <p-button (click)="exportData()" severity="success" pTooltip="XLS" tooltipPosition="bottom" class="px-2" icon="pi pi-file-excel" styleClass="p-button-icon-only"></p-button>
+                  <!-- <p-button (click)="exportData()" title="Export Transactions" class="p-2" severity="success" icon="pi pi-file-excel" styleClass="p-button-icon-only"></p-button> -->
                 </div>
                 <div class="col-12">
                   <p-table #table [value]="userTransactionDetails" [selection]="selectedTransactions" selectionMode="multiple" dataKey="transaction_id" [tableStyle]="{'min-width': '50rem'}" (selectionChange)="onSelectionChange($event)" (onHeaderCheckboxToggle) ="updateCheckedState()">
                     <ng-template #header>
                       <tr >
                         <th style="width: 4rem">
-                          <p-tableheadercheckbox #headerCheckBox></p-tableheadercheckbox>
+                          <p-tableHeaderCheckbox #headerCheckBox></p-tableHeaderCheckbox>
                         </th>
                         <th>Transaction ID</th>
                         <th>Transaction Date</th>
@@ -152,7 +152,7 @@
                       <tr>
                         <td>
                           @if (!isRowDisabled(rowData)) {
-                            <p-tablecheckbox [value]="rowData"></p-tablecheckbox>
+                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                           }
                         </td>
                         <td>{{rowData.transaction_id}}</td>

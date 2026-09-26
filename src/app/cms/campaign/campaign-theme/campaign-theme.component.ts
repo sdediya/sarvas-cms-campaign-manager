@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import * as Utils from 'src/app/utils/utils';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { I18nServiceService } from 'src/app/services/i18n-service.service';

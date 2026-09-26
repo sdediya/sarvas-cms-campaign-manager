@@ -2,12 +2,12 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { error, json } from '@rxweb/reactive-form-validators';
-import { SortEvent } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { SortEvent } from '@openng/optimus-ui/api';
+import { Table } from '@openng/optimus-ui/table';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 

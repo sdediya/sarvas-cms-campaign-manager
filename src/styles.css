@@ -1,5 +1,5 @@
 /* Global styles — legacy-layout-tokens.css is the frozen light CMS baseline (pre-Optimus). */
-@import "primeicons/primeicons.css";
+@import "@openng/icons/openng-icons.css";
 @import "./assets/layout/styles/theme/legacy-layout-tokens.css";
 
 .customBtn{
@@ -27,7 +27,7 @@ label sup {
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
 }
 
-/* ---- PrimeNG 22 / Aura compatibility ---- */
+/* ---- Optimus UI / Aura compatibility ---- */
 
 /* Templates use p-formgrid; Sakai/PrimeFlex styles .formgrid.grid */
 .p-formgrid.grid > .col,

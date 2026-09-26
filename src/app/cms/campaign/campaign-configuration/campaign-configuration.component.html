@@ -91,11 +91,11 @@
             </td>
             <td>
               @if (write && (campaign_confs.type =='drop' || campaign_confs.type =='capping')) {
-                <p-button [routerLink]="['/campaign/edit-configuration']" [queryParams]="{id: campaign_confs.id}" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/campaign/edit-configuration']" [queryParams]="{id: campaign_confs.id}" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
               }
 
               @if (delete) {
-                <p-button (onClick)="toggleConf(campaign_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                <p-button (onClick)="toggleConf(campaign_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
               }
             </td>
           </tr>

@@ -86,7 +86,7 @@
                   @for (col of columns; track col) {
                     <th [pSortableColumn]="col.key">
                       {{ col.header || col.key }}
-                      <p-sort-icon [field]="col.key"></p-sort-icon>
+                      <p-sortIcon [field]="col.key"></p-sortIcon>
                     </th>
                   }
                 </tr>

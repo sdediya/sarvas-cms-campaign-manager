@@ -5,7 +5,7 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators'
 import { HttpService } from 'src/app/services/http/http.service';
 import * as customValidator from 'src/app/utils/validators'
 import { environment } from 'src/environments/environment';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { CrudService } from 'src/app/services/common/crud.service';
 
 @Component({

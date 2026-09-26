@@ -293,10 +293,10 @@
               <td class="col-actions">
                 <div class="field m-0">
                   @if (SmsConfigues.controls.length > 1) {
-                    <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                    <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
                   }
                   @if (i==SmsConfigues.controls.length-1) {
-                    <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                    <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" styleClass="p-button-icon-only" severity="success"></p-button>
                   }
                 </div>
               </td>

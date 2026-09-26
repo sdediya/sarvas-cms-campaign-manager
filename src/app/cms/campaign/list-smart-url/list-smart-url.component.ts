@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Table } from 'primeng/table';
+import { Table } from '@openng/optimus-ui/table';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { ConfirmationService, MessageService, SortEvent } from 'primeng/api';
+import { ConfirmationService, MessageService, SortEvent } from '@openng/optimus-ui/api';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { ClipboardService } from 'ngx-clipboard';
 import { Router } from '@angular/router';

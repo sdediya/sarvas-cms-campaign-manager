@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
-import { MenuItem } from 'primeng/api';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MenuItem } from '@openng/optimus-ui/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { LayoutService } from '../../layout.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Router } from '@angular/router';

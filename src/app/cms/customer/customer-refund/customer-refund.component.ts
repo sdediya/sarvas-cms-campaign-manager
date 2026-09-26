@@ -2,12 +2,12 @@ import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
-import { Table, TableHeaderCheckbox } from "primeng/table";
+import { Table, TableHeaderCheckbox } from "@openng/optimus-ui/table";
 
 
 @Component({

@@ -617,10 +617,10 @@
                   <td style="width: 10rem">
                     <div class="field m-0">
                       @if (i > 0 ) {
-                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
                       }
                       @if (i==CampaignConfigues.controls.length-1) {
-                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" styleClass="p-button-icon-only" severity="success"></p-button>
                       }
                     </div>
                   </td>
@@ -651,7 +651,7 @@
                       <td><p>{{campaign_confs.type == 'capping' ? ((campaign_confs.conf_is_optin_capping==true) ? 'Optin' : 'Billing'): ''  }}</p> </td>
                       <td>
                         @if (write && (campaign_confs.type =='drop' || campaign_confs.type =='capping')) {
-                          <p-button (click)="getConfigurationById(campaign_confs)" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                          <p-button (click)="getConfigurationById(campaign_confs)" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
                         }
                       </td>
                     </tr>

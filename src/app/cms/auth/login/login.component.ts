@@ -3,7 +3,7 @@ import { LayoutService } from '../../layout/layout.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Router } from '@angular/router';
 

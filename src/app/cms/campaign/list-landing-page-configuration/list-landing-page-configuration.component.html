@@ -52,17 +52,17 @@
             </th>
             <th pSortableColumn="region" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+                Region <p-sortIcon class="mx-4" field="region"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="operator" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+                Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="service" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Service <p-sort-icon class="mx-4" field="service"></p-sort-icon>
+                Service <p-sortIcon class="mx-4" field="service"></p-sortIcon>
               </div>
             </th>
             <th style="min-width: 12rem">
@@ -76,7 +76,7 @@
           <tr>
             <td>
               @if (write) {
-                <p-button [routerLink]="['/campaign/landing-page-configuration/edit']" [queryParams]="{id: campaigns.common_landing_campaigns_uuid}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/campaign/landing-page-configuration/edit']" [queryParams]="{id: campaigns.common_landing_campaigns_uuid}" severity="success" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
               }
             </td>
             <td class="text-center">

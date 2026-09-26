@@ -52,32 +52,32 @@
             </th>
             <th pSortableColumn="name"  style="min-width: 20rem">
               <div class="flex justify-content-between align-items-center">
-                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="service" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Service <p-sort-icon class="mx-4" field="service"></p-sort-icon>
+                Service <p-sortIcon class="mx-4" field="service"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="region"  style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+                Region <p-sortIcon class="mx-4" field="region"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="plan" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Plan <p-sort-icon class="mx-4" field="plan"></p-sort-icon>
+                Plan <p-sortIcon class="mx-4" field="plan"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="platform" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Platform <p-sort-icon class="mx-4" field="platform"></p-sort-icon>
+                Platform <p-sortIcon class="mx-4" field="platform"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="operator" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+                Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
               </div>
             </th>
             <th style="min-width: 12rem">
@@ -122,7 +122,7 @@
           <tr>
             <td >
               @if (write) {
-                <p-button [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
               }
             </td>
             <td class="text-center">

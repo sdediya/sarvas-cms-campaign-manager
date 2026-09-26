@@ -21,48 +21,48 @@
           <tr>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Unique Code <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Unique Code <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Country <p-sort-icon class="mx-4" field="country"></p-sort-icon>
+                Country <p-sortIcon class="mx-4" field="country"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="operator" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+                Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
               </div>
             </th>
 
             <th pSortableColumn="time" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Start Time <p-sort-icon class="mx-4" field="time"></p-sort-icon>
+                Start Time <p-sortIcon class="mx-4" field="time"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Interval Minutes <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Interval Minutes <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Retry On Failure<p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Retry On Failure<p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Max Retry Count <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Max Retry Count <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Current Retry Count <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Current Retry Count <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
 
@@ -128,7 +128,7 @@
           </td>
           <td>
             @if (write) {
-              <p-button [routerLink]="['/masters/edit-cron']" [queryParams]="{id: crons.cron_id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              <p-button [routerLink]="['/masters/edit-cron']" [queryParams]="{id: crons.cron_id}" severity="success" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
             }
           </td>
         </tr>

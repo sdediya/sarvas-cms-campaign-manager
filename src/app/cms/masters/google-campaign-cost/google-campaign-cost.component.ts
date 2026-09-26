@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { MessageService } from '@openng/optimus-ui/api';
+import { Table } from '@openng/optimus-ui/table';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { HttpService } from 'src/app/services/http/http.service';

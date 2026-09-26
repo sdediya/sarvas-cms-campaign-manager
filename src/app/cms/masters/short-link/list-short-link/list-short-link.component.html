@@ -24,28 +24,28 @@
           <tr>
             <!-- <th pSortableColumn="name" style="min-width: 12rem">
             <div class="flex justify-content-between align-items-center">
-              Copy URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              Copy URL <p-sortIcon class="mx-4" field="name"></p-sortIcon>
             </div>
           </th> -->
           <th pSortableColumn="name" style="min-width: 12rem">
             <div class="flex justify-content-between align-items-center">
-              Copy URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              Copy URL <p-sortIcon class="mx-4" field="name"></p-sortIcon>
             </div>
           </th>
 
           <th pSortableColumn="name" style="min-width: 12rem">
             <div class="flex justify-content-between align-items-center">
-              Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
             </div>
           </th>
           <th pSortableColumn="name" style="min-width: 12rem">
             <div class="flex justify-content-between align-items-center">
-              Code <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              Code <p-sortIcon class="mx-4" field="name"></p-sortIcon>
             </div>
           </th>
           <th pSortableColumn="name" style="min-width: 12rem">
             <div class="flex justify-content-between align-items-center">
-              Redirect URL <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+              Redirect URL <p-sortIcon class="mx-4" field="name"></p-sortIcon>
             </div>
           </th>
           <th style="min-width: 10rem">
@@ -102,7 +102,7 @@
             </td>
             <td>
               @if (write) {
-                <p-button [routerLink]="['/masters/edit-short-link']" [queryParams]="{id: shortlink.shortlink_id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/masters/edit-short-link']" [queryParams]="{id: shortlink.shortlink_id}" severity="success" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
               }
             </td>
           </tr>

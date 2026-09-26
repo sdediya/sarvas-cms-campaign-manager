@@ -4,9 +4,9 @@ import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
+import { ConfirmationService, MessageService } from '@openng/optimus-ui/api';
+import { provideOptimus } from '@openng/optimus-ui/config';
+import Aura from '@openng/optimus-ui-themes/aura';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +37,7 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
     DatePipe,
     MessageService,
     ConfirmationService,
-    providePrimeNG({
+    provideOptimus({
       theme: {
         preset: Aura,
         options: {
@@ -45,8 +45,6 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
           darkModeSelector: 'none',
         },
       },
-      license:
-        'eyJpZCI6IjFmOWFlM2Y4LWE0MDAtNDRlMy04N2RhLTdhM2JmZDIyMzllYiIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3OTA0MTE0MTMsImV4cCI6MTgyMTk0NzQxM30.zEORdj2Bzo8iru_twJHQubWaM_VvUh16RcQS2To_-HmLScJxQ3zx6yUAbbMyd4xpHJkwKM94QK9XPEJGLtOPDQ',
     }),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MaintenanceInterceptor, multi: true },

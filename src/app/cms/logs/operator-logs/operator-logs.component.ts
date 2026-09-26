@@ -1,12 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
-import { MessageService} from 'primeng/api';
+import { MessageService} from '@openng/optimus-ui/api';
 import { HttpService } from 'src/app/services/http/http.service';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { Router } from '@angular/router';
-import { Table } from 'primeng/table';
+import { Table } from '@openng/optimus-ui/table';
 
 
 @Component({

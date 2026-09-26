@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService } from '@openng/optimus-ui/api';
 import { debounceTime } from 'rxjs';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';

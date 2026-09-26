@@ -458,7 +458,7 @@
                               <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_exit_button_color || '#df2a2a'">{{campaignThemeForm.value.theme_exit_button_text || 'Exit' | i18n}}</button>
                             }
                           </div>
-                          <p-button [label]="campaignThemeForm.value.theme_resent_otp_text || 'RESEND_OTP' | i18n" class="p-button-link pt-0 mt-2 pb-0" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                          <p-button [label]="campaignThemeForm.value.theme_resent_otp_text || 'RESEND_OTP' | i18n" class="p-button-link pt-0 mt-2 pb-0" icon="pi pi-plus" styleClass="p-button-icon-only" severity="success"></p-button>
                           <div class="flex flex-column align-items-center m-0 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_after_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
                         </div>
                       }

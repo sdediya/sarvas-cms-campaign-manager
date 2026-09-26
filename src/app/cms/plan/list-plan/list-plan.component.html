@@ -114,10 +114,10 @@
             </td>
             <td>
               @if (write) {
-                <p-button [routerLink]="['/plan/edit']" [queryParams]="{id: plans.id}" title="Edit Plan" class="mr-2" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/plan/edit']" [queryParams]="{id: plans.id}" title="Edit Plan" class="mr-2" severity="success" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
               }
               @if (write && plans.fallback && plans.fallback==1) {
-                <p-button type="button" (click)="getPlanbyId(plans.id)" title="Add Fallback" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                <p-button type="button" (click)="getPlanbyId(plans.id)" title="Add Fallback" severity="success" size="small" icon="pi pi-plus" styleClass="p-button-icon-only"></p-button>
               }
             </td>
           </tr>
@@ -188,7 +188,7 @@
                 <td>{{ fallback.fallback_amount }}</td>
                 <td>{{ fallback.fallback_validity }}</td>
                 <td>
-                  <p-button type="button" (click)="deleteFallback(fallback.fallback_id, i)" title="Delete Fallback" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                  <p-button type="button" (click)="deleteFallback(fallback.fallback_id, i)" title="Delete Fallback" severity="danger" size="small" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
                 </td>
               </tr>
             </ng-template>
@@ -239,7 +239,7 @@
                 }
               </div>
               <div class="col-12 md:col-2">
-                <p-button (click)="removeFallback(i)" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                <p-button (click)="removeFallback(i)" severity="danger" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
               </div>
             </div>
           </div>
