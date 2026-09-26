@@ -1,10 +1,10 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <form [formGroup]="campaignThemeForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
       <div class="card">
         <div class="p-fluid formgrid grid align-content-center">
           <div class="field col-4 m-0">
-            <h5 class="mb-3">Campaign Theme Design</h5>
+            <h5 class="cms-page-title">Campaign Theme Design</h5>
           </div>
           <div class="field col-4">
             <label htmlFor="campaign_id">Select Campaign</label>
@@ -39,8 +39,8 @@
         <div class="card">
           <div class="p-fluid formgrid grid">
             <div class="field col-12 md:col-6">
-              <p-fieldset legend="Theme Design">
-                <!-- <p-fieldset legend="Theme Design"> -->
+              <p-panel header="Theme Design" styleClass="cms-form-section">
+                <!-- <p-panel header="Theme Design" styleClass="cms-form-section"> -->
                 <div class="grid">
                   <div class="field col-6 md:col-6">
                     <div class="grid">
@@ -395,11 +395,11 @@
                     <input pInputText id="theme_powered_by_text" type="text" formControlName="theme_powered_by_text" placeholder="Powered By Text" />
                   </div>
                 </div>
-              </p-fieldset>
+              </p-panel>
             </div>
             <!--  -->
             <div class="field col-12 md:col-6">
-              <p-fieldset legend="Theme Preview">
+              <p-panel header="Theme Preview" styleClass="cms-form-section">
                 <div class="card edit-pencil theme_preview" [ngClass]="'currentTheme'| i18n" data-fieldName ="background_color" [style]="{'background-color':campaignThemeForm.value.theme_page_background_color}">
                   <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
                     <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_logo_title_text" [style]="{'color':campaignThemeForm.value.theme_logo_title_text || 'black'}"></div>
@@ -458,7 +458,7 @@
                               <button type="button" class="customBtn m-3" styleClass="p-button-sm m-3" [style.background-color]="campaignThemeForm.value.theme_exit_button_color || '#df2a2a'">{{campaignThemeForm.value.theme_exit_button_text || 'Exit' | i18n}}</button>
                             }
                           </div>
-                          <p-button [label]="campaignThemeForm.value.theme_resent_otp_text || 'RESEND_OTP' | i18n" class="p-button-link pt-0 mt-2 pb-0" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                          <p-button [label]="campaignThemeForm.value.theme_resent_otp_text || 'RESEND_OTP' | i18n" class="p-button-link pt-0 mt-2 pb-0" icon="pi pi-plus" severity="success"></p-button>
                           <div class="flex flex-column align-items-center m-0 text-sm" [innerHTML]="campaignThemeForm.value.theme_subscribe_button_after_text" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}"></div>
                         </div>
                       }
@@ -469,12 +469,12 @@
                     </div>
                   </div>
                 </div>
-              </p-fieldset>
+              </p-panel>
             </div>
           </div>
           <div class="p-fluid formgrid grid">
             <div class="field col-12 md:col-6 pl-5">
-              <button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+              <div class="cms-sticky-actions"><button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple class="w-6 text-xl " size="small">Submit</button></div>
             </div>
           </div>
         </div>

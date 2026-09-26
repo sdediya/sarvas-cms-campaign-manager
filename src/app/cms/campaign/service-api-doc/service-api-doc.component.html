@@ -1,9 +1,8 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
 	<div class="col-12">
 		<div class="card">
-			<h5>Service API Doc</h5>
-			<p-divider></p-divider>
-			<p-table #dt1 [value]="apiDocs"  [scrollable]="true">
+			<h5 class="cms-page-title">Service API Doc</h5>
+			<p-table styleClass="cms-table-dense" #dt1 [value]="apiDocs"  [scrollable]="true">
 				<ng-template #header>
 					<tr>
 						<th style="min-width: 6rem" >
@@ -20,7 +19,7 @@
 					<tr>
 						<td >
                             {{apiDocs.file_name}}
-							<!-- <p-button *ngIf="write" [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button> -->
+							<!-- <p-button *ngIf="write" [routerLink]="['/campaign/edit']" [queryParams]="{id: campaigns.id}" severity="success" size="small" icon="pi pi-pencil"></p-button> -->
 						</td>
 						<td>
 							<a [href]="apiDocs.file_path" target="_blank"> <i class="pi pi-download"></i></a>

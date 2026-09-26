@@ -1,16 +1,16 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
       @if (!editable) {
-        <h5 class="mb-5">Add Smart Url</h5>
+        <h5 class="cms-page-title">Add Smart Url</h5>
       }
       @if (editable) {
-        <h5 class="mb-5">Edit Smart Url</h5>
+        <h5 class="cms-page-title">Edit Smart Url</h5>
       }
       <form [formGroup]="smartUrlForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid">
           <div class="field col-12 md:col-12">
-            <p-fieldset legend="Smart Url Details">
+            <p-panel header="Smart Url Details" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-3">
                   <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -242,17 +242,13 @@
                   </div>
                 </div>
               </div>
-            </p-fieldset>
+            </p-panel>
           </div>
         </div>
-        <div class="p-fluid formgrid grid">
-          <div class="field col-12 md:col-2">
-            <p-button type="submit" label="Submit" [raised]="true"></p-button>
-          </div>
-          <div class="field col-12 md:col-2">
-            <p-button [routerLink]="['/campaign/smart-url/list']" label="Cancel" severity="danger"></p-button>
-          </div>
-        </div>
+        <div class="cms-sticky-actions">
+      <p-button type="submit" label="Submit" [raised]="true"></p-button>
+      <p-button [routerLink]="['/campaign/smart-url/list']" label="Cancel" severity="danger"></p-button>
+    </div>
       </form>
     </div>
   </div>

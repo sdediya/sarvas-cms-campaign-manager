@@ -1,10 +1,10 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <form [formGroup]="campaignThemeForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
       <div class="card">
         <div class="p-fluid formgrid grid align-content-center">
           <!-- <div class="field col-2 m-0">
-          <h5 class="mb-3">Add Landing Page</h5>
+          <h5 class="cms-page-title">Add Landing Page</h5>
         </div> -->
         <div class="field col-3">
           <label htmlFor="theme_region">Select Region</label>
@@ -233,8 +233,8 @@
       <div class="card">
         <div class="p-fluid formgrid grid">
           <div class="field col-12 md:col-6">
-            <p-fieldset legend="Theme Design">
-              <!-- <p-fieldset legend="Theme Design"> -->
+            <p-panel header="Theme Design" styleClass="cms-form-section">
+              <!-- <p-panel header="Theme Design" styleClass="cms-form-section"> -->
               <div class="grid">
                 <div class="field col-6 md:col-6">
                   <div class="grid">
@@ -428,11 +428,11 @@
                 </div>
               }
             </ng-container>
-          </p-fieldset>
+          </p-panel>
         </div>
         <!--  -->
         <div class="field col-12 md:col-6">
-          <p-fieldset legend="Theme Preview" [style]="{ position: 'relative' }">
+          <p-panel header="Theme Preview" styleClass="cms-form-section" [style]="{ position: 'relative' }">
             <!-- Language dropdown at top-right -->
             <div [style]="{ position: 'absolute', top: '-2.5rem', right: '1rem' }">
               <p-select id="language" [options]="language_list" optionLabel="value"
@@ -550,12 +550,14 @@
                 </div>
               </div>
             </div>
-          </p-fieldset>
+          </p-panel>
         </div>
       </div>
       <div class="p-fluid formgrid grid">
         <div class="field col-12 md:col-6 pl-5">
-          <button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+          <div class="cms-sticky-actions">
+          <button type="submit" [disabled]="!campaignThemeForm.valid" pButton pRipple size="small" label="Submit"></button>
+        </div>
         </div>
       </div>
     </div>

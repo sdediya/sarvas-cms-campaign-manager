@@ -1,32 +1,22 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5>Campaign Configuration List</h5>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <div class="col-3 pl-0">
-          <p-select class="col" [(ngModel)]="filter.conf_type" id="conf_type" [options]="conf_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_type')" placeholder="Configuration Type" optionValue="code"></p-select>
-        </div>
-        <div class="col-3">
-          <p-select class="col" [(ngModel)]="filter.conf_level_type" id="conf_level_type" [options]="conf_level_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_level_type')" placeholder="Configuration Level" optionValue="code"></p-select>
-        </div>
-      </div>
-      <div class="flex">
+      <h5 class="cms-page-title">Campaign Configuration List</h5>
+      <div class="cms-filter-bar">
+          <p-select [(ngModel)]="filter.conf_type" id="conf_type" [options]="conf_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_type')" placeholder="Configuration Type" optionValue="code"></p-select>
+          <p-select [(ngModel)]="filter.conf_level_type" id="conf_level_type" [options]="conf_level_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_level_type')" placeholder="Configuration Level" optionValue="code"></p-select>
         @if (filter.conf_level_type || filter.conf_type) {
-          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
         }
       </div>
-      <p-divider></p-divider>
 
-      <p-table #dt1 [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+      <p-table #dt1 styleClass="cms-table-dense" [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
-            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+          <div class="cms-list-tools">
+            <p-iconfield><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Configuration" class="w-full"/></p-iconfield>
             @if (campaign_confs.length>0) {
-                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
           </div>
         </ng-template>
@@ -91,11 +81,11 @@
             </td>
             <td>
               @if (write && (campaign_confs.type =='drop' || campaign_confs.type =='capping')) {
-                <p-button [routerLink]="['/campaign/edit-configuration']" [queryParams]="{id: campaign_confs.id}" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/campaign/edit-configuration']" [queryParams]="{id: campaign_confs.id}" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil"></p-button>
               }
 
               @if (delete) {
-                <p-button (onClick)="toggleConf(campaign_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                <p-button (onClick)="toggleConf(campaign_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash"></p-button>
               }
             </td>
           </tr>

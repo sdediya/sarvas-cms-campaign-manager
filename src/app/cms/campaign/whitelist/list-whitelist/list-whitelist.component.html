@@ -1,36 +1,28 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
       <div class="m-1 grid justify-content-between">
         <span class="flex">
-          <h5 style="text-wrap: nowrap;">Whitelist Configuration List</h5>
+          <h5 class="cms-page-title" style="text-wrap: nowrap;">Whitelist Configuration List</h5>
         </span>
         @if (write) {
           <p-button [routerLink]="['/campaign/add-whitelist']">Add Whitelist</p-button>
         }
       </div>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid mx-1">
-        <div class="col-3 pl-0">
+      <div class="cms-filter-bar">
           <p-select [(ngModel)]="filter.whitelist_type" id="whitelist_type" [options]="whitelist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'whitelist_type')" placeholder="Whitelist Type" optionValue="code"></p-select>
-        </div>
-        <div class="col-3">
           @if (filter.whitelist_type) {
-            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
           }
-        </div>
       </div>
-      <p-divider></p-divider>
 
-      <p-table #dt1 [value]="whitelist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+      <p-table #dt1 styleClass="cms-table-dense" [value]="whitelist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
-            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+          <div class="cms-list-tools">
+            <p-iconfield><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Mobile or Series" class="w-full"/></p-iconfield>
             @if (whitelist_confs.length > 0) {
-                <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
           </div>
         </ng-template>
@@ -63,7 +55,7 @@
             </td>
             <td>
               @if (delete) {
-                <p-button (onClick)="toggleConf(whitelist_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                <p-button (onClick)="toggleConf(whitelist_confs.id, rowIndex)" severity="danger" size="small" icon="pi pi-trash"></p-button>
               }
             </td>
           </tr>

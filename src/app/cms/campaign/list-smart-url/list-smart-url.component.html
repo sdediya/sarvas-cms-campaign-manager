@@ -1,28 +1,23 @@
-<div class="grid">
+<div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5>Smart Url</h5>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <p-select class="col w-100" [(ngModel)]="telcom_id" id="tel_id" [options]="regions" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
+      <h5 class="cms-page-title">Smart Url</h5>
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="telcom_id" id="tel_id" [options]="regions" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
 
-        <p-select class="col w-100" [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
-        <div class="col-6 w-100">
-          @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
-            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
-          }
-        </div>
+        <p-select [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
+        @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
+          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+        }
       </div>
 
-      <p-divider></p-divider>
-      <p-table #dt1 [value]="campaigns"  [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+      <p-table #dt1 styleClass="cms-table-dense" [value]="campaigns"  [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
-            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
-              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Smart Url" class="w-full"/></p-iconfield>
-            <!-- <button *ngIf="campaigns.length>0" type="button" pButton pRipple  (click)="exportToExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button> -->
+          <div class="cms-list-tools">
+            <p-iconfield>
+              <p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Smart Url" class="w-full"/>
+            </p-iconfield>
         </div>
       </ng-template>
       <ng-template #header>
@@ -42,27 +37,27 @@
           </th>
           <!-- <th pSortableColumn="name"  style="min-width: 20rem">
           <div class="flex justify-content-between align-items-center">
-            Campaign Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+            Campaign Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
           </div>
         </th> -->
         <th pSortableColumn="region"  style="min-width: 12rem">
           <div class="flex justify-content-between align-items-center">
-            Region <p-sort-icon class="mx-4" field="region"></p-sort-icon>
+            Region <p-sortIcon class="mx-4" field="region"></p-sortIcon>
           </div>
         </th>
         <th pSortableColumn="plan" style="min-width: 12rem">
           <div class="flex justify-content-between align-items-center">
-            Plan <p-sort-icon class="mx-4" field="plan"></p-sort-icon>
+            Plan <p-sortIcon class="mx-4" field="plan"></p-sortIcon>
           </div>
         </th>
         <th pSortableColumn="platform" style="min-width: 12rem">
           <div class="flex justify-content-between align-items-center">
-            Platform <p-sort-icon class="mx-4" field="platform"></p-sort-icon>
+            Platform <p-sortIcon class="mx-4" field="platform"></p-sortIcon>
           </div>
         </th>
         <th pSortableColumn="operator" style="min-width: 12rem">
           <div class="flex justify-content-between align-items-center">
-            Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+            Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
           </div>
         </th>
         <th style="min-width: 12rem">
@@ -97,7 +92,7 @@
       <tr>
         <td >
           @if (write) {
-            <p-button [routerLink]="['/campaign/smart-url/edit']" [queryParams]="{id: campaigns.smart_url_uuid}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+            <p-button [routerLink]="['/campaign/smart-url/edit']" [queryParams]="{id: campaigns.smart_url_uuid}" severity="success" size="small" icon="pi pi-pencil"></p-button>
           }
         </td>
         <td class="text-center">
