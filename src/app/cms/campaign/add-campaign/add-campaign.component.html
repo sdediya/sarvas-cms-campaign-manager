@@ -1,741 +1,913 @@
-<div class="grid">
-  <div class="col-12">
-    <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add Campaign</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Campaign</h5>
-      }
-      <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid">
-          <div class="field col-12 md:col-12">
-            <p-fieldset legend="Campaign Details">
-              <div class="grid">
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_region" [options]="campaign_regions" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_region')" formControlName="campaign_region" placeholder="Select Region" optionValue="id"  [readonly]="editable" ></p-select>
-                  @if (submitted && !f['campaign_region'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_region'].hasError('required') ) {
-                        <span class="p-error">
-                          Region is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_telecom_id">Select Operator<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_telecom_id" [options]="telecom_operators" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_telecom_id')" formControlName="campaign_telecom_id" placeholder="Select Operator" optionValue="id" [readonly]="editable"></p-select>
-                  @if (submitted && !f['campaign_telecom_id'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_telecom_id'].hasError('required') ) {
-                        <span class="p-error">
-                          Operator is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_service_id">Select Service<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_service_id" [options]="services" optionLabel="name" (onChange)="dropdownOnChange($event, 'campaign_service_id')" formControlName="campaign_service_id" placeholder="Select Service" optionValue="id" [readonly]="editable"></p-select>
-                  @if (submitted && !f['campaign_service_id'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_service_id'].hasError('required') ) {
-                        <span class="p-error">
-                          Service is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
+<div class="mx-auto max-w-[1200px]">
+  <cms-page-header [title]="editable ? 'Edit campaign' : 'Add campaign'">
+    <div cmsActions class="flex gap-2">
+      <button hlmBtn type="button" variant="outline" (click)="cancel()">Cancel</button>
+      <button hlmBtn type="button" (click)="onSubmit()">Save</button>
+    </div>
+  </cms-page-header>
 
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_plan_id">Select Plan<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_plan_id" [options]="telecom_plans" optionLabel="name" formControlName="campaign_plan_id" placeholder="Select Plan" optionValue="id" (onChange)="dropdownOnChange($event, 'campaign_plan_id')"></p-select>
-                  @if (submitted && !f['campaign_plan_id'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_plan_id'].hasError('required') ) {
-                        <span class="p-error">
-                          Plan is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-3">
-                  <div class="grid">
-                    <div class="col-12 pb-0">
-                      <label>Campaign Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    </div>
-                    <div class="col">
-                      <p-radiobutton formControlName="campaign_type" value="service"  inputId="service"></p-radiobutton>
-                      <label for="service" class="ml-2">Service API</label>
-                    </div>
-                    <div class="col">
-                      <p-radiobutton formControlName="campaign_type" value="wap"  inputId="wap"></p-radiobutton>
-                      <label for="wap" class="ml-2">WAP</label>
-                    </div>
-                    <div class="col-12 pb-0 pt-0 pr-0">
-                      @if (submitted && !f['campaign_type'].valid) {
-                        <div style="display: block; width: 100%;">
-                          @if (f['campaign_type'].hasError('required') ) {
-                            <span class="p-error">
-                              Campaign Type is required
-                            </span>
-                          }
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-                @if (f['campaign_type'].value=='service' || f['campaign_type'].value=='wap') {
-                  <div class="field col-12 md:col-3">
-                    <div class="grid">
-                      <div class="col-12 pb-0">
-                        <label>Billing Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                      </div>
-                      <div class="col">
-                        <p-radiobutton formControlName="campaign_service_options" value="billing"  inputId="billing"></p-radiobutton>
-                        <label for="billing" class="ml-2">Billing</label>
-                      </div>
-                      <div class="col">
-                        <p-radiobutton formControlName="campaign_service_options" value="optin"  inputId="optin"></p-radiobutton>
-                        <label for="optin" class="ml-2">Optin</label>
-                      </div>
-                      <div class="col-12 pb-0 pt-0 pr-0">
-                        @if (submitted && !f['campaign_service_options'].valid) {
-                          <div style="display: block; width: 100%;">
-                            @if (f['campaign_service_options'].hasError('required') ) {
-                              <span class="p-error">
-                                Please select service options
-                              </span>
-                            }
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
-                }
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_flow">Select Campaign Flow<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_flow" [options]="campaign_flows" optionLabel="name" formControlName="campaign_flow" [readonly]="isFlowReadonly" placeholder="Select Campaign Flow" optionValue="code"></p-select>
-                  @if (submitted && !f['campaign_flow'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_flow'].hasError('required') ) {
-                        <span class="p-error">
-                          Campaign Flow is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_owner_id">Select Campaign Owner</label>
-                  <p-select id="campaign_owner_id" [options]="campaign_owners" optionLabel="name" [filter]="true" formControlName="campaign_owner_id" placeholder="Select Campaign Owner" optionValue="id"></p-select>
-                </div>
-              </div>
-            </p-fieldset>
-          </div>
-          @if (f['campaign_type'].value == 'wap') {
-            <div class="field col-12">
-              <p-fieldset legend="Campaign Setting for WAP">
-                <div class="grid">
-                  <div class="field col-12 md:col-4">
-                    <div class="grid">
-                      <div class="col-12 pb-0">
-                        <label>Skip Consent</label>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_c1" value="c1" label="C1" [binary]="true"></p-checkbox>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_c2" value="c2" label="C2" [binary]="true"></p-checkbox>
-                      </div>
-                      <div class="col">
-                        <p-checkbox formControlName="campaign_skip_msisdn" value="skip_msisdn" label="Skip Msisdn" [binary]="true"></p-checkbox>
-                      </div>
-                    </div>
-                  </div>
-                  @if (f['campaign_c1'].value || f['campaign_c2'].value) {
-                    <div class="field col-12 md:col-3">
-                      <label>Skip Time Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                      <p-select id="campaign_skip_time_type" [options]="skip_type" optionLabel="name" formControlName="campaign_skip_type" placeholder="Select Skip Time" optionValue="value"></p-select>
-                      @if (submitted && !f['campaign_skip_type'].valid) {
-                        <div style="display: block; width: 100%;">
-                          @if (f['campaign_skip_type'].hasError('required') ) {
-                            <span class="p-error">
-                              Skip time type is required
-                            </span>
-                          }
-                        </div>
-                      }
-                    </div>
-                  }
-                  @if (f['campaign_c1'].value || f['campaign_c2'].value) {
-                    <div class="field col-12 md:col-6">
-                      <div class="grid">
-                        <div class="field col-12 md:col-6">
-                          <label htmlFor="campaign_dt">Data Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
-                          <input pInputText id="campaign_dt" type="text" formControlName="campaign_dt" placeholder="Data Flow in seconds" />
-                          @if (submitted && !f['campaign_dt'].valid) {
-                            <div style="display: block; width: 100%;">
-                              @if (f['campaign_dt'].hasError('numeric')) {
-                                <span class="p-error">
-                                  Please enter valid DT
-                                </span>
-                              }
-                              @if (f['campaign_dt'].hasError('required')) {
-                                <span class="p-error">
-                                  Please enter Data flow time
-                                </span>
-                              }
-                            </div>
-                          }
-                        </div>
-                        <div class="field col-12 md:col-6" >
-                          <label htmlFor="campaign_wf">Wifi Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
-                          <input pInputText id="campaign_wf" type="text" formControlName="campaign_wf" placeholder="Wifi Flow in seconds" />
-                          @if (submitted && !f['campaign_wf'].valid) {
-                            <div style="display: block; width: 100%;">
-                              @if (f['campaign_wf'].hasError('numeric')) {
-                                <span class="p-error">
-                                  Please enter valid WF
-                                </span>
-                              }
-                              @if (f['campaign_wf'].hasError('required')) {
-                                <span class="p-error">
-                                  Please enter Wifi flow time
-                                </span>
-                              }
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  }
-                </div>
-                @if (f['campaign_c1'].value || f['campaign_c2'].value) {
-                  <div class="grid">
-                    @if (f['campaign_skip_type'].value == 'multiple_times') {
-                      <div class="field card col-12 md:col-6" formArrayName="campaign_skip_times">
-                        <table class="w-100 text-center">
-                          <thead>
-                            <th width="45%">Start Time</th>
-                            <th width="45%">End Time</th>
-                            <th style="width: 15rem; padding: 20px"></th>
-                          </thead>
-                          <tbody>
-                            @for (form of campaignSkipTimes.controls; track form; let last = $last; let first = $first; let index = $index) {
-                              <tr>
-                                <td [formGroupName]="index">
-                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="start_time"></p-datepicker>
-                                  @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
-                                    <div style="display: block; width: 100%;">
-                                      @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required') ) {
-                                        <span class="p-error">
-                                          Start time is required
-                                        </span>
-                                      }
-                                    </div>
-                                  }
-                                </td>
-                                <td [formGroupName]="index">
-                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="end_time"></p-datepicker>
-                                  @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
-                                    <div style="display: block; width: 100%;">
-                                      @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required') ) {
-                                        <span class="p-error">
-                                          end time is required
-                                        </span>
-                                      }
-                                    </div>
-                                  }
-                                </td>
-                                <td class="flex justify-content-start">
-                                  @if (index > 0) {
-                                    <button pButton pRipple type="button" severity="danger" [text]="true" [rounded]="true" (click)="removeTimes(index)"><i class="pi pi-trash"></i></button>
-                                  }
-                                  @if (last) {
-                                    <button pButton pRipple type="button" severity="success" [text]="true" [rounded]="true" (click)="addTimes()"><i class="pi pi-plus"></i></button>
-                                  }
-                                </td>
-                              </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
-                    }
-                  </div>
-                }
-                <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_tpid"> Select Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_tpid" [options]="campaign_redirections" optionLabel="name" formControlName="campaign_tpid" placeholder="Select  Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_tpid'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_tpid'].hasError('required') ) {
-                          <span class="p-error">
-                            Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_capping">Post Capping Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_capping" [options]="post_capping_redirections" optionLabel="name" formControlName="campaign_redirection_capping" placeholder="Select Post Capping Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_capping'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_capping'].hasError('required') ) {
-                          <span class="p-error">
-                            Post capping redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_blocking">On Blocking Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_blocking" [options]="blocking_redirections" optionLabel="name" formControlName="campaign_redirection_blocking" placeholder="Select On Blocking Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_blocking'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_blocking'].hasError('required') ) {
-                          <span class="p-error">
-                            On Blocking Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_404">On 404 Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_404" [options]="not_found_redirection" optionLabel="name" formControlName="campaign_redirection_404" placeholder="Select On Blocking Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_404'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_404'].hasError('required') ) {
-                          <span class="p-error">
-                            On Blocking Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                </div>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label for="campaign_tpid">Redirect URL</label>
-                    <input pInputText id="campaign_tpid" type="text" formControlName="campaign_tpid" placeholder="URL" />
-                  </div>
-                </div>
-                <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_ga_tag"> GA Tag ID </label>
-                    <input pInputText id="campaign_ga_tag" type="text" formControlName="campaign_ga_tag"  placeholder="G-xxxxxxx" />
-                  </div>
-                  @for (event of ga_events; track event) {
-                    <div class="field col-12 md:col-3 flex align-items-center justify-content-center">
-                      <div class="field-checkbox m-0 mt-4">
-                        <p-checkbox name="campaign_ga_events" [value]="event.value"  [formControl]="f['campaign_ga_events']" [inputId]="event.value"></p-checkbox>
-                        <label [for]="event.value">{{ event.name }}</label>
-                      </div>
-                    </div>
-                  }
-                </div>
-                <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="col-12 pb-0">
-                    <label>Is Silent Redirect</label>
-                  </div>
-                  <div class="col">
-                    <p-checkbox formControlName="campaign_is_silent_redirect" value="silent_redirect" label="Silent Redirect" [binary]="true"></p-checkbox>
-                  </div>
-                </div>
-              </p-fieldset>
-            </div>
+  <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()" class="pb-24">
+    <cms-form-section title="Campaign details">
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_region">Region <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_region"
+          class="w-full"
+          formControlName="campaign_region"
+          [disabled]="editable"
+          [itemToString]="regionToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_region')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (region of campaign_regions; track region.id) {
+                <hlm-select-item [value]="region.id">{{ region.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_region'].valid) {
+          @if (f['campaign_region'].hasError('required')) {
+            <span class="text-sm text-destructive">Region is required</span>
           }
-          <div class="field col-12 md:col-12">
-            <p-fieldset legend="Ad Partner">
-              <div class="grid">
-                <div class="field col-12 md:col-4">
-                  <label htmlFor="campaign_platform_id">Select Platform<span label styleclass="label-required" class="text-red-500">*</span></label>
-                  <p-select id="campaign_platform_id" [options]="advertising_platforms" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_platform_id')" formControlName="campaign_platform_id" placeholder="Select Platform" optionValue="id"></p-select>
-                  @if (submitted && !f['campaign_platform_id'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_platform_id'].hasError('required') ) {
-                        <span class="p-error">
-                          Platform is required
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-4">
-                  <label htmlFor="campaign_callback_url">Select Platform S2S URL<span label styleclass="label-required" class="text-red-500">*</span></label> &nbsp; @if (f['campaign_callback_url'].valid) {
-                  <i class="pi pi-clone cursor-pointer" title="Copy S2S" (click)="copyS2Surl()"></i>
-                }
-                <p-select id="campaign_callback_url" [options]="platform_callback_urls" optionLabel="url" formControlName="campaign_callback_url" placeholder="Select Platform S2S URL" (onChange)="dropdownOnChange($event, 'campaign_callback_url')" optionValue="url"></p-select>
-                @if (submitted && !f['campaign_callback_url'].valid) {
-                  <div style="display: block; width: 100%;">
-                    @if (f['campaign_callback_url'].hasError('required') ) {
-                      <span class="p-error">
-                        Platform Callback URL is required
-                      </span>
-                    }
-                  </div>
-                }
-              </div>
-              <div class="field col-12 md:col-2">
-                <label htmlFor="campaign_cost_per_aquisition">CPA<span label styleclass="label-required" class="text-red-500">*</span></label>
-                <div class="p-inputgroup">
-                  <span class="p-inputgroup-addon">$</span>
-                  <input pInputText id="campaign_cost_per_aquisition" type="text" formControlName="campaign_cost_per_aquisition" appTwoDigitDecimalDirective placeholder="CPA" (change)="onChangeCpaCpc($event, 'campaign_cost_per_aquisition')" />
-                </div>
-                @if (submitted && !f['campaign_cost_per_aquisition'].valid) {
-                  <div style="display: block; width: 100%;">
-                    @if (f['campaign_cost_per_aquisition'].hasError('required') ) {
-                      <span class="p-error">
-                        CPA is required
-                      </span>
-                    }
-                    @if (f['campaign_cost_per_aquisition'].hasError('numeric')) {
-                      <span class="p-error">
-                        Please enter valid CPA
-                      </span>
-                    }
-                    @if (f['campaign_cost_per_aquisition'].hasError('min') || f['campaign_cost_per_aquisition'].hasError('max')) {
-                      <span class="p-error">
-                        Please enter CPA between range of 0-100
-                      </span>
-                    }
-                  </div>
-                }
-              </div>
-              <div class="field col-12 md:col-2">
-                <label htmlFor="campaign_cost_per_click">CPC<span label styleclass="label-required" class="text-red-500">*</span></label>
-                <div class="p-inputgroup">
-                  <span class="p-inputgroup-addon">$</span>
-                  <input pInputText id="campaign_cost_per_click" type="text" formControlName="campaign_cost_per_click" appTwoDigitDecimalDirective placeholder="CPC" (change)="onChangeCpaCpc($event, 'campaign_cost_per_click')"/>
-                </div>
-                @if (submitted && !f['campaign_cost_per_click'].valid) {
-                  <div style="display: block; width: 100%;">
-                    @if (f['campaign_cost_per_click'].hasError('required') ) {
-                      <span class="p-error">
-                        CPC is required
-                      </span>
-                    }
-                    @if (f['campaign_cost_per_click'].hasError('numeric')) {
-                      <span class="p-error">
-                        Please enter valid CPC
-                      </span>
-                    }
-                    @if (f['campaign_cost_per_click'].hasError('min') || f['campaign_cost_per_click'].hasError('max')) {
-                      <span class="p-error">
-                        Please enter CPC between range of 0-100
-                      </span>
-                    }
-                  </div>
-                }
-              </div>
-              <div class="field col-3 align-item-center m-0" style="display: flex; align-items: center;">
-                <label class="m-0">Is Google Campaign</label>
-                <p-toggleswitch formControlName="campaign_is_google_campaign" class="ml-5"></p-toggleswitch>
-              </div>
-              <div class="field col-12 md:col-3 align-item-center m-0" style="display: flex; align-items: center;">
-                <label for="campaign_exclude_cost" >Exclude cost (Consider cost from Google Sheet)</label>
-                <p-toggleswitch formControlName="campaign_exclude_cost" class="ml-5"></p-toggleswitch>
-              </div>
-              <div class="field col-12 md:col-3">
-                <label for="campaign_tpid">Google Campaign ID</label>
-                <input pInputText id="campaign_google_campaign_id" type="text" formControlName="campaign_google_campaign_id" placeholder="Google Campaign ID" />
-              </div>
-              <div class="field col-12">
-                <p>
-                  <b>Campaign S2S URL:</b> {{f['campaign_callback_url'].value}}<br>
-                  <b>Campaign S2S URL method:</b> {{f['campaign_callback_method'].value}}
-                </p>
-              </div>
-            </div>
-          </p-fieldset>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_telecom_id">Operator <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_telecom_id"
+          class="w-full"
+          formControlName="campaign_telecom_id"
+          [disabled]="editable"
+          [itemToString]="telecomToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_telecom_id')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (op of telecom_operators; track op.id) {
+                <hlm-select-item [value]="op.id">{{ op.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_telecom_id'].valid) {
+          @if (f['campaign_telecom_id'].hasError('required')) {
+            <span class="text-sm text-destructive">Operator is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_service_id">Service <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_service_id"
+          class="w-full"
+          formControlName="campaign_service_id"
+          [disabled]="editable"
+          [itemToString]="serviceToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_service_id')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (svc of services; track svc.id) {
+                <hlm-select-item [value]="svc.id">{{ svc.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_service_id'].valid) {
+          @if (f['campaign_service_id'].hasError('required')) {
+            <span class="text-sm text-destructive">Service is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_plan_id">Plan <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_plan_id"
+          class="w-full"
+          formControlName="campaign_plan_id"
+          [itemToString]="planToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_plan_id')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (plan of telecom_plans; track plan.id) {
+                <hlm-select-item [value]="plan.id">{{ plan.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_plan_id'].valid) {
+          @if (f['campaign_plan_id'].hasError('required')) {
+            <span class="text-sm text-destructive">Plan is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel>Campaign type <span class="text-destructive">*</span></label>
+        <div class="flex flex-wrap gap-4 pt-1">
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input type="radio" formControlName="campaign_type" value="service" id="service" class="accent-primary" />
+            Service API
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input type="radio" formControlName="campaign_type" value="wap" id="wap" class="accent-primary" />
+            WAP
+          </label>
         </div>
-        <div class="field col-12 md:col-12" style="display: none" >
-          <p-fieldset legend="Reports Alert">
-            <div class="grid">
-              <div class="field col-5 align-item-center m-0" style="display: flex; align-items: center;">
-                <label class="m-0">Enable Report alerts</label>
-                <p-toggleswitch formControlName="campaign_report_alerts" class="ml-5"></p-toggleswitch>
-              </div>
-              @if (f['campaign_report_alerts'].value) {
-                <div class="field col-7 m-0">
-                  <div class="pb-0" style="display: flex; align-items: center;">
-                    <label>Select Reports Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <!-- <div class="field col-12 md:col-3 flex align-items-center justify-content-center m-0" > -->
-                    @for (event of campaign_report_type; track event) {
-                      <div class="field-checkbox m-0 ml-4">
-                        <p-checkbox name="campaign_report_type" [value]="event.value"  [formControl]="f['campaign_report_type']" [inputId]="event.value" (onChange)="valueCheck()" ></p-checkbox>
-                        <label [for]="event.value">{{ event.name }}</label>
+        @if (submitted && !f['campaign_type'].valid) {
+          @if (f['campaign_type'].hasError('required')) {
+            <span class="text-sm text-destructive">Campaign Type is required</span>
+          }
+        }
+      </div>
+
+      @if (f['campaign_type'].value == 'service' || f['campaign_type'].value == 'wap') {
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel>Billing type <span class="text-destructive">*</span></label>
+          <div class="flex flex-wrap gap-4 pt-1">
+            <label class="inline-flex items-center gap-2 text-sm">
+              <input type="radio" formControlName="campaign_service_options" value="billing" id="billing" class="accent-primary" />
+              Billing
+            </label>
+            <label class="inline-flex items-center gap-2 text-sm">
+              <input type="radio" formControlName="campaign_service_options" value="optin" id="optin" class="accent-primary" />
+              Optin
+            </label>
+          </div>
+          @if (submitted && !f['campaign_service_options'].valid) {
+            @if (f['campaign_service_options'].hasError('required')) {
+              <span class="text-sm text-destructive">Please select service options</span>
+            }
+          }
+        </div>
+      }
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_flow">Campaign flow <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_flow"
+          class="w-full"
+          formControlName="campaign_flow"
+          [disabled]="isFlowReadonly"
+          [itemToString]="flowToString"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (flow of campaign_flows; track flow.code) {
+                <hlm-select-item [value]="flow.code">{{ flow.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_flow'].valid) {
+          @if (f['campaign_flow'].hasError('required')) {
+            <span class="text-sm text-destructive">Campaign Flow is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_owner_id">Campaign owner</label>
+        <hlm-select
+          id="campaign_owner_id"
+          class="w-full"
+          formControlName="campaign_owner_id"
+          [itemToString]="ownerToString"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (owner of campaign_owners; track owner.id) {
+                <hlm-select-item [value]="owner.id">{{ owner.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+      </div>
+    </cms-form-section>
+
+    @if (f['campaign_type'].value == 'wap') {
+      <cms-form-section title="Campaign setting for WAP">
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel>Skip consent</label>
+          <div class="flex flex-wrap gap-4 pt-1">
+            <label class="inline-flex items-center gap-2 text-sm">
+              <hlm-checkbox formControlName="campaign_c1" inputId="campaign_c1" />
+              C1
+            </label>
+            <label class="inline-flex items-center gap-2 text-sm">
+              <hlm-checkbox formControlName="campaign_c2" inputId="campaign_c2" />
+              C2
+            </label>
+            <label class="inline-flex items-center gap-2 text-sm">
+              <hlm-checkbox formControlName="campaign_skip_msisdn" inputId="campaign_skip_msisdn" />
+              Skip Msisdn
+            </label>
+          </div>
+        </div>
+
+        @if (f['campaign_c1'].value || f['campaign_c2'].value) {
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="campaign_skip_time_type">Skip time type <span class="text-destructive">*</span></label>
+            <hlm-select
+              id="campaign_skip_time_type"
+              class="w-full"
+              formControlName="campaign_skip_type"
+              [itemToString]="skipTypeToString"
+            >
+              <hlm-select-trigger class="w-full">
+                <hlm-select-value placeholder="Select…" />
+              </hlm-select-trigger>
+              <hlm-select-content *hlmSelectPortal>
+                <hlm-select-group>
+                  @for (st of skip_type; track st.value) {
+                    <hlm-select-item [value]="st.value">{{ st.name }}</hlm-select-item>
+                  }
+                </hlm-select-group>
+              </hlm-select-content>
+            </hlm-select>
+            @if (submitted && !f['campaign_skip_type'].valid) {
+              @if (f['campaign_skip_type'].hasError('required')) {
+                <span class="text-sm text-destructive">Skip time type is required</span>
+              }
+            }
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="campaign_dt">Data flow (seconds) <span class="text-destructive">*</span></label>
+            <input hlmInput id="campaign_dt" type="text" class="w-full" formControlName="campaign_dt" placeholder="e.g. 30" />
+            @if (submitted && !f['campaign_dt'].valid) {
+              @if (f['campaign_dt'].hasError('numeric')) {
+                <span class="text-sm text-destructive">Please enter valid DT</span>
+              }
+              @if (f['campaign_dt'].hasError('required')) {
+                <span class="text-sm text-destructive">Please enter Data flow time</span>
+              }
+            }
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="campaign_wf">Wifi flow (seconds) <span class="text-destructive">*</span></label>
+            <input hlmInput id="campaign_wf" type="text" class="w-full" formControlName="campaign_wf" placeholder="e.g. 30" />
+            @if (submitted && !f['campaign_wf'].valid) {
+              @if (f['campaign_wf'].hasError('numeric')) {
+                <span class="text-sm text-destructive">Please enter valid WF</span>
+              }
+              @if (f['campaign_wf'].hasError('required')) {
+                <span class="text-sm text-destructive">Please enter Wifi flow time</span>
+              }
+            }
+          </div>
+        }
+
+        @if ((f['campaign_c1'].value || f['campaign_c2'].value) && f['campaign_skip_type'].value == 'multiple_times') {
+          <div class="col-span-full overflow-x-auto" formArrayName="campaign_skip_times">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-border text-left">
+                  <th class="px-2 py-2 font-medium">Start time</th>
+                  <th class="px-2 py-2 font-medium">End time</th>
+                  <th class="px-2 py-2 font-medium w-24"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (form of campaignSkipTimes.controls; track form; let last = $last; let index = $index) {
+                  <tr class="border-b border-border/60" [formGroupName]="index">
+                    <td class="px-2 py-2 align-top">
+                      <input hlmInput type="time" class="w-full" formControlName="start_time" placeholder="hh:mm" />
+                      @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
+                        @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required')) {
+                          <span class="text-sm text-destructive">Start time is required</span>
+                        }
+                      }
+                    </td>
+                    <td class="px-2 py-2 align-top">
+                      <input hlmInput type="time" class="w-full" formControlName="end_time" placeholder="hh:mm" />
+                      @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
+                        @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required')) {
+                          <span class="text-sm text-destructive">End time is required</span>
+                        }
+                      }
+                    </td>
+                    <td class="px-2 py-2 align-top">
+                      <div class="flex gap-1">
+                        @if (index > 0) {
+                          <button hlmBtn type="button" variant="ghost" size="icon-sm" (click)="removeTimes(index)" aria-label="Remove time">
+                            <ng-icon name="lucideTrash2" size="1rem" />
+                          </button>
+                        }
+                        @if (last) {
+                          <button hlmBtn type="button" variant="ghost" size="icon-sm" (click)="addTimes()" aria-label="Add time">
+                            <ng-icon name="lucidePlus" size="1rem" />
+                          </button>
+                        }
                       </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+
+        <div class="col-span-full my-1 border-t border-border"></div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_tpid">Redirection <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="campaign_tpid"
+            class="w-full"
+            formControlName="campaign_tpid"
+            [itemToString]="redirectionToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select…" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (r of campaign_redirections; track r.code) {
+                  <hlm-select-item [value]="r.code">{{ r.name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && !f['campaign_tpid'].valid) {
+            @if (f['campaign_tpid'].hasError('required')) {
+              <span class="text-sm text-destructive">Redirection is required</span>
+            }
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_redirection_capping">Post capping redirection <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="campaign_redirection_capping"
+            class="w-full"
+            formControlName="campaign_redirection_capping"
+            [itemToString]="postCappingToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select…" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (r of post_capping_redirections; track r.code) {
+                  <hlm-select-item [value]="r.code">{{ r.name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && !f['campaign_redirection_capping'].valid) {
+            @if (f['campaign_redirection_capping'].hasError('required')) {
+              <span class="text-sm text-destructive">Post capping redirection is required</span>
+            }
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_redirection_blocking">On blocking redirection <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="campaign_redirection_blocking"
+            class="w-full"
+            formControlName="campaign_redirection_blocking"
+            [itemToString]="blockingToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select…" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (r of blocking_redirections; track r.code) {
+                  <hlm-select-item [value]="r.code">{{ r.name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && !f['campaign_redirection_blocking'].valid) {
+            @if (f['campaign_redirection_blocking'].hasError('required')) {
+              <span class="text-sm text-destructive">On Blocking Redirection is required</span>
+            }
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_redirection_404">On 404 redirection <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="campaign_redirection_404"
+            class="w-full"
+            formControlName="campaign_redirection_404"
+            [itemToString]="notFoundToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select…" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (r of not_found_redirection; track r.code) {
+                  <hlm-select-item [value]="r.code">{{ r.name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && !f['campaign_redirection_404'].valid) {
+            @if (f['campaign_redirection_404'].hasError('required')) {
+              <span class="text-sm text-destructive">On Blocking Redirection is required</span>
+            }
+          }
+        </div>
+
+        <div class="flex flex-col gap-1.5 md:col-span-2 lg:col-span-2">
+          <label hlmLabel for="campaign_redirect_url">Redirect URL</label>
+          <input hlmInput id="campaign_redirect_url" type="text" class="w-full" formControlName="campaign_tpid" placeholder="URL" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_ga_tag">GA tag ID</label>
+          <input hlmInput id="campaign_ga_tag" type="text" class="w-full" formControlName="campaign_ga_tag" placeholder="G-xxxxxxx" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel>Silent redirect</label>
+          <div class="pt-1">
+            <label class="inline-flex items-center gap-2 text-sm">
+              <hlm-checkbox formControlName="campaign_is_silent_redirect" inputId="campaign_is_silent_redirect" />
+              Silent redirect
+            </label>
+          </div>
+        </div>
+
+        @for (event of ga_events; track event.value) {
+          <div class="flex flex-col gap-1.5">
+            <label class="inline-flex items-center gap-2 text-sm pt-6">
+              <hlm-checkbox
+                [inputId]="event.value"
+                [checked]="isArrayValueChecked('campaign_ga_events', event.value)"
+                (checkedChange)="toggleArrayValue('campaign_ga_events', event.value, $event)"
+              />
+              {{ event.name }}
+            </label>
+          </div>
+        }
+      </cms-form-section>
+    }
+
+    <cms-form-section title="Ad partner">
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_platform_id">Platform <span class="text-destructive">*</span></label>
+        <hlm-select
+          id="campaign_platform_id"
+          class="w-full"
+          formControlName="campaign_platform_id"
+          [itemToString]="platformToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_platform_id')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (p of advertising_platforms; track p.id) {
+                <hlm-select-item [value]="p.id">{{ p.name }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_platform_id'].valid) {
+          @if (f['campaign_platform_id'].hasError('required')) {
+            <span class="text-sm text-destructive">Platform is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_callback_url" class="inline-flex items-center gap-1">
+          Platform S2S URL <span class="text-destructive">*</span>
+          @if (f['campaign_callback_url'].valid) {
+            <button type="button" class="inline-flex text-muted-foreground hover:text-foreground" title="Copy S2S" (click)="copyS2Surl()">
+              <ng-icon name="lucideCopy" size="0.9rem" />
+            </button>
+          }
+        </label>
+        <hlm-select
+          id="campaign_callback_url"
+          class="w-full"
+          formControlName="campaign_callback_url"
+          [itemToString]="callbackUrlToString"
+          (valueChange)="dropdownOnChange({ value: $event }, 'campaign_callback_url')"
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Select…" />
+          </hlm-select-trigger>
+          <hlm-select-content *hlmSelectPortal>
+            <hlm-select-group>
+              @for (u of platform_callback_urls; track u.url) {
+                <hlm-select-item [value]="u.url">{{ u.url }}</hlm-select-item>
+              }
+            </hlm-select-group>
+          </hlm-select-content>
+        </hlm-select>
+        @if (submitted && !f['campaign_callback_url'].valid) {
+          @if (f['campaign_callback_url'].hasError('required')) {
+            <span class="text-sm text-destructive">Platform Callback URL is required</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_cost_per_aquisition">CPA <span class="text-destructive">*</span></label>
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-sm text-muted-foreground">$</span>
+          <input
+            hlmInput
+            id="campaign_cost_per_aquisition"
+            type="text"
+            class="w-full ps-7"
+            formControlName="campaign_cost_per_aquisition"
+            appTwoDigitDecimalDirective
+            placeholder="0.00"
+            (change)="onChangeCpaCpc($event, 'campaign_cost_per_aquisition')"
+          />
+        </div>
+        @if (submitted && !f['campaign_cost_per_aquisition'].valid) {
+          @if (f['campaign_cost_per_aquisition'].hasError('required')) {
+            <span class="text-sm text-destructive">CPA is required</span>
+          }
+          @if (f['campaign_cost_per_aquisition'].hasError('numeric')) {
+            <span class="text-sm text-destructive">Please enter valid CPA</span>
+          }
+          @if (f['campaign_cost_per_aquisition'].hasError('min') || f['campaign_cost_per_aquisition'].hasError('max')) {
+            <span class="text-sm text-destructive">Please enter CPA between range of 0-100</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_cost_per_click">CPC <span class="text-destructive">*</span></label>
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3 text-sm text-muted-foreground">$</span>
+          <input
+            hlmInput
+            id="campaign_cost_per_click"
+            type="text"
+            class="w-full ps-7"
+            formControlName="campaign_cost_per_click"
+            appTwoDigitDecimalDirective
+            placeholder="0.00"
+            (change)="onChangeCpaCpc($event, 'campaign_cost_per_click')"
+          />
+        </div>
+        @if (submitted && !f['campaign_cost_per_click'].valid) {
+          @if (f['campaign_cost_per_click'].hasError('required')) {
+            <span class="text-sm text-destructive">CPC is required</span>
+          }
+          @if (f['campaign_cost_per_click'].hasError('numeric')) {
+            <span class="text-sm text-destructive">Please enter valid CPC</span>
+          }
+          @if (f['campaign_cost_per_click'].hasError('min') || f['campaign_cost_per_click'].hasError('max')) {
+            <span class="text-sm text-destructive">Please enter CPC between range of 0-100</span>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label hlmLabel for="campaign_is_google_campaign">Google campaign</label>
+        <hlm-switch class="mt-1" formControlName="campaign_is_google_campaign" inputId="campaign_is_google_campaign" />
+      </div>
+
+      @if (f['campaign_is_google_campaign'].value) {
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_exclude_cost">Exclude cost (from Google Sheet)</label>
+          <hlm-switch class="mt-1" formControlName="campaign_exclude_cost" inputId="campaign_exclude_cost" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_google_campaign_id">Google campaign ID</label>
+          <input
+            hlmInput
+            id="campaign_google_campaign_id"
+            type="text"
+            class="w-full"
+            formControlName="campaign_google_campaign_id"
+            placeholder="e.g. 123456789"
+          />
+        </div>
+      }
+
+      <div class="col-span-full rounded-md border border-border bg-muted/40 px-3 py-2 text-sm">
+        <strong>Campaign S2S URL:</strong> {{ f['campaign_callback_url'].value }}<br />
+        <strong>Method:</strong> {{ f['campaign_callback_method'].value }}
+      </div>
+    </cms-form-section>
+
+    <div class="hidden">
+      <cms-form-section title="Reports alert">
+        <div class="flex flex-col gap-1.5">
+          <label hlmLabel for="campaign_report_alerts">Enable report alerts</label>
+          <hlm-switch class="mt-1" formControlName="campaign_report_alerts" inputId="campaign_report_alerts" />
+        </div>
+        @if (f['campaign_report_alerts'].value) {
+          <div class="col-span-full flex flex-col gap-1.5">
+            <label hlmLabel>Reports type <span class="text-destructive">*</span></label>
+            <div class="flex flex-wrap gap-4">
+              @for (event of campaign_report_type; track event.value) {
+                <label class="inline-flex items-center gap-2 text-sm">
+                  <hlm-checkbox
+                    [inputId]="event.value"
+                    [checked]="isArrayValueChecked('campaign_report_type', event.value)"
+                    (checkedChange)="toggleArrayValue('campaign_report_type', event.value, $event)"
+                  />
+                  {{ event.name }}
+                </label>
+              }
+            </div>
+            @if (submitted && !f['campaign_report_type'].valid) {
+              @if (f['campaign_report_type'].hasError('required')) {
+                <span class="text-sm text-destructive">Select atleast 1</span>
+              }
+            }
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="campaign_report_send_to">To <span class="text-destructive">*</span></label>
+            <textarea
+              id="campaign_report_send_to"
+              hlmTextarea
+              rows="5"
+              formControlName="campaign_report_send_to"
+              placeholder="Comma-separated emails"
+            ></textarea>
+            @if (submitted && !f['campaign_report_send_to'].valid) {
+              @if (f['campaign_report_send_to'].hasError('required')) {
+                <span class="text-sm text-destructive">Insert emails plz</span>
+              }
+            }
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="campaign_report_send_CC">CC <span class="text-destructive">*</span></label>
+            <textarea
+              id="campaign_report_send_CC"
+              hlmTextarea
+              rows="5"
+              formControlName="campaign_report_send_CC"
+              placeholder="Comma-separated emails"
+            ></textarea>
+            @if (submitted && !f['campaign_report_send_CC'].valid) {
+              @if (f['campaign_report_send_CC'].hasError('required')) {
+                <span class="text-sm text-destructive">Insert emails plz</span>
+              }
+            }
+          </div>
+        }
+      </cms-form-section>
+    </div>
+
+    <cms-form-section title="Campaign configuration">
+      <div class="col-span-full overflow-x-auto" formArrayName="CampaignConfigues">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-border text-left">
+              <th class="px-2 py-2 font-medium w-10">#</th>
+              <th class="px-2 py-2 font-medium">Configuration type</th>
+              <th class="px-2 py-2 font-medium">Configuration level</th>
+              <th class="px-2 py-2 font-medium">Configuration value</th>
+              <th class="px-2 py-2 font-medium">Capping on</th>
+              <th class="px-2 py-2 font-medium w-24">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (control of CampaignConfigues.controls; track control; let i = $index) {
+              <tr class="border-b border-border/60" [formGroupName]="i">
+                <td class="px-2 py-2 text-center align-top">{{ i + 1 }}</td>
+                <td class="px-2 py-2 align-top">
+                  <hlm-select class="w-full" formControlName="conf_type" [itemToString]="confTypeToString">
+                    <hlm-select-trigger class="w-full">
+                      <hlm-select-value placeholder="Type" />
+                    </hlm-select-trigger>
+                    <hlm-select-content *hlmSelectPortal>
+                      <hlm-select-group>
+                        @for (t of conf_types; track t.code) {
+                          <hlm-select-item [value]="t.code">{{ t.name }}</hlm-select-item>
+                        }
+                      </hlm-select-group>
+                    </hlm-select-content>
+                  </hlm-select>
+                  @if (submitted && f['CampaignConfigues'].controls[i].hasError('required') && f['CampaignConfigues'].controls[i].controls['conf_type'].value === '') {
+                    <span class="text-sm text-destructive">Please select configuration type</span>
+                  }
+                  @if (f['CampaignConfigues'].controls[i].hasError('duplicate')) {
+                    <span class="text-sm text-destructive">Configuration type already exist !</span>
+                  }
+                  @if (f['CampaignConfigues'].controls[i].hasError('exist')) {
+                    <span class="text-sm text-destructive">Configuration type duplicate entry !</span>
+                  }
+                </td>
+                <td class="px-2 py-2 align-top">
+                  <hlm-select class="w-full" formControlName="conf_level_type" [itemToString]="confLevelToString">
+                    <hlm-select-trigger class="w-full">
+                      <hlm-select-value placeholder="Level" />
+                    </hlm-select-trigger>
+                    <hlm-select-content *hlmSelectPortal>
+                      <hlm-select-group>
+                        @for (t of conf_level_types; track t.code) {
+                          <hlm-select-item [value]="t.code">{{ t.name }}</hlm-select-item>
+                        }
+                      </hlm-select-group>
+                    </hlm-select-content>
+                  </hlm-select>
+                  @if (submitted && f['CampaignConfigues'].controls[i].hasError('required') && f['CampaignConfigues'].controls[i].controls['conf_level_type'].value === '') {
+                    <span class="text-sm text-destructive">Please select configuration level</span>
+                  }
+                  @if (f['CampaignConfigues'].controls[i].hasError('duplicate')) {
+                    <span class="text-sm text-destructive">Configuration level already exist !</span>
+                  }
+                  @if (f['CampaignConfigues'].controls[i].hasError('exist')) {
+                    <span class="text-sm text-destructive">Configuration level duplicate entry !</span>
+                  }
+                </td>
+                <td class="px-2 py-2 align-top">
+                  @if (f['CampaignConfigues'].controls[i].controls['conf_type'].value !== 'blocking') {
+                    <input hlmInput type="text" class="w-full" formControlName="conf_entity_value" placeholder="Value" />
+                    @if (submitted && f['CampaignConfigues'].controls[i].hasError('required') && f['CampaignConfigues'].controls[i].controls['conf_entity_value'].value === '') {
+                      <span class="text-sm text-destructive">Configuration value is required</span>
                     }
-                  <!-- </div> -->
-                </div>
-                @if (submitted && !f['campaign_report_type'].valid) {
-                  <div style="display: block; width: 100%;">
-                    @if (f['campaign_report_type'].hasError('required') ) {
-                      <span class="p-error">
-                        Select atleast 1
-                      </span>
+                    @if (f['CampaignConfigues'].controls[i].controls['conf_entity_value'].hasError('numeric')) {
+                      <span class="text-sm text-destructive">Please enter valid value</span>
+                    }
+                  }
+                </td>
+                <td class="px-2 py-2 align-top">
+                  <hlm-select class="w-full" formControlName="conf_is_optin_capping" [itemToString]="confCappingToString">
+                    <hlm-select-trigger class="w-full">
+                      <hlm-select-value placeholder="Capping" />
+                    </hlm-select-trigger>
+                    <hlm-select-content *hlmSelectPortal>
+                      <hlm-select-group>
+                        @for (t of conf_is_optin_capping; track t.code) {
+                          <hlm-select-item [value]="t.code">{{ t.name }}</hlm-select-item>
+                        }
+                      </hlm-select-group>
+                    </hlm-select-content>
+                  </hlm-select>
+                </td>
+                <td class="px-2 py-2 align-top">
+                  <div class="flex gap-1">
+                    @if (i > 0) {
+                      <button hlmBtn type="button" variant="ghost" size="icon-sm" (click)="removeCampaignConfigue(i)" aria-label="Remove configuration">
+                        <ng-icon name="lucideTrash2" size="1rem" />
+                      </button>
+                    }
+                    @if (i == CampaignConfigues.controls.length - 1) {
+                      <button hlmBtn type="button" variant="ghost" size="icon-sm" (click)="addCampaignConfigue()" aria-label="Add configuration">
+                        <ng-icon name="lucidePlus" size="1rem" />
+                      </button>
                     }
                   </div>
-                }
-              </div>
+                </td>
+              </tr>
             }
-            @if (f['campaign_report_alerts'].value) {
-              <div class="col-12 m-0" style="display:flex;">
-                <div class="field col-12 md:col-6 m-0 p-0 pr-3">
-                  <label htmlFor="campaign_report_send_to">To<span label styleclass="label-required" class="text-red-500">*</span> </label>
-                  <textarea id="campaign_report_send_to" pTextarea placeholder="Please enter emails with comma separate" class="p-inputtext" rows="5" formControlName="campaign_report_send_to"></textarea>
-                  @if (submitted && !f['campaign_report_send_to'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_report_send_to'].hasError('required') ) {
-                        <span class="p-error">
-                          Insert emails plz
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-                <div class="field col-12 md:col-6 m-0 p-0 pl-3">
-                  <label htmlFor="campaign_report_send_CC">CC<span label styleclass="label-required" class="text-red-500">*</span> </label>
-                  <textarea id="campaign_report_send_CC" pTextarea placeholder="Please enter emails with comma separate" class="p-inputtext" rows="5"  formControlName="campaign_report_send_CC"></textarea>
-                  @if (submitted && !f['campaign_report_send_CC'].valid) {
-                    <div style="display: block; width: 100%;">
-                      @if (f['campaign_report_send_CC'].hasError('required') ) {
-                        <span class="p-error">
-                          Insert emails plz
-                        </span>
-                      }
-                    </div>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-        </p-fieldset>
+          </tbody>
+        </table>
       </div>
-      <div class="field col-12 md:col-12" >
-        <p-fieldset legend="Campaign Configuration">
-          <div class="field" formArrayName="CampaignConfigues">
-            <p-table tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"  dataKey="idd" [value]="CampaignConfigues.controls" id="addPlatform">
-              <ng-template #header>
-                <tr>
-                  <th style="width: 5%">#</th>
-                  <th style="width: 25%">Configuration Type</th>
-                  <th style="width: 25%">Configuration Level</th>
-                  <th style="width: 25%">Configuration Value</th>
-                  <th style="width: 25%">Capping On</th>
-                  <th style="width: 15%;">Options</th>
-                </tr>
-              </ng-template>
-              <ng-template #body let-control  let-i="rowIndex" let-first="first">
-                <tr [formGroupName]="i">
-                  <td style = "text-align: center;">{{i+1}}</td>
-                  <td style="width: 14rem">
-                    <div class="field m-0">
-                      <p-select [options]="conf_types" optionLabel="name" formControlName="conf_type" placeholder="Configuration Type" optionValue="code"></p-select>
-                      <div>
-                        @if (submitted &&f['CampaignConfigues'].controls[i].hasError('required') && (f['CampaignConfigues'].controls[i].controls['conf_type'].value==='')) {
-                          <span class="p-error">
-                            Please select configuration type
-                          </span>
-                        }
-                        @if (f['CampaignConfigues'].controls[i].hasError('duplicate')) {
-                          <span class="p-error">
-                            Configuration type already exist !
-                          </span>
-                        }
-                        @if (f['CampaignConfigues'].controls[i].hasError('exist')) {
-                          <span class="p-error">
-                            Configuration type duplicate entry !
-                          </span>
-                        }
-                      </div>
 
-                    </div>
-                  </td>
-                  <td style="width: 14rem">
-                    <div class="field m-0">
-                      <p-select [options]="conf_level_types" optionLabel="name" formControlName="conf_level_type" placeholder="Configuration Level" optionValue="code"></p-select>
-                      <div>
-                        @if (submitted && f['CampaignConfigues'].controls[i].hasError('required') && (f['CampaignConfigues'].controls[i].controls['conf_level_type'].value==='')) {
-                          <span class="p-error">
-                            Please select configuration level
-                          </span>
-                        }
-                        @if (f['CampaignConfigues'].controls[i].hasError('duplicate')) {
-                          <span class="p-error">
-                            Configuration level already exist !
-                          </span>
-                        }
-                        @if (f['CampaignConfigues'].controls[i].hasError('exist')) {
-                          <span class="p-error">
-                            Configuration level duplicate entry !
-                          </span>
-                        }
-                      </div>
-
-                    </div>
-                  </td>
-                  <td style="width: 10rem">
-                    @if (f['CampaignConfigues'].controls[i].controls['conf_type'].value!=='blocking') {
-                      <div class="field m-0">
-                        <input pInputText type="text" formControlName="conf_entity_value" placeholder="Configuration Value"  />
-                        <div >
-                          @if (submitted && f['CampaignConfigues'].controls[i].hasError('required') && (f['CampaignConfigues'].controls[i].controls['conf_entity_value'].value==='')) {
-                            <span class="p-error">
-                              Configuration value is required
-                            </span>
-                          }
-                          @if (f['CampaignConfigues'].controls[i].controls['conf_entity_value'].hasError('numeric')) {
-                            <span class="p-error">
-                              Please enter valid value
-                            </span>
-                          }
-                        </div>
-                      </div>
-                    }
-                  </td>
-                  <td style="width: 14rem">
-                    <div class="field m-0">
-                      <p-select [options]="conf_is_optin_capping" optionLabel="name" formControlName="conf_is_optin_capping" placeholder="Capping On" optionValue="code"></p-select>
-
-                    </div>
-                  </td>
-                  <td style="width: 10rem">
-                    <div class="field m-0">
-                      @if (i > 0 ) {
-                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" styleClass="p-button-icon-only"></p-button>
-                      }
-                      @if (i==CampaignConfigues.controls.length-1) {
-                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" styleClass="p-button-icon-only" severity="success"></p-button>
-                      }
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
-          @if (campaign_confs.length>0) {
-            <div class="field">
-              <p-table  tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" #dt1 [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event,'')" [paginator]="false" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
-                <ng-template #header>
-                  <tr>
-                    <th style="width: 5%">#</th>
-                    <th style="width: 25%">Configuration Type</th>
-                    <th style="width: 25%">Configuration Level</th>
-                    <th style="width: 25%">Configuration Value</th>
-                    <th style="width: 15%;">Capping On</th>
-                    <th style="width: 15%;">Options</th>
-                  </tr>
-                </ng-template>
-                <ng-template #body let-campaign_confs let-i="rowIndex">
-                  @if ((campaign_confs.level_name == 'service' && campaign_confs.conf_telcom_id == f['campaign_telecom_id'].value) || campaign_confs.level_name != 'service') {
-                    <tr>
-                      <td style = "text-align: center;"> {{i+1}} </td>
-                      <td><p>{{campaign_confs.type | uppercase}} </p></td>
-                      <td><p>{{campaign_confs.level_name | titlecase}}({{campaign_confs.entity_name | titlecase}}) </p> </td>
-                      <td><p>{{campaign_confs.conf_value}}{{campaign_confs.type =='drop'? '%' : '' }}</p></td>
-                      <td><p>{{campaign_confs.type == 'capping' ? ((campaign_confs.conf_is_optin_capping==true) ? 'Optin' : 'Billing'): ''  }}</p> </td>
-                      <td>
-                        @if (write && (campaign_confs.type =='drop' || campaign_confs.type =='capping')) {
-                          <p-button (click)="getConfigurationById(campaign_confs)" title="Edit Configuration" class="mr-3" severity="info" size="small" icon="pi pi-pencil" styleClass="p-button-icon-only"></p-button>
-                        }
-                      </td>
-                    </tr>
-                  }
-                </ng-template>
-              </p-table>
+      @if (campaign_confs.length > 0) {
+        <div class="col-span-full overflow-x-auto">
+          @if (loading) {
+            <div class="flex items-center gap-2 py-4 text-sm text-muted-foreground">
+              <hlm-spinner />
+              Loading configurations…
             </div>
           }
-        </p-fieldset>
-      </div>
-
-    </div>
-    <div class="p-fluid formgrid grid">
-      <div class="field col-12 md:col-2">
-        <p-button type="submit" label="Submit" [raised]="true"></p-button>
-      </div>
-      <div class="field col-12 md:col-2">
-        <p-button [routerLink]="['/campaign/list']" label="Cancel" severity="danger"></p-button>
-      </div>
-    </div>
-  </form>
-</div>
-</div>
-</div>
-<!-- Configuration Sidebar Starts -->
-@if (configurationSidebarVisible) {
-  <div>
-    <p-drawer [(visible)]="configurationSidebarVisible" position="right" [style]="{width:'40em'}">
-      <h3>Edit Campaign Configuration</h3>
-      <form [formGroup]="campaignConfForm" (ngSubmit)="onCampaignConfSubmit()">
-        <div class="p-fluid formgrid grid">
-          <div class="col-12 md:col-6">
-            <label htmlFor="conf_type">Enter Configuration Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-            <input pInputText id="conf_type" type="text" formControlName="conf_type" placeholder="Enter Configuration Type" [readonly]="true" />
-            @if (Sidebarsubmitted && !fc['conf_type'].valid) {
-              <div style="display: block; width: 100%;">
-                @if (fc['conf_type'].hasError('required') ) {
-                  <span class="p-error">
-                    Please select configuration type
-                  </span>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border text-left">
+                <th class="px-2 py-2 font-medium w-10">#</th>
+                <th class="px-2 py-2 font-medium">Configuration type</th>
+                <th class="px-2 py-2 font-medium">Configuration level</th>
+                <th class="px-2 py-2 font-medium">Configuration value</th>
+                <th class="px-2 py-2 font-medium">Capping on</th>
+                <th class="px-2 py-2 font-medium w-24">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (campaign_conf of campaign_confs; track campaign_conf; let i = $index) {
+                @if ((campaign_conf.level_name == 'service' && campaign_conf.conf_telcom_id == f['campaign_telecom_id'].value) || campaign_conf.level_name != 'service') {
+                  <tr class="border-b border-border/60">
+                    <td class="px-2 py-2 text-center">{{ i + 1 }}</td>
+                    <td class="px-2 py-2">{{ campaign_conf.type | uppercase }}</td>
+                    <td class="px-2 py-2">{{ campaign_conf.level_name | titlecase }}({{ campaign_conf.entity_name | titlecase }})</td>
+                    <td class="px-2 py-2">{{ campaign_conf.conf_value }}{{ campaign_conf.type == 'drop' ? '%' : '' }}</td>
+                    <td class="px-2 py-2">{{ campaign_conf.type == 'capping' ? (campaign_conf.conf_is_optin_capping == true ? 'Optin' : 'Billing') : '' }}</td>
+                    <td class="px-2 py-2">
+                      @if (write && (campaign_conf.type == 'drop' || campaign_conf.type == 'capping')) {
+                        <button
+                          hlmBtn
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          title="Edit Configuration"
+                          (click)="getConfigurationById(campaign_conf)"
+                          aria-label="Edit configuration"
+                        >
+                          <ng-icon name="lucidePencil" size="1rem" />
+                        </button>
+                      }
+                    </td>
+                  </tr>
                 }
-              </div>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </cms-form-section>
+  </form>
+
+  <div class="sticky bottom-0 z-10 -mx-4 border-t border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6">
+    <div class="mx-auto flex max-w-[1200px] justify-end gap-2">
+      <button hlmBtn type="button" variant="outline" (click)="cancel()">Cancel</button>
+      <button hlmBtn type="button" (click)="onSubmit()">Save</button>
+    </div>
+  </div>
+</div>
+
+@if (configurationSidebarVisible) {
+  <div class="fixed inset-0 z-50 flex justify-end">
+    <button
+      type="button"
+      class="absolute inset-0 bg-black/40"
+      aria-label="Close configuration panel"
+      (click)="configurationSidebarVisible = false"
+    ></button>
+    <div class="relative z-10 flex h-full w-full max-w-xl flex-col gap-4 overflow-y-auto border-l border-border bg-background p-6 shadow-lg">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="m-0 text-lg font-semibold">Edit campaign configuration</h2>
+        <button hlmBtn type="button" variant="ghost" size="icon-sm" (click)="configurationSidebarVisible = false" aria-label="Close">
+          <ng-icon name="lucideX" size="1rem" />
+        </button>
+      </div>
+      <form [formGroup]="campaignConfForm" (ngSubmit)="onCampaignConfSubmit()" class="flex flex-col gap-4">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="conf_type">Configuration type <span class="text-destructive">*</span></label>
+            <input hlmInput id="conf_type" type="text" class="w-full" formControlName="conf_type" placeholder="Type" [readonly]="true" />
+            @if (Sidebarsubmitted && !fc['conf_type'].valid) {
+              @if (fc['conf_type'].hasError('required')) {
+                <span class="text-sm text-destructive">Please select configuration type</span>
+              }
             }
           </div>
-          <div class="col-12 md:col-6">
-            <label htmlFor="conf_level_type">Enter Configuration Level<span label styleclass="label-required" class="text-red-500">*</span></label>
-            <input pInputText id="conf_level_type" type="text" formControlName="conf_level_type" placeholder="Enter Configuration Level" [readonly]="true" />
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="conf_level_type">Configuration level <span class="text-destructive">*</span></label>
+            <input hlmInput id="conf_level_type" type="text" class="w-full" formControlName="conf_level_type" placeholder="Level" [readonly]="true" />
           </div>
-          <div class="col-12 md:col-6">
-            <div class="mb-2">
-              <label htmlFor="conf_entity_id">Enter Entity<span label styleclass="label-required" class="text-red-500">*</span></label>
-              <input pInputText id="conf_entity_name" type="text" formControlName="conf_entity_name" placeholder="Enter Entity" [readonly]="true" />
-              <input pInputText id="conf_entity_id" type="hidden" formControlName="conf_entity_id" [readonly]="true" />
+          <div class="flex flex-col gap-1.5">
+            <label hlmLabel for="conf_entity_name">Entity <span class="text-destructive">*</span></label>
+            <input hlmInput id="conf_entity_name" type="text" class="w-full" formControlName="conf_entity_name" placeholder="Entity" [readonly]="true" />
+            <input id="conf_entity_id" type="hidden" formControlName="conf_entity_id" />
+          </div>
+          @if (fc['conf_type'].value == 'capping') {
+            <div class="flex flex-col gap-1.5">
+              <label hlmLabel for="conf_is_optin_capping">Capping on <span class="text-destructive">*</span></label>
+              <input hlmInput id="conf_is_optin_capping" type="text" class="w-full" formControlName="conf_is_optin_capping" placeholder="Capping on" [readonly]="true" />
             </div>
-            @if (fc['conf_type'].value == 'capping') {
-              <div class="col-12 md:col-6">
-                <label htmlFor="conf_is_optin_capping">Enter Capping On<span label styleclass="label-required" class="text-red-500">*</span></label>
-                <input pInputText id="conf_level_type" type="text" formControlName="conf_is_optin_capping" placeholder="Enter Configuration Level" [readonly]="true" />
-              </div>
-            }
-          </div>
-          @if (this.confTypeSidebar!=='blocking') {
-            <div class="col-12 md:col-6">
-              <label htmlFor="conf_entity_value">Enter Configuration Value<span label styleclass="label-required" class="text-red-500">*</span></label>
-              <input pInputText id="conf_entity_value" type="text" formControlName="conf_entity_value" placeholder="Enter Configuration Value"  />
+          }
+          @if (confTypeSidebar !== 'blocking') {
+            <div class="flex flex-col gap-1.5">
+              <label hlmLabel for="conf_entity_value">Configuration value <span class="text-destructive">*</span></label>
+              <input hlmInput id="conf_entity_value" type="text" class="w-full" formControlName="conf_entity_value" placeholder="Value" />
               @if (Sidebarsubmitted && !fc['conf_entity_value'].valid) {
-                <div style="display: block; width: 100%;">
-                  @if (fc['conf_entity_value'].hasError('required') ) {
-                    <span class="p-error">Configuration value is required</span>
-                  }
-                  @if (fc['conf_entity_value'].hasError('numeric')) {
-                    <span class="p-error">Please enter valid value</span>
-                  }
-                </div>
+                @if (fc['conf_entity_value'].hasError('required')) {
+                  <span class="text-sm text-destructive">Configuration value is required</span>
+                }
+                @if (fc['conf_entity_value'].hasError('numeric')) {
+                  <span class="text-sm text-destructive">Please enter valid value</span>
+                }
               }
             </div>
           }
-          <div class="field col-12 md:col-12">
-            <button type="submit" pButton pRipple size="small" class="w-full p-3 text-md">Submit</button>
-          </div>
         </div>
+        <button hlmBtn type="submit" class="w-full">Submit</button>
       </form>
-    </p-drawer>
+    </div>
   </div>
 }
-<!-- Configuration Sidebar Ends -->
-<p-toast></p-toast>

@@ -8,12 +8,15 @@ import { ConfirmationService , MessageService } from '@openng/optimus-ui/api';
 import { ClipboardService } from 'ngx-clipboard';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { Location } from '@angular/common';
+import { provideIcons } from '@ng-icons/core';
+import { lucideCopy, lucidePencil, lucidePlus, lucideTrash2, lucideX } from '@ng-icons/lucide';
 
 @Component({
     selector: 'app-add-campaign',
     templateUrl: './add-campaign.component.html',
     styleUrls: ['./add-campaign.component.css'],
-    standalone: false
+    standalone: false,
+    viewProviders: [provideIcons({ lucideCopy, lucidePencil, lucidePlus, lucideTrash2, lucideX })],
 })
 export class AddCampaignComponent implements OnInit{
   read:boolean = false
@@ -34,19 +37,19 @@ export class AddCampaignComponent implements OnInit{
   selected_report_tosend = false;
   
   campaignData : any = {};
-  telecom_operators = [];
-  telecom_plans = [];
-  advertising_platforms = [];
-  services = [];
+  telecom_operators: any[] = [];
+  telecom_plans: any[] = [];
+  advertising_platforms: any[] = [];
+  services: any[] = [];
   campaign_flows :any = [];
   isFlowReadonly : boolean = false;
-  campaign_owners= [];
+  campaign_owners: any[] = [];
 
   // redirections 
   campaign_redirections:{ name: string; code: string }[] = [];
-  post_capping_redirections = []
-  blocking_redirections = []
-  not_found_redirection = []
+  post_capping_redirections: any[] = []
+  blocking_redirections: any[] = []
+  not_found_redirection: any[] = []
 
   campaign_tpid_redirects = [
     { name: 'Auto Login to Shemaroome', code: '27' },
@@ -79,8 +82,8 @@ export class AddCampaignComponent implements OnInit{
   lazyLoadEvent:any;
   conf_entities = []
 
-  platform_callback_urls = [];
-  campaign_regions = [];
+  platform_callback_urls: any[] = [];
+  campaign_regions: any[] = [];
   campaign_name:any='';
   existing_campaign_name:any='';
   campaign_confs:any=[]
@@ -150,6 +153,23 @@ export class AddCampaignComponent implements OnInit{
     {value: 'entire_day', name: "Entire Day"},
     {value: 'multiple_times', name: "Times In a Day"}
   ]
+
+  regionToString = (id: unknown) => (this.campaign_regions as any[]).find((r: any) => r.id == id)?.name ?? '';
+  telecomToString = (id: unknown) => (this.telecom_operators as any[]).find((t: any) => t.id == id)?.name ?? '';
+  serviceToString = (id: unknown) => (this.services as any[]).find((s: any) => s.id == id)?.name ?? '';
+  planToString = (id: unknown) => (this.telecom_plans as any[]).find((p: any) => p.id == id)?.name ?? '';
+  flowToString = (code: unknown) => (this.campaign_flows as any[]).find((f: any) => f.code == code)?.name ?? '';
+  ownerToString = (id: unknown) => (this.campaign_owners as any[]).find((o: any) => o.id == id)?.name ?? '';
+  skipTypeToString = (value: unknown) => (this.skip_type as any[]).find((s: any) => s.value == value)?.name ?? '';
+  redirectionToString = (code: unknown) => this.campaign_redirections.find((r) => r.code == code)?.name ?? '';
+  postCappingToString = (code: unknown) => (this.post_capping_redirections as any[]).find((r: any) => r.code == code)?.name ?? '';
+  blockingToString = (code: unknown) => (this.blocking_redirections as any[]).find((r: any) => r.code == code)?.name ?? '';
+  notFoundToString = (code: unknown) => (this.not_found_redirection as any[]).find((r: any) => r.code == code)?.name ?? '';
+  platformToString = (id: unknown) => (this.advertising_platforms as any[]).find((p: any) => p.id == id)?.name ?? '';
+  callbackUrlToString = (url: unknown) => String(url ?? '');
+  confTypeToString = (code: unknown) => this.conf_types.find((t) => t.code == code)?.name ?? '';
+  confLevelToString = (code: unknown) => this.conf_level_types.find((t) => t.code == code)?.name ?? '';
+  confCappingToString = (code: unknown) => this.conf_is_optin_capping.find((t) => t.code == code)?.name ?? '';
 
   constructor(
       private frmbuilder:FormBuilder, 
@@ -589,16 +609,42 @@ export class AddCampaignComponent implements OnInit{
     }
   }
   
+  cancel(): void {
+    this.router.navigate(['/campaign/list']);
+  }
+
+  isArrayValueChecked(controlName: string, value: string): boolean {
+    const current = this.f[controlName]?.value;
+    return Array.isArray(current) && current.includes(value);
+  }
+
+  toggleArrayValue(controlName: string, value: string, checked: boolean): void {
+    const ctrl = this.f[controlName];
+    const current: string[] = Array.isArray(ctrl?.value) ? [...ctrl.value] : [];
+    const idx = current.indexOf(value);
+    if (checked && idx === -1) {
+      current.push(value);
+    }
+    if (!checked && idx > -1) {
+      current.splice(idx, 1);
+    }
+    ctrl.setValue(current);
+    if (controlName === 'campaign_report_type') {
+      this.valueCheck();
+    }
+  }
+
   async onSubmit(){    
     this.submitted = true;
     console.log(this.campaignForm);
     if(this.campaignForm.status!=='INVALID'){
       this.isValidForm = true;
       this.campaign_name = await this.getCampaignName(this.campaignForm.get('campaign_region').value, this.campaignForm.get('campaign_telecom_id').value, this.campaignForm.get('campaign_plan_id').value, this.campaignForm.get('campaign_type').value)
+      const raw = this.campaignForm.getRawValue();
       let data = {
-        ...this.campaignForm.value,
-        campaign_ga_events: this.campaignForm.value.campaign_ga_events?.join(','),
-        campaign_report_type: this.campaignForm.value.campaign_report_type?.join(',')
+        ...raw,
+        campaign_ga_events: raw.campaign_ga_events?.join(','),
+        campaign_report_type: raw.campaign_report_type?.join(',')
       };
       
       data.campaign_name = this.campaign_name

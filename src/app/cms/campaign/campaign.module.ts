@@ -21,6 +21,12 @@ import { AddSmartUrlComponent } from './add-smart-url/add-smart-url.component';
 import { AddLandingPageConfigurationComponent } from './add-landing-page-configuration/add-landing-page-configuration.component';
 import { ListLandingPageConfigurationComponent } from './list-landing-page-configuration/list-landing-page-configuration.component';
 import { SharedUiModule } from 'src/app/shared/shared-ui.module';
+import { SharedSpartanModule } from 'src/app/shared/shared-spartan.module';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
+import { HlmSwitchImports } from '@spartan-ng/helm/switch';
+import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
+import { NgIcon } from '@ng-icons/core';
 
 @NgModule({
   declarations: [
@@ -43,6 +49,12 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
   ],
   imports: [
     SharedUiModule,
+    SharedSpartanModule,
+    ...HlmSelectImports,
+    ...HlmCheckboxImports,
+    ...HlmSwitchImports,
+    ...HlmTextareaImports,
+    NgIcon,
     CommonModule,
     CampaignRoutingModule,
     FormsModule,
