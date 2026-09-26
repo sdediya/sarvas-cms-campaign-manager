@@ -39,6 +39,8 @@ import { TargetVsAchievementRevenueComponent } from './target-vs-achievement-rev
 import { TargetVsAchievementActivationComponent } from './target-vs-achievement-activation/target-vs-achievement-activation.component';
 import { TargetVsAchievementDrrComponent } from './target-vs-achievement-drr/target-vs-achievement-drr.component';
 import { SharedUiModule } from 'src/app/shared/shared-ui.module';
+import { SharedSpartanModule } from 'src/app/shared/shared-spartan.module';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,8 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
   ],
   imports: [
     SharedUiModule,
+    SharedSpartanModule,
+    ...HlmSelectImports,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

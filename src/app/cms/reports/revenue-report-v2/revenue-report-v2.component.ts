@@ -27,21 +27,46 @@ export class RevenueReportV2Component implements OnInit{
 
   maxDate:any;
 
-  masterService = [];
+  masterService: any[] = [];
 
-  telcoms = []
-  masterAggregator = []
-  products = []
-  services = []
+  telcoms: any[] = []
+  masterAggregator: any[] = []
+  products: any[] = []
+  services: any[] = []
   serviceWiseShare:any = [];
 
   reports: any = [];
   footerData: any = {};
   cols: any =[];
+  dateRangeStartIso = '';
+  dateRangeEndIso = '';
   service: any = [
     {name: 'SME', code: 'sme'},
     {name: 'Legacy', code: 'legacy'}
   ]
+
+  telcomToString = (id: unknown) => {
+    const tel: any = this.telcoms.find((e: any) => e.tel_id == id);
+    return tel?.tel_name ?? '';
+  };
+
+  masterAggregatorToString = (id: unknown) => {
+    const mag: any = this.masterAggregator.find((e: any) => e.maggregator_id == id);
+    return mag?.maggregator_name ?? '';
+  };
+
+  productToString = (code: unknown) => {
+    const product: any = this.products.find((e: any) => e.code == code);
+    return product?.name ?? '';
+  };
+
+  serviceToString = (id: unknown) => {
+    if (id === '' || id === null || id === undefined) {
+      return 'All';
+    }
+    const svc: any = this.services.find((e: any) => e.service_id == id);
+    return svc?.service_name ?? '';
+  };
 
   constructor(
     private frmbuilder:FormBuilder, 
@@ -118,11 +143,60 @@ export class RevenueReportV2Component implements OnInit{
   // convenience getter for easy access to form fields
   get f() { return this.revenueReportForm.controls; }
 
+  get maxDateIso(): string {
+    return this.convertDateFormat(this.maxDate || new Date());
+  }
+
   // Convert date to format YYYY-MM-DD
   convertDateFormat(rawDate:any) {
     let curr_dt = new Date(rawDate)
     let convertedDate = curr_dt.getFullYear() + "-" + String(curr_dt.getMonth() + 1).padStart(2, '0') + "-" + String(curr_dt.getDate()).padStart(2, '0');
     return convertedDate;
+  }
+
+  private parseIsoDate(iso: string): Date {
+    const [year, month, day] = iso.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  onDateRangePartChange(part: 'start' | 'end', event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    if (part === 'start') {
+      this.dateRangeStartIso = value;
+      if (this.dateRangeEndIso && this.dateRangeEndIso < value) {
+        this.dateRangeEndIso = '';
+      }
+    } else {
+      this.dateRangeEndIso = value;
+    }
+    this.syncDateRangeControl();
+  }
+
+  private syncDateRangeControl(): void {
+    if (this.dateRangeStartIso && this.dateRangeEndIso) {
+      this.f['revenue_date_range'].setValue([
+        this.parseIsoDate(this.dateRangeStartIso),
+        this.parseIsoDate(this.dateRangeEndIso),
+      ]);
+      this.f['revenue_date_range'].markAsDirty();
+    } else {
+      this.f['revenue_date_range'].setValue('');
+    }
+  }
+
+  clearFilters(): void {
+    this.revenueReportForm.reset();
+    this.dateRangeStartIso = '';
+    this.dateRangeEndIso = '';
+    this.submitted = false;
+    this.isValidForm = false;
+    this.cols = [];
+    this.reports = [];
+    this.footerData = {};
+    this.serviceWiseShare = [];
+    this.services = [];
+    this.masterAggregator = [];
+    this.products = [];
   }
 
   getTelcoms(){
