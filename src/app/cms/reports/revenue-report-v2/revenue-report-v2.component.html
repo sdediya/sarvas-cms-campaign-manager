@@ -1,131 +1,133 @@
 <div class="mx-auto max-w-[1400px]">
-  <cms-page-header title="Revenue Report"></cms-page-header>
+  <div class="card">
+    <cms-page-header title="Revenue Report"></cms-page-header>
 
-  <form [formGroup]="revenueReportForm" (ngSubmit)="onSubmit()">
-    <cms-filter-bar (apply)="onSubmit()" (clear)="clearFilters()">
-      <div class="flex flex-col gap-1.5">
-        <label hlmLabel for="revenue_date_range_start">Date range <span class="text-destructive">*</span></label>
-        <div class="flex flex-col gap-2 sm:flex-row">
-          <input
-            id="revenue_date_range_start"
-            type="date"
-            hlmInput
-            class="w-full"
-            [attr.max]="maxDateIso"
-            [value]="dateRangeStartIso"
-            (change)="onDateRangePartChange('start', $event)"
-          />
-          <input
-            id="revenue_date_range_end"
-            type="date"
-            hlmInput
-            class="w-full"
-            [attr.max]="maxDateIso"
-            [attr.min]="dateRangeStartIso || null"
-            [value]="dateRangeEndIso"
-            (change)="onDateRangePartChange('end', $event)"
-          />
+    <form [formGroup]="revenueReportForm" (ngSubmit)="onSubmit()">
+      <cms-filter-bar (apply)="onSubmit()" (clear)="clearFilters()">
+        <div class="flex flex-col gap-1">
+          <label hlmLabel for="revenue_date_range_start">Select Date Range <span class="text-destructive">*</span></label>
+          <div class="flex w-full overflow-hidden rounded-md border border-input bg-background focus-within:ring-2 focus-within:ring-ring/40">
+            <input
+              id="revenue_date_range_start"
+              type="date"
+              hlmInput
+              class="w-full min-w-0 rounded-none border-0 shadow-none focus-visible:ring-0"
+              [attr.max]="maxDateIso"
+              [value]="dateRangeStartIso"
+              (change)="onDateRangePartChange('start', $event)"
+            />
+            <input
+              id="revenue_date_range_end"
+              type="date"
+              hlmInput
+              class="w-full min-w-0 rounded-none border-0 border-l border-input shadow-none focus-visible:ring-0"
+              [attr.max]="maxDateIso"
+              [attr.min]="dateRangeStartIso || null"
+              [value]="dateRangeEndIso"
+              (change)="onDateRangePartChange('end', $event)"
+            />
+          </div>
+          @if (submitted && f['revenue_date_range'].hasError('required')) {
+            <span class="text-sm text-destructive">Please select report date range</span>
+          }
         </div>
-        @if (submitted && f['revenue_date_range'].hasError('required')) {
-          <span class="text-sm text-destructive">Please select report date range</span>
-        }
-      </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label hlmLabel for="revenue_telcom_id">Telcom <span class="text-destructive">*</span></label>
-        <hlm-select
-          id="revenue_telcom_id"
-          class="w-full"
-          formControlName="revenue_telcom_id"
-          [itemToString]="telcomToString"
-        >
-          <hlm-select-trigger class="w-full">
-            <hlm-select-value placeholder="Telcom" />
-          </hlm-select-trigger>
-          <hlm-select-content *hlmSelectPortal>
-            <hlm-select-group>
-              @for (tel of telcoms; track tel.tel_id) {
-                <hlm-select-item [value]="tel.tel_id">{{ tel.tel_name }}</hlm-select-item>
-              }
-            </hlm-select-group>
-          </hlm-select-content>
-        </hlm-select>
-        @if (submitted && f['revenue_telcom_id'].hasError('required')) {
-          <span class="text-sm text-destructive">Please select telcom</span>
-        }
-      </div>
+        <div class="flex flex-col gap-1">
+          <label hlmLabel for="revenue_telcom_id">Select Telcom <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="revenue_telcom_id"
+            class="w-full"
+            formControlName="revenue_telcom_id"
+            [itemToString]="telcomToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select Telcom" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (tel of telcoms; track tel.tel_id) {
+                  <hlm-select-item [value]="tel.tel_id">{{ tel.tel_name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && f['revenue_telcom_id'].hasError('required')) {
+            <span class="text-sm text-destructive">Please select telcom</span>
+          }
+        </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label hlmLabel for="revenue_master_aggregator">Master aggregator <span class="text-destructive">*</span></label>
-        <hlm-select
-          id="revenue_master_aggregator"
-          class="w-full"
-          formControlName="revenue_master_aggregator"
-          [itemToString]="masterAggregatorToString"
-        >
-          <hlm-select-trigger class="w-full">
-            <hlm-select-value placeholder="Master aggregator" />
-          </hlm-select-trigger>
-          <hlm-select-content *hlmSelectPortal>
-            <hlm-select-group>
-              @for (mag of masterAggregator; track mag.maggregator_id) {
-                <hlm-select-item [value]="mag.maggregator_id">{{ mag.maggregator_name }}</hlm-select-item>
-              }
-            </hlm-select-group>
-          </hlm-select-content>
-        </hlm-select>
-        @if (submitted && f['revenue_master_aggregator'].hasError('required')) {
-          <span class="text-sm text-destructive">Please select master aggregator</span>
-        }
-      </div>
+        <div class="flex flex-col gap-1">
+          <label hlmLabel for="revenue_master_aggregator">Select Master Aggregator <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="revenue_master_aggregator"
+            class="w-full"
+            formControlName="revenue_master_aggregator"
+            [itemToString]="masterAggregatorToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select Master Aggregator" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (mag of masterAggregator; track mag.maggregator_id) {
+                  <hlm-select-item [value]="mag.maggregator_id">{{ mag.maggregator_name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && f['revenue_master_aggregator'].hasError('required')) {
+            <span class="text-sm text-destructive">Please select master aggregator</span>
+          }
+        </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label hlmLabel for="revenue_product_type">Product <span class="text-destructive">*</span></label>
-        <hlm-select
-          id="revenue_product_type"
-          class="w-full"
-          formControlName="revenue_product_type"
-          [itemToString]="productToString"
-        >
-          <hlm-select-trigger class="w-full">
-            <hlm-select-value placeholder="Product" />
-          </hlm-select-trigger>
-          <hlm-select-content *hlmSelectPortal>
-            <hlm-select-group>
-              @for (product of products; track product.code) {
-                <hlm-select-item [value]="product.code">{{ product.name }}</hlm-select-item>
-              }
-            </hlm-select-group>
-          </hlm-select-content>
-        </hlm-select>
-        @if (submitted && f['revenue_product_type'].hasError('required')) {
-          <span class="text-sm text-destructive">Please select product</span>
-        }
-      </div>
+        <div class="flex flex-col gap-1">
+          <label hlmLabel for="revenue_product_type">Select Product <span class="text-destructive">*</span></label>
+          <hlm-select
+            id="revenue_product_type"
+            class="w-full"
+            formControlName="revenue_product_type"
+            [itemToString]="productToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select Product" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                @for (product of products; track product.code) {
+                  <hlm-select-item [value]="product.code">{{ product.name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+          @if (submitted && f['revenue_product_type'].hasError('required')) {
+            <span class="text-sm text-destructive">Please select product</span>
+          }
+        </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label hlmLabel for="revenue_service_id">Service</label>
-        <hlm-select
-          id="revenue_service_id"
-          class="w-full"
-          formControlName="revenue_service_id"
-          [itemToString]="serviceToString"
-        >
-          <hlm-select-trigger class="w-full">
-            <hlm-select-value placeholder="Service" />
-          </hlm-select-trigger>
-          <hlm-select-content *hlmSelectPortal>
-            <hlm-select-group>
-              <hlm-select-item [value]="''">All</hlm-select-item>
-              @for (svc of services; track svc.service_id) {
-                <hlm-select-item [value]="svc.service_id">{{ svc.service_name }}</hlm-select-item>
-              }
-            </hlm-select-group>
-          </hlm-select-content>
-        </hlm-select>
-      </div>
-    </cms-filter-bar>
-  </form>
+        <div class="flex flex-col gap-1">
+          <label hlmLabel for="revenue_service_id">Select Service</label>
+          <hlm-select
+            id="revenue_service_id"
+            class="w-full"
+            formControlName="revenue_service_id"
+            [itemToString]="serviceToString"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Select Service" />
+            </hlm-select-trigger>
+            <hlm-select-content *hlmSelectPortal>
+              <hlm-select-group>
+                <hlm-select-item [value]="''">All</hlm-select-item>
+                @for (svc of services; track svc.service_id) {
+                  <hlm-select-item [value]="svc.service_id">{{ svc.service_name }}</hlm-select-item>
+                }
+              </hlm-select-group>
+            </hlm-select-content>
+          </hlm-select>
+        </div>
+      </cms-filter-bar>
+    </form>
+  </div>
 
   @if (submitted && isValidForm) {
     <cms-data-table [empty]="!reports?.length">

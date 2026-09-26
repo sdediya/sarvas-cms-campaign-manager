@@ -5,6 +5,11 @@
 @import "@spartan-ng/brain/hlm-tailwind-preset.css";
 @import "./styles/spartan-theme.css";
 
+/* Sakai root scale (live html font-size 12px). Tailwind rem tracks this. */
+html {
+  font-size: 12px;
+}
+
 /* Optimus/legacy after Tailwind so cascade matches brief Step 5.
    OpenNG icons via local wrapper: package css url() breaks under Tailwind PostCSS. */
 @import "./styles/openng-icons.css";
@@ -30,10 +35,10 @@ label sup {
     color: #e24c4c;
 }
 
-/* Card surface used by CMS pages */
+/* Card surface used by CMS pages (slightly denser, closer to Sakai) */
 .card {
     background: var(--surface-card);
-    padding: 1.5rem;
+    padding: 1.25rem;
     margin-bottom: 1rem;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
@@ -128,6 +133,169 @@ p-button {
     display: inline-flex;
     vertical-align: middle;
 }
+
+/* ---- CMS UI design system (2026-09-26) ---- */
+.cms-page-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 1rem;
+margin-bottom: 1.25rem;
+flex-wrap: wrap;
+}
+.cms-page-header h5 {
+margin: 0;
+font-weight: 600;
+color: var(--text-color, #495057);
+}
+
+.cms-filter-bar {
+margin-bottom: 1rem;
+}
+.cms-filter-bar .field > label,
+.formgrid .field > label,
+.p-fieldset .field > label {
+display: block;
+margin-bottom: 0.35rem;
+font-weight: 600;
+font-size: 0.875rem;
+color: var(--text-color, #495057);
+}
+
+.cms-form-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 0.75rem;
+align-items: center;
+margin-top: 1.25rem;
+padding-top: 1rem;
+border-top: 1px solid var(--surface-border, #dfe7ef);
+}
+.cms-form-actions p-button,
+.cms-form-actions button {
+min-width: 7rem;
+}
+
+.cms-readonly-summary {
+margin-top: 0.75rem;
+padding: 0.75rem 1rem;
+background: var(--surface-ground, #eff3f8);
+border: 1px solid var(--surface-border, #dfe7ef);
+border-radius: var(--border-radius, 6px);
+font-size: 0.875rem;
+color: var(--text-color-secondary, #6c757d);
+}
+.cms-readonly-summary strong {
+color: var(--text-color, #495057);
+font-weight: 600;
+}
+
+.cms-toggle-field {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+min-height: 2.5rem;
+padding-top: 1.5rem; /* align with labeled inputs */
+}
+.cms-toggle-field label {
+margin: 0 !important;
+font-weight: 600;
+}
+
+.card .p-fieldset {
+margin-bottom: 1rem;
+}
+
+/* Filter selects: prefer field wrappers over raw .col on p-select */
+.cms-filter-bar p-select,
+.cms-filter-bar .p-select {
+width: 100%;
+}
+
+/* Quiet Sakai form (opt-in via .cms-quiet-form on card) */
+.cms-quiet-form.card { padding: 1.25rem 1.5rem; }
+.cms-quiet-form .cms-page-header { margin-bottom: 1rem; }
+.cms-quiet-form .cms-page-header h5 { font-size: 1.25rem; font-weight: 600; margin: 0; }
+
+.cms-quiet-form .cms-section {
+margin-bottom: 1.75rem;
+}
+.cms-quiet-form .cms-section:last-of-type {
+margin-bottom: 0.75rem;
+}
+.cms-quiet-form .cms-section-title {
+margin: 0 0 1rem;
+padding: 0;
+font-size: 1rem;
+font-weight: 600;
+color: var(--text-color, #495057);
+}
+
+.cms-quiet-form .field {
+margin-bottom: 1.25rem;
+}
+.cms-quiet-form .field > label {
+display: block;
+margin: 0 0 0.25rem; /* tight label → control gap (Sparked-like) */
+padding: 0;
+font-weight: 600;
+font-size: 0.875rem;
+line-height: 1.25;
+color: var(--text-color, #495057);
+}
+
+.cms-quiet-form .p-select,
+.cms-quiet-form .p-inputtext,
+.cms-quiet-form .p-inputgroup,
+.cms-quiet-form textarea,
+.cms-quiet-form input.p-inputtext { width: 100%; }
+
+.cms-quiet-form .p-inputgroup {
+display: flex;
+width: 100%;
+}
+.cms-quiet-form .p-inputgroup .p-inputtext,
+.cms-quiet-form .p-inputgroup input {
+width: 100%;
+flex: 1 1 auto;
+}
+
+.cms-quiet-form .cms-option-group {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 0.75rem 1.25rem;
+min-height: 2.5rem;
+}
+.cms-quiet-form .cms-option-group label {
+margin: 0;
+font-weight: 500;
+font-size: 0.875rem;
+}
+.cms-quiet-form .cms-toggle-field {
+flex-direction: column;
+align-items: flex-start;
+justify-content: flex-start;
+gap: 0.35rem;
+padding-top: 0;
+min-height: auto;
+}
+.cms-quiet-form .cms-toggle-field > label {
+margin: 0 0 0.25rem !important;
+}
+.cms-quiet-form .cms-check-inline {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+padding-top: 1.35rem;
+min-height: 2.5rem;
+}
+.cms-quiet-form .cms-check-inline label { margin: 0; font-weight: 500; }
+.cms-quiet-form .cms-form-actions { margin-top: 0.75rem; }
+.cms-quiet-form .p-divider { margin: 0.75rem 0 1.25rem; }
+
+
+
 
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";

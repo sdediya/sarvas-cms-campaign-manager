@@ -1,19 +1,21 @@
-<header class="flex h-14 items-center gap-3 border-b border-border bg-background px-4">
+<header
+  class="flex h-[4.25rem] w-full items-center gap-3 border-b border-border bg-white px-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
+>
+  <a routerLink="/" class="flex shrink-0 items-center">
+    <img src="assets/images/shemaroo_logo.svg" alt="Shemaroo" class="h-8 w-auto" />
+  </a>
+
   <button
     type="button"
     hlmBtn
     variant="ghost"
     size="icon"
-    class="md:hidden"
+    class="shrink-0 text-[var(--text-color,#495057)]"
     (click)="menuToggle.emit()"
     aria-label="Toggle menu"
   >
     <ng-icon name="lucideMenu" size="1.25rem" />
   </button>
-
-  <a routerLink="/" class="flex items-center">
-    <img src="assets/images/shemaroo_logo.svg" alt="Shemaroo" class="h-8 w-auto" />
-  </a>
 
   <div class="ms-auto">
     <button
@@ -21,7 +23,7 @@
       hlmBtn
       variant="ghost"
       size="sm"
-      class="gap-2"
+      class="gap-2 text-[var(--text-color,#495057)]"
       [hlmDropdownMenuTrigger]="userMenu"
     >
       <ng-icon name="lucideUser" size="1.1rem" />

@@ -10,8 +10,8 @@
   --surface-f: #ffffff;
   --text-color: #495057;
   --text-color-secondary: #6c757d;
-  /* Match Optimus Aura primary (emerald.500) for layout chrome */
-  --primary-color: #10b981;
+  /* Match live PrimeNG/Sakai indigo for layout chrome */
+  --primary-color: #6366F1;
   --primary-color-text: #ffffff;
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -35,7 +35,7 @@
   --surface-overlay: #ffffff;
   --surface-border: #dfe7ef;
   --surface-hover: #f6f9fc;
-  --focus-ring: 0 0 0 0.2rem #a7f3d0;
+  --focus-ring: 0 0 0 0.2rem #c7d2fe;
   --maskbg: rgba(0, 0, 0, 0.4);
   color-scheme: light;
 }

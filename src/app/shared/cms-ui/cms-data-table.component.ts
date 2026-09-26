@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'cms-data-table',
   template: `
     <div class="rounded-md border border-border bg-card">
-      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border px-3 py-2">
         <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
           <ng-content select="[cmsTableMeta]"></ng-content>
         </div>
@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
         </div>
       </div>
       @if (loading) {
-        <div class="flex justify-center py-16"><ng-content select="[cmsLoading]"></ng-content></div>
+        <div class="flex justify-center py-12"><ng-content select="[cmsLoading]"></ng-content></div>
       } @else if (empty) {
         <ng-content select="[cmsEmpty]"></ng-content>
       } @else {
