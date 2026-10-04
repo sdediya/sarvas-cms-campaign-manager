@@ -14,6 +14,8 @@ import { ListSmartUrlComponent } from './list-smart-url/list-smart-url.component
 import { AddSmartUrlComponent } from './add-smart-url/add-smart-url.component';
 import { AddLandingPageConfigurationComponent } from './add-landing-page-configuration/add-landing-page-configuration.component';
 import { ListLandingPageConfigurationComponent } from './list-landing-page-configuration/list-landing-page-configuration.component';
+import { ListThemeLayersComponent } from './theme-layers/list-theme-layers/list-theme-layers.component';
+import { AddThemeLayerComponent } from './theme-layers/add-theme-layer/add-theme-layer.component';
 const routes: Routes = [
   // { path: 'cms/campaign', redirectTo:'/cms/campaign/list', pathMatch:'full'},
   { path: 'add', component:AddCampaignComponent},
@@ -33,7 +35,10 @@ const routes: Routes = [
   { path: 'smart-url/edit', component:AddSmartUrlComponent},
   { path: 'landing-page-configuration/add', component:AddLandingPageConfigurationComponent},
   { path: 'landing-page-configuration/edit', component:AddLandingPageConfigurationComponent},
-  { path: 'landing-page-configuration/list', component:ListLandingPageConfigurationComponent}];
+  { path: 'landing-page-configuration/list', component:ListLandingPageConfigurationComponent},
+  { path: 'theme-layers/list', component: ListThemeLayersComponent },
+  { path: 'theme-layers/add', component: AddThemeLayerComponent },
+  { path: 'theme-layers/edit', component: AddThemeLayerComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

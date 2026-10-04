@@ -21,6 +21,8 @@ import { AddSmartUrlComponent } from './add-smart-url/add-smart-url.component';
 import { AddLandingPageConfigurationComponent } from './add-landing-page-configuration/add-landing-page-configuration.component';
 import { ListLandingPageConfigurationComponent } from './list-landing-page-configuration/list-landing-page-configuration.component';
 import { SharedUiModule } from 'src/app/shared/shared-ui.module';
+import { ListThemeLayersComponent } from './theme-layers/list-theme-layers/list-theme-layers.component';
+import { AddThemeLayerComponent } from './theme-layers/add-theme-layer/add-theme-layer.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
     ListSmartUrlComponent,
     AddSmartUrlComponent,
     AddLandingPageConfigurationComponent,
-    ListLandingPageConfigurationComponent
+    ListLandingPageConfigurationComponent,
+    ListThemeLayersComponent,
+    AddThemeLayerComponent
   ],
   imports: [
     SharedUiModule,

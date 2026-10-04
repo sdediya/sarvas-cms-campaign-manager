@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http/http.service';
 import { StateService } from 'src/app/services/storage/state.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { THEME_LAYERS_SUPERADMIN, ThemeLayerAccessService } from 'src/app/services/common/theme-layer-access.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,10 +25,14 @@ export class MenuComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private httpService: HttpService,
     private StateService: StateService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private themeLayerAccess: ThemeLayerAccessService
   ) {}
 
   ngOnInit() {
+    // The answer lands in state, which re-runs the filter below.
+    this.themeLayerAccess.isSuperadmin().subscribe();
+
     // 1. Reactively filter menu when permissions arrive or update in state
     this.stateSub = this.StateService.stateValue$.subscribe((state: any) => {
       if (state && state['user_permissions']) {
@@ -78,6 +83,10 @@ export class MenuComponent implements OnInit, OnDestroy {
             if (Object.hasOwn(ele, 'items')) {
               ele.items = ele.items.filter((item: any) => {
                 if (item.label === 'Failed Callback Logs' && !authorizedUsers.includes(currentUserEmail)) {
+                  return false;
+                }
+
+                if (item.label === 'Default Themes' && this.StateService.getSingleStateValue(THEME_LAYERS_SUPERADMIN) !== true) {
                   return false;
                 }
 

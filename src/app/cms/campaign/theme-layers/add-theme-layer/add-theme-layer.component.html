@@ -1,0 +1,201 @@
+@if (allowed) {
+<div class="grid cms-campaign cms-page">
+  <div class="col-12">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="card">
+        <div class="cms-page-header">
+          <div class="cms-page-header__text">
+            <span class="cms-page-kicker">Campaigns · Default Themes</span>
+            <h5 class="cms-page-title">{{ editable ? 'Edit default theme' : 'Add default theme' }}</h5>
+            <p class="cms-page-subtitle">
+              Applies only where the campaign theme leaves a field empty. Leave a field blank (or "Inherit") to use the next layer:
+              operator + service, then service, then operator, then the page's built-in defaults.
+            </p>
+          </div>
+          <div class="cms-page-header__actions">
+            <p-button [routerLink]="['/campaign/theme-layers/list']" severity="secondary" icon="pi pi-arrow-left" label="Back to list"></p-button>
+          </div>
+        </div>
+
+        <p-panel header="Applies to" styleClass="cms-form-section">
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-3">
+              <label for="layer_scope">Scope</label>
+              <p-select inputId="layer_scope" formControlName="layer_scope" [options]="scopes" optionLabel="label"
+                optionValue="value" placeholder="Select scope" (onChange)="onScopeChange()"></p-select>
+              @if (submitted && !editable && !scope) {
+                <small class="p-error">Please select a scope</small>
+              }
+            </div>
+            @if (needsTelecom) {
+              <div class="field col-12 md:col-3">
+                <label for="layer_telecom_id">Operator</label>
+                <p-select inputId="layer_telecom_id" formControlName="layer_telecom_id" [options]="telecoms" optionLabel="name"
+                  optionValue="id" [filter]="true" placeholder="Select operator" (onChange)="onTelecomChange()"></p-select>
+                @if (submitted && !editable && !f['layer_telecom_id'].value) {
+                  <small class="p-error">Please select an operator</small>
+                }
+              </div>
+            }
+            @if (needsService) {
+              <div class="field col-12 md:col-3">
+                <label for="layer_service_id">Service</label>
+                <p-select inputId="layer_service_id" formControlName="layer_service_id" [options]="serviceOptions" optionLabel="name"
+                  optionValue="id" [filter]="true" placeholder="Select service"
+                  [emptyMessage]="scope === 'operator_service' ? 'Select an operator with partner services first' : 'No services'"></p-select>
+                @if (submitted && !editable && !f['layer_service_id'].value) {
+                  <small class="p-error">Please select a service</small>
+                }
+              </div>
+            }
+            <div class="field col-12 md:col-3">
+              <label for="theme_language">Language</label>
+              <p-select inputId="theme_language" formControlName="theme_language" [options]="languages" optionLabel="label"
+                optionValue="value"></p-select>
+            </div>
+          </div>
+          @if (editable) {
+            <small class="text-color-secondary">Scope, operator, service and language cannot change. Delete and re-create the default theme instead.</small>
+          }
+        </p-panel>
+
+        @for (section of textSections; track section.title) {
+          <p-panel [header]="section.title" styleClass="cms-form-section" [toggleable]="true">
+            <div class="p-fluid formgrid grid">
+              @for (field of section.fields; track field.name) {
+                <div class="field col-12" [ngClass]="{ 'md:col-6': field.kind !== 'editor' }">
+                  <label [for]="field.name">{{ field.label }}</label>
+                  @switch (field.kind) {
+                    @case ('editor') {
+                      <p-editor [formControlName]="field.name" [style]="{ height: '90px' }">
+                        <ng-template #header>
+                          <span class="ql-formats">
+                            <button type="button" class="ql-bold" aria-label="Bold"></button>
+                            <button type="button" class="ql-italic" aria-label="Italic"></button>
+                            <button type="button" class="ql-underline" aria-label="Underline"></button>
+                          </span>
+                        </ng-template>
+                      </p-editor>
+                    }
+                    @case ('textarea') {
+                      <textarea pTextarea [id]="field.name" [formControlName]="field.name" rows="3" placeholder="Inherit"></textarea>
+                    }
+                    @default {
+                      <input pInputText [id]="field.name" [formControlName]="field.name" placeholder="Inherit" />
+                    }
+                  }
+                  @if (f[field.name].hasError('maxlength')) {
+                    <small class="p-error">At most {{ field.max }} characters</small>
+                  }
+                </div>
+              }
+            </div>
+          </p-panel>
+        }
+
+        <p-panel header="Colours" styleClass="cms-form-section" [toggleable]="true">
+          <div class="p-fluid formgrid grid">
+            @for (field of colorFields; track field.name) {
+              <div class="field col-12 md:col-4">
+                <label [for]="field.name">{{ field.label }}</label>
+                <div class="flex align-items-center gap-2">
+                  <p-colorpicker [ngModel]="f[field.name].value || null" [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="f[field.name].setValue($event); f[field.name].markAsDirty()"></p-colorpicker>
+                  <input pInputText [id]="field.name" [formControlName]="field.name" placeholder="Inherit (e.g. #1d4ed8)" />
+                  @if (f[field.name].value) {
+                    <p-button icon="pi pi-times" severity="secondary" [text]="true" (click)="f[field.name].setValue('')"
+                      pTooltip="Clear (inherit)"></p-button>
+                  }
+                </div>
+                @if (f[field.name].hasError('pattern')) {
+                  <small class="p-error">Use a hex colour such as #1d4ed8</small>
+                }
+              </div>
+            }
+          </div>
+        </p-panel>
+
+        <p-panel header="Layout, logos and exit" styleClass="cms-form-section" [toggleable]="true">
+          <div class="p-fluid formgrid grid">
+            @for (field of enumFields; track field.name) {
+              <div class="field col-12 md:col-4">
+                <label [for]="field.name">{{ field.label }}</label>
+                <p-select [inputId]="field.name" [formControlName]="field.name" [options]="field.options" optionLabel="label"
+                  optionValue="value"></p-select>
+              </div>
+            }
+            @for (field of flagFields; track field.name) {
+              <div class="field col-12 md:col-4">
+                <label [for]="field.name">{{ field.label }}</label>
+                <p-select [inputId]="field.name" [formControlName]="field.name" [options]="flagOptions" optionLabel="label"
+                  optionValue="value"></p-select>
+              </div>
+            }
+            <div class="field col-12 md:col-6">
+              <label for="theme_operator_logo_url">Operator logo URL</label>
+              <input pInputText id="theme_operator_logo_url" formControlName="theme_operator_logo_url"
+                placeholder="Inherit (https://… or /path)" />
+              @if (f['theme_operator_logo_url'].invalid) {
+                <small class="p-error">Use an https URL or a root-relative path</small>
+              }
+            </div>
+            <div class="field col-12 md:col-6">
+              <label for="theme_exit_button_url">Exit button URL</label>
+              <input pInputText id="theme_exit_button_url" formControlName="theme_exit_button_url" placeholder="Inherit (https://…)" />
+              @if (f['theme_exit_button_url'].invalid) {
+                <small class="p-error">Use an absolute http(s) URL</small>
+              }
+            </div>
+          </div>
+        </p-panel>
+
+        <p-panel header="Banner and poster images" styleClass="cms-form-section" [toggleable]="true">
+          <p class="text-color-secondary mt-0">
+            The first image is the hero banner; the poster layout uses them all. Leave empty to inherit.
+          </p>
+          <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-6">
+              <label for="image_url_input">Add image URL</label>
+              <div class="flex gap-2">
+                <input pInputText id="image_url_input" [(ngModel)]="imageUrlInput" [ngModelOptions]="{ standalone: true }"
+                  placeholder="https://… or /path" (keydown.enter)="$event.preventDefault(); addImageUrl()" />
+                <p-button type="button" icon="pi pi-plus" label="Add" (click)="addImageUrl()"></p-button>
+              </div>
+            </div>
+            <div class="field col-12 md:col-6">
+              <label for="image_file">Or upload (PNG, JPG, GIF, WEBP; up to 1 MB)</label>
+              <div class="flex gap-2 align-items-center">
+                <input #fileInput type="file" id="image_file" accept=".png,.jpg,.jpeg,.gif,.webp" (change)="onFileChange($event)" />
+                <p-button type="button" icon="pi pi-upload" [label]="uploading ? 'Uploading…' : 'Upload'"
+                  [disabled]="!selectedFile || uploading" (click)="uploadImage(fileInput)"></p-button>
+              </div>
+            </div>
+          </div>
+          @if (imageError) {
+            <p-message severity="warn" [text]="imageError" styleClass="mb-3"></p-message>
+          }
+          @if (images.length) {
+            <div class="flex flex-wrap gap-3">
+              @for (url of images; track $index) {
+                <div class="flex flex-column align-items-center gap-1" style="width: 140px">
+                  <img [src]="url" alt="" style="width: 140px; height: 90px; object-fit: cover; border-radius: 6px; border: 1px solid var(--surface-border)" />
+                  <small class="text-overflow-ellipsis white-space-nowrap overflow-hidden w-full" [title]="url">
+                    {{ $index === 0 ? 'Banner · ' : '' }}{{ url }}
+                  </small>
+                  <p-button type="button" icon="pi pi-trash" severity="danger" [text]="true" size="small" (click)="removeImage($index)"></p-button>
+                </div>
+              }
+            </div>
+          }
+        </p-panel>
+
+        <div class="flex justify-content-end gap-2 mt-3">
+          <p-button [routerLink]="['/campaign/theme-layers/list']" severity="secondary" label="Cancel"></p-button>
+          <p-button type="submit" [label]="editable ? 'Update' : 'Create'" icon="pi pi-check" [loading]="saving"></p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+}
+<p-toast></p-toast>

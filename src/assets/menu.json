@@ -80,6 +80,14 @@
                 ]
               },
               {
+                "label": "Default Themes",
+                "item_action": "read",
+                "icon": "pi pi-fw pi-palette",
+                "routerLink": [
+                  "/campaign/theme-layers/list"
+                ]
+              },
+              {
                 "label": "Service API Document",
                 "item_action": "read",
                 "icon": "pi pi-download",

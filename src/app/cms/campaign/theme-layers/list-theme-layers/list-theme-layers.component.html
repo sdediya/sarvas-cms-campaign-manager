@@ -1,0 +1,78 @@
+@if (allowed) {
+<div class="grid cms-campaign cms-page">
+  <div class="col-12">
+    <div class="card">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          <h5 class="cms-page-title">Default Themes</h5>
+          <p class="cms-page-subtitle">
+            Operator, service and operator + service themes. A campaign page uses them only where its own theme leaves a field empty.
+          </p>
+        </div>
+        <div class="cms-page-header__actions">
+          <p-button [routerLink]="['/campaign/theme-layers/add']" icon="pi pi-plus" label="Add Default Theme"></p-button>
+        </div>
+      </div>
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="filter.scope" [options]="scopes" optionLabel="label" optionValue="value"
+          [showClear]="true" (onChange)="getLayers()" placeholder="Scope"></p-select>
+        <p-select [(ngModel)]="filter.telecom_id" [options]="telecoms" optionLabel="name" optionValue="id"
+          [filter]="true" [showClear]="true" (onChange)="getLayers()" placeholder="Operator"></p-select>
+        <p-select [(ngModel)]="filter.service_id" [options]="services" optionLabel="name" optionValue="id"
+          [filter]="true" [showClear]="true" (onChange)="getLayers()" placeholder="Service"></p-select>
+        <div class="cms-filter-actions">
+          @if (filter.scope || filter.telecom_id || filter.service_id) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+        </div>
+      </div>
+      <p-table #dt1 styleClass="cms-table-dense" [value]="layers" [loading]="loading" [paginator]="true" [rows]="10"
+        [globalFilterFields]="['layer_scope', 'theme_language', 'theme_banner_title_text']"
+        [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
+        <ng-template #caption>
+          <div class="cms-list-tools">
+            <p-iconfield>
+              <p-inputicon class="pi pi-search"></p-inputicon>
+              <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Search" class="w-full" />
+            </p-iconfield>
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th style="min-width: 7rem">Options</th>
+            <th style="min-width: 10rem">Scope</th>
+            <th style="min-width: 14rem">Operator</th>
+            <th style="min-width: 12rem">Service</th>
+            <th style="min-width: 8rem">Language</th>
+            <th style="min-width: 12rem">Updated</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-layer>
+          <tr>
+            <td>
+              <div class="flex gap-2">
+                <p-button [routerLink]="['/campaign/theme-layers/edit']" [queryParams]="{ id: layer.layer_id }"
+                  severity="success" size="small" icon="pi pi-pencil"></p-button>
+                <p-button (click)="deleteLayer(layer)" severity="danger" size="small" icon="pi pi-trash"></p-button>
+              </div>
+            </td>
+            <td>{{ scopeLabel(layer.layer_scope) }}</td>
+            <td>{{ telecomName(layer.layer_telecom_id) }}</td>
+            <td>{{ serviceName(layer.layer_service_id) }}</td>
+            <td>{{ layer.theme_language || 'All' }}</td>
+            <td>{{ (layer.layer_updateddate || layer.layer_createddate) | date: 'dd MMM yyyy, HH:mm' }}</td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="6" class="cms-table-empty">No default themes yet.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+}
+<p-toast></p-toast>
+<p-confirmdialog key="confirmThemeLayerDelete"></p-confirmdialog>
