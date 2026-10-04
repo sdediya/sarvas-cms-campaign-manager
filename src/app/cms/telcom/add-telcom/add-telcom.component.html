@@ -249,7 +249,7 @@
                             </td>
                             <td style="width: 10rem">
                               <div class="field m-0">
-                                <p-select [options]="services" formControlName="telcom_service_id" placeholder="Select Service" optionLabel="name" optionValue="id"></p-select>
+                                <p-select [options]="services" formControlName="telcom_service_id" placeholder="Select Service" optionLabel="name" optionValue="id" appendTo="body"></p-select>
                                 @if (submitted && !f['tel_services'].controls[i].controls['telcom_service_id'].valid) {
                                   <div style="display: block; width: 100%;">
                                     @if (f['tel_services'].controls[i].controls['telcom_service_id'].hasError('required') ) {
@@ -263,7 +263,7 @@
                             </td>
                             <td style="width: 10rem">
                               <div class="field m-0">
-                                <p-select id="tel_services" [options]="master_aggregators" optionLabel="maggregator_name" formControlName="telcom_partner_id" placeholder="Select Partner" optionValue="maggregator_id"></p-select>
+                                <p-select id="tel_services" [options]="master_aggregators" optionLabel="maggregator_name" formControlName="telcom_partner_id" placeholder="Select Partner" optionValue="maggregator_id" appendTo="body"></p-select>
                               </div>
                             </td>
                             <td style="width: 10rem">
