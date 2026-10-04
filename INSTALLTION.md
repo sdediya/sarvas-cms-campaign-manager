@@ -61,6 +61,33 @@
    ./deploy.sh
    ```
 
+The script deploys the **prod** build and runs these steps, stopping at the first failure:
+1. Checks that `git`, `node`, `npm`, `pm2` and `curl` are installed, and that the working tree has no uncommitted changes.
+2. Pulls the latest code (`git pull --ff-only`).
+3. Installs dependencies (`npm install`) only if `package.json` changed since the last successful install, or `node_modules/` is missing. The check compares a SHA-256 hash of `package.json` with the one stored in `node_modules/.package-json.sha256`.
+4. Builds the app (`npm run build:prod`). If the build fails, the live site is not touched.
+5. Moves the current `dist/` to `dist-backup/` and the new build into `dist/`.
+6. Reloads the pm2 app (or starts it from `ecosystem.config.js --env prod` if it is not registered yet).
+7. Health check: requests `http://localhost:3001/` until it returns the Angular `index.html`, for up to 30 seconds.
+
+If the health check passes, `dist-backup/` is deleted and the pm2 process list is saved (`pm2 save`).
+If it fails, the script prints recent pm2 logs, restores `dist-backup/` to `dist/`, reloads pm2, keeps the broken build in `dist-failed/` for inspection, and exits with a non-zero code. The pulled code is left in place; the script prints the `git reset` command to revert it.
+
+Defaults can be overridden with environment variables:
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `BRANCH` | `main` | Branch to pull |
+| `APP_NAME` | `Campaign Manager` | pm2 app name |
+| `PORT` | `3001` | Port used for the health check |
+| `HEALTH_TIMEOUT` | `30` | Seconds to wait for the app to respond |
+| `FORCE_INSTALL` | `false` | Set to `true` to run `npm install` even if `package.json` is unchanged |
+
+Example:
+```bash
+BRANCH=release HEALTH_TIMEOUT=60 ./deploy.sh
+```
+
 ## Additional Commands
 - To stop the application:
   ```bash

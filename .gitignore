@@ -3,6 +3,8 @@
 # Compiled output
 /dist
 /dist-temp
+/dist-backup
+/dist-failed
 /tmp
 /out-tsc
 /bazel-out
