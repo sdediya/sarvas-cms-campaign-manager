@@ -13,6 +13,7 @@ import {
   HEX_COLOR_INPUT,
   HTTP_URL,
   HTTPS_OR_ROOT_URL,
+  isValidPriceText,
   LAYER_LANGUAGE_OPTIONS,
   LAYER_SCOPE_OPTIONS,
   MAX_IMAGES,
@@ -29,6 +30,11 @@ function optionalPattern(pattern: RegExp): ValidatorFn {
     const value = typeof control.value === 'string' ? control.value.trim() : control.value;
     return !value || pattern.test(value) ? null : { pattern: true };
   };
+}
+
+function priceTextValidator(control: AbstractControl) {
+  const value = typeof control.value === 'string' ? control.value.trim() : '';
+  return !value || isValidPriceText(value) ? null : { priceText: true };
 }
 
 /** `p-colorpicker` may emit hex without the leading '#'. */
@@ -98,6 +104,7 @@ export class AddThemeLayerComponent implements OnInit {
     for (const section of TEXT_SECTIONS) {
       for (const field of section.fields) controls[field.name] = ['', [Validators.maxLength(field.max)]];
     }
+    controls['theme_price_text'] = ['', [Validators.maxLength(200), priceTextValidator]];
     for (const field of COLOR_FIELDS) controls[field.name] = ['', [optionalPattern(HEX_COLOR_INPUT)]];
     for (const field of FLAG_FIELDS) controls[field.name] = [null];
     for (const field of ENUM_FIELDS) controls[field.name] = [null];

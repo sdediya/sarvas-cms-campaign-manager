@@ -400,6 +400,16 @@
                     <label htmlFor="theme_powered_by_text">Powered By Text</label>
                     <input pInputText id="theme_powered_by_text" type="text" formControlName="theme_powered_by_text" placeholder="Powered By Text" />
                   </div>
+                  <div class="field col-12">
+                    <label htmlFor="theme_price_text">Price Text</label>
+                    <input pInputText id="theme_price_text" type="text" formControlName="theme_price_text" placeholder="e.g. <currency> <plan_amount> per <validity_text>" />
+                    <small class="block text-color-secondary mt-1">{{ priceTextHint }} Needs default themes enabled on the server.</small>
+                    @if (f['theme_price_text'].hasError('priceText') || f['theme_price_text'].hasError('maxlength')) {
+                      <div class="cms-field-error">
+                        <span class="p-error">Must include &lt;plan_amount&gt;, use only the listed placeholders and be at most 200 characters</span>
+                      </div>
+                    }
+                  </div>
                 </div>
               </p-panel>
             </div>

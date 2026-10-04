@@ -21,9 +21,25 @@ export const LAYER_LANGUAGE_OPTIONS = [
   { label: 'Arabic', value: 'Arabic' }
 ];
 
-export type TextField = { name: string; label: string; max: number; kind: 'input' | 'textarea' | 'editor' };
+export type TextField = { name: string; label: string; max: number; kind: 'input' | 'textarea' | 'editor'; hint?: string };
+
+/** Same rule as the backend (`isValidPriceText`): the amount is required and only these placeholders are allowed. */
+export const PRICE_TEXT_PLACEHOLDERS = ['<currency>', '<plan_amount>', '<plan_validity>', '<validity_text>'];
+export const PRICE_TEXT_HINT =
+  'Blank = default (e.g. "KWD 0.15 / day"). Must include <plan_amount>. Placeholders: <currency>, <plan_amount>, <plan_validity> (days), <validity_text> (day / week / month in the page language).';
+
+export function isValidPriceText(value: string): boolean {
+  const tokens = value.match(/<[^<>]*>/g) ?? [];
+  return value.includes('<plan_amount>') && tokens.every((t) => PRICE_TEXT_PLACEHOLDERS.includes(t));
+}
 
 export const TEXT_SECTIONS: { title: string; fields: TextField[] }[] = [
+  {
+    title: 'Price',
+    fields: [
+      { name: 'theme_price_text', label: 'Price text (e.g. "<currency> <plan_amount> per <validity_text>")', max: 200, kind: 'input', hint: PRICE_TEXT_HINT }
+    ]
+  },
   {
     title: 'Hero',
     fields: [

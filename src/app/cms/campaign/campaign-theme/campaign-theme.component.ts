@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,12 @@ import * as Utils from 'src/app/utils/utils';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { I18nServiceService } from 'src/app/services/i18n-service.service';
 import { distinctUntilChanged, throttleTime } from 'rxjs';
+import { isValidPriceText, PRICE_TEXT_HINT } from '../theme-layers/theme-layer-fields';
+
+function priceTextValidator(control: AbstractControl) {
+  const value = typeof control.value === 'string' ? control.value.trim() : '';
+  return !value || isValidPriceText(value) ? null : { priceText: true };
+}
 
 @Component({
     selector: 'app-campaign-theme',
@@ -25,6 +31,7 @@ export class CampaignThemeComponent implements OnInit{
 
   [key:string]:any
   campaignThemeForm: any = FormGroup;
+  priceTextHint = PRICE_TEXT_HINT;
 
   submitted : boolean = false;
   isValidForm : boolean = false;
@@ -110,7 +117,8 @@ export class CampaignThemeComponent implements OnInit{
       theme_exit_button: [true],
       theme_send_otp_button_text: [''],
       theme_verify_otp_button_text: [''],
-      theme_powered_by_text: ['']
+      theme_powered_by_text: [''],
+      theme_price_text: ['', [Validators.maxLength(200), priceTextValidator]]
     });
 
 
@@ -449,6 +457,7 @@ console.log(currentTheme);
       this.f['theme_send_otp_button_text'].setValue("");
       this.f['theme_verify_otp_button_text'].setValue("");
       this.f['theme_powered_by_text'].setValue("");
+      this.f['theme_price_text'].setValue("");
   }
 
   resetFormExcept(form: FormGroup, fieldsToExclude: string[]) {

@@ -84,8 +84,14 @@
                       <input pInputText [id]="field.name" [formControlName]="field.name" placeholder="Inherit" />
                     }
                   }
+                  @if (field.hint) {
+                    <small class="block text-color-secondary mt-1">{{ field.hint }}</small>
+                  }
                   @if (f[field.name].hasError('maxlength')) {
                     <small class="p-error">At most {{ field.max }} characters</small>
+                  }
+                  @if (f[field.name].hasError('priceText')) {
+                    <small class="p-error">Must include &lt;plan_amount&gt; and use only the listed placeholders</small>
                   }
                 </div>
               }
