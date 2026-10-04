@@ -1,68 +1,72 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class=" m-2 grid justify-content-between">
-        <h5>Cron List</h5>
-        @if (write) {
-          <p-button [routerLink]="['/masters/master-cron']">Add crons</p-button>
-        }
+            <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Cron Jobs</h5>
+          <p class="cms-page-subtitle">Manage scheduled cron configurations</p>
+        </div>
       </div>
-      <p-table #dt1 [value]="crons"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+
+      <p-table #dt1 styleClass="cms-table-dense" [value]="crons"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
+          <div class="cms-list-tools">
             <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Crons" class="w-full"/></p-iconfield>
-            @if (crons.length > 0) {
+            <div class="cms-list-tools__actions">
+              @if (crons.length > 0) {
                 <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
           <tr>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Unique Code <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Unique Code <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Country <p-sort-icon class="mx-4" field="country"></p-sort-icon>
+                Country <p-sortIcon class="mx-4" field="country"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="operator" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Operator <p-sort-icon class="mx-4" field="operator"></p-sort-icon>
+                Operator <p-sortIcon class="mx-4" field="operator"></p-sortIcon>
               </div>
             </th>
 
             <th pSortableColumn="time" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Start Time <p-sort-icon class="mx-4" field="time"></p-sort-icon>
+                Start Time <p-sortIcon class="mx-4" field="time"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Interval Minutes <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Interval Minutes <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Retry On Failure<p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Retry On Failure<p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Max Retry Count <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Max Retry Count <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
             <th pSortableColumn="url" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Current Retry Count <p-sort-icon class="mx-4" field="url"></p-sort-icon>
+                Current Retry Count <p-sortIcon class="mx-4" field="url"></p-sortIcon>
               </div>
             </th>
 
@@ -128,19 +132,19 @@
           </td>
           <td>
             @if (write) {
-              <p-button [routerLink]="['/masters/edit-cron']" [queryParams]="{id: crons.cron_id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+              <p-button [routerLink]="['/masters/edit-cron']" [queryParams]="{id: crons.cron_id}" severity="success" size="small" icon="pi pi-pencil"></p-button>
             }
           </td>
         </tr>
       </ng-template>
       <ng-template #emptymessage>
         <tr>
-          <td colspan="8">No data found.</td>
+          <td colspan="6" class="cms-table-empty">No data found.</td>
         </tr>
       </ng-template>
       <ng-template #loadingbody>
         <tr>
-          <td colspan="8">Loading data. Please wait.</td>
+          <td colspan="6" class="cms-table-empty">Loading data. Please wait.</td>
         </tr>
       </ng-template>
     </p-table>

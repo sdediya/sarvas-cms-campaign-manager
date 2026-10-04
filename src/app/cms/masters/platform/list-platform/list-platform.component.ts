@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -14,6 +14,7 @@ import { ClipboardService } from 'ngx-clipboard';
     selector: 'app-list-platform',
     templateUrl: './list-platform.component.html',
     styleUrls: ['./list-platform.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListPlatformComponent implements OnInit {

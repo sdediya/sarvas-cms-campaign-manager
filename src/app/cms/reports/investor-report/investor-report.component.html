@@ -1,14 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="ml-1 grid">
-        <h5>Investor Reports</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Investor Reports</h5>
+          <p class="cms-page-subtitle">Investor performance and revenue insights</p>
+        </div>
       </div>
-      <p-divider align="center">
-
-      </p-divider>
       <form [formGroup]="ipForm" (ngSubmit)="$event.preventDefault()">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="year">Select Year<span label styleclass="label-required"
@@ -20,24 +21,6 @@
                   @if (f['year'].hasError('required') ) {
                     <span class="p-error">
                       Please select year
-                    </span>
-                  }
-                </div>
-              }
-            </div>
-          </div>
-          <div class="col-4 md:col-3">
-            <div class="field col-12">
-              <label>Select Service<span label styleclass="label-required"
-              class="text-red-500">*</span></label>
-              <p-select formControlName="service" id="service" [options]="services"
-                optionLabel="label" optionValue="value" placeholder="Service"
-              [showClear]="true"></p-select>
-              @if (submitted && !f['service'].valid) {
-                <div style="display: block; width: 100%;">
-                  @if (f['service'].hasError('required') ) {
-                    <span class="p-error">
-                      Please select service
                     </span>
                   }
                 </div>
@@ -71,22 +54,25 @@
       @if (submitted && isValidForm) {
         <div>
           @if (reports?.length) {
-            <div class="flex justify-content-end mb-2">
-              @if (ipForm.get('reportType')?.value !== 'detail') {
+            <div class="cms-list-tools mb-2">
+              <div></div>
+              <div class="cms-list-tools__actions">
+                @if (ipForm.get('reportType')?.value !== 'detail') {
                 <button type="button" pButton pRipple (click)="onExport()" severity="success"><i class="pi pi-file-excel"></i> Export</button>
               }
+              </div>
             </div>
           }
           @if (reports?.length && ipForm.get('reportType')?.value !== 'detail') {
             <p-table [columns]="cols" [value]="reports"
               [scrollable]="true" scrollHeight="500px" [customSort]="true"
-              (sortFunction)="customSort($event)">
+              (sortFunction)="customSort($event)" styleClass="cms-table-dense">
               <ng-template #header let-columns>
                 <tr>
                   @for (col of columns; track col) {
                     <th [pSortableColumn]="col.key">
                       {{ col.header || col.key }}
-                      <p-sort-icon [field]="col.key"></p-sort-icon>
+                      <p-sortIcon [field]="col.key"></p-sortIcon>
                     </th>
                   }
                 </tr>

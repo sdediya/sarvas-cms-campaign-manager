@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { error, json } from '@rxweb/reactive-form-validators';
 import { Table } from 'primeng/table';
@@ -14,6 +14,7 @@ import { Observable, catchError } from 'rxjs';
     selector: 'app-ip-report',
     templateUrl: './ip-report.component.html',
     styleUrls: ['./ip-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class IpReportComponent {

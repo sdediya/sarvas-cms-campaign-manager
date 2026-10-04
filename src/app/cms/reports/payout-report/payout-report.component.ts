@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
@@ -9,6 +9,7 @@ import { HttpService } from 'src/app/services/http/http.service';
     selector: 'app-payout-report',
     templateUrl: './payout-report.component.html',
     styleUrls: ['./payout-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PayoutReportComponent {

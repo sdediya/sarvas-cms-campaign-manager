@@ -5,6 +5,17 @@
     cursor: pointer;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+:host ::ng-deep .cms-campaign .p-datatable .p-datatable-tbody > tr > td {
     text-wrap: nowrap;
+}
+
+:host ::ng-deep .cms-campaign .p-datatable {
+    border: 1px solid var(--vas-border, var(--surface-border, #e2e8f0));
+    border-radius: var(--vas-radius, 10px);
+}
+
+:host ::ng-deep .cms-campaign .p-datatable .p-paginator {
+    border-top: 1px solid var(--vas-border, var(--surface-border, #e2e8f0));
+    padding: 0.5rem 0.75rem;
+    background: var(--surface-50, #f8fafc);
 }

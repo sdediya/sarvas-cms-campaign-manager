@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { Table } from 'primeng/table';
     selector: 'app-dbc-notification-logs',
     templateUrl: './dbc-notification-logs.component.html',
     styleUrls: ['./dbc-notification-logs.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DbcNotificationLogsComponent implements OnInit {

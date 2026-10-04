@@ -1,10 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="p-fluid formgrid grid align-items-center mb-6" style="display: flex; justify-content: space-between;">
-        <div class="col-3 md:col-2">
-          <h5 class="m-0">Google Sheet</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Google Sheet</h5>
+          <p class="cms-page-subtitle">Manage Google Sheet integrations</p>
         </div>
+      </div>
+
+      <div class="p-fluid formgrid grid align-items-center mb-6" style="display: flex; justify-content: space-between;">
         @if (write) {
           <button type="button" pButton pRipple (click)="showDialog()" tooltipPosition="bottom" severity="success"><i class="pi pi-plus"></i></button>
         }
@@ -32,7 +37,7 @@
               <td> {{ googleSheet.date }} </td>
               <td> <p-toggleswitch [(ngModel)]="googleSheet.status" [disabled]="!write" class="p-inputswitch-checked" (onChange)="statusToggle(googleSheet.gSheet_id, googleSheet.status, rowIndex)"></p-toggleswitch></td>
               <td> @if (write) {
-                <p-button (click)="showDialog(googleSheet)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                <p-button (click)="showDialog(googleSheet)" severity="success" size="small" icon="pi pi-plus"></p-button>
               } </td>
             </tr>
           </ng-template>

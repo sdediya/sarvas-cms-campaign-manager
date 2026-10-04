@@ -1,13 +1,21 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="cms-page-title">Campaign Configuration List</h5>
-      <div class="cms-filter-bar">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          <h5 class="cms-page-title">Campaign Configuration</h5>
+          <p class="cms-page-subtitle">View and manage campaign configuration rules</p>
+        </div>
+      </div>
+<div class="cms-filter-bar">
           <p-select [(ngModel)]="filter.conf_type" id="conf_type" [options]="conf_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_type')" placeholder="Configuration Type" optionValue="code"></p-select>
           <p-select [(ngModel)]="filter.conf_level_type" id="conf_level_type" [options]="conf_level_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'conf_level_type')" placeholder="Configuration Level" optionValue="code"></p-select>
-        @if (filter.conf_level_type || filter.conf_type) {
+        <div class="cms-filter-actions">
+          @if (filter.conf_level_type || filter.conf_type) {
           <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
         }
+        </div>
       </div>
 
       <p-table #dt1 styleClass="cms-table-dense" [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
@@ -15,9 +23,11 @@
           <div class="cms-list-tools">
             <p-iconfield><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Configuration" class="w-full"/></p-iconfield>
-            @if (campaign_confs.length>0) {
+            <div class="cms-list-tools__actions">
+              @if (campaign_confs.length>0) {
                 <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
@@ -92,12 +102,12 @@
         </ng-template>
         <ng-template #emptymessage>
           <tr>
-            <td colspan="8">No data found.</td>
+            <td colspan="7" class="cms-table-empty">No data found.</td>
           </tr>
         </ng-template>
         <ng-template #loadingbody>
           <tr>
-            <td colspan="8">Loading data. Please wait.</td>
+            <td colspan="7" class="cms-table-empty">Loading data. Please wait.</td>
           </tr>
         </ng-template>
       </p-table>

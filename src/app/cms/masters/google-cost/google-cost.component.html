@@ -1,11 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Google Campaign Cost</h5>
+          <p class="cms-page-subtitle">Manage Google campaign cost</p>
+        </div>
+      </div>
+
       <form [formGroup]="googleCampaignCostForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid align-items-center" style="display: flex; justify-content: space-between;">
-          <div class="col-12 md:col-8">
-            <h5 class="m-0">Google Campaign Cost</h5>
-          </div>
           <div class="col-6 md:col-4 text-right">
             @if (write && !isCronScheduled) {
               <button type="button" pButton pRipple [disabled]="manualProcess" tooltip="Process Sheet Manually" (click)="showuploadDialog()" class="md:w-6" tooltipPosition="bottom" severity="success">Process Sheet Manually</button>
@@ -105,7 +110,7 @@
                 <td> {{ googleCampaignCost.partner_name }} </td>
                 <td> {{ googleCampaignCost.amount }} </td>
                 <td> @if (write) {
-                  <p-button (click)="showDialog(googleCampaignCost)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                  <p-button (click)="showDialog(googleCampaignCost)" severity="success" size="small" icon="pi pi-plus"></p-button>
                 } </td>
               </tr>
             </ng-template>

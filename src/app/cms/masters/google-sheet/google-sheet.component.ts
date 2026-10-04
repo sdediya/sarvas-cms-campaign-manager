@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -12,6 +12,7 @@ import moment from 'moment';
     selector: 'app-google-sheet',
     templateUrl: './google-sheet.component.html',
     styleUrls: ['./google-sheet.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GoogleSheetComponent implements OnInit{

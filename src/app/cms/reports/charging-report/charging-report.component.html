@@ -1,14 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-
-      <div class="p-fluid formgrid grid align-items-center	">
-        <div class="col-12 md:col-3">
-          <h5 class="m-0">Charging Report</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Charging Report</h5>
+          <p class="cms-page-subtitle">Charging and billing report</p>
         </div>
       </div>
-      <form [formGroup]="chargingReportForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center	">
+<form [formGroup]="chargingReportForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center	 cms-filter-bar">
           <div class="col-6 md:col-3">
             <label htmlFor="date">Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker  formControlName="date" [readonlyInput]="true" inputId="range" selectionMode="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" ></p-datepicker>
@@ -81,7 +82,7 @@
           </div>
 
           <div class="col-6 md:col-3 flex align-items-center">
-            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
@@ -98,13 +99,16 @@
               @for (table of reportTables; track table) {
                 <div class="mb-5">
                   <h5 class="mt-3">{{ table.planName }} Plan Report</h5>
-                  <p-table [columns]="table.cols" [value]="table.reports" [scrollable]="true" scrollHeight="700px">
+                  <p-table [columns]="table.cols" [value]="table.reports" [scrollable]="true" scrollHeight="700px" styleClass="cms-table-dense">
                     @if (table.reports?.length > 0) {
                       <ng-template #caption>
-                        <div class="flex">
-                          <button type="button" pButton pRipple (click)="downloadExcel(table.plan_validity)" class="ml-auto" pTooltip="Export XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
-                        </div>
-                      </ng-template>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel(table.plan_validity)" pTooltip="Export XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
+              </div>
+            </ng-template>
                     }
                     <ng-template #header let-columns>
                       <tr>

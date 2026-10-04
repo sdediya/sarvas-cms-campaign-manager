@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-target-vs-achievement-drr',
     templateUrl: './target-vs-achievement-drr.component.html',
     styleUrls: ['./target-vs-achievement-drr.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TargetVsAchievementDrrComponent implements OnInit {

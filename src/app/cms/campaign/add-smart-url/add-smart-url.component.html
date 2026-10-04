@@ -1,22 +1,29 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="cms-page-title">Add Smart Url</h5>
-      }
-      @if (editable) {
-        <h5 class="cms-page-title">Edit Smart Url</h5>
-      }
+            <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Smart URL</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Create Smart URL</h5>
+            <p class="cms-page-subtitle">Configure smart URL routing and operator defaults</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Smart URL</h5>
+            <p class="cms-page-subtitle">Configure smart URL routing and operator defaults</p>
+          }
+        </div>
+      </div>
       <form [formGroup]="smartUrlForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid">
-          <div class="field col-12 md:col-12">
+        <div class="p-fluid formgrid grid cms-form-stack">
+          <div class="col-12 cms-section-wrap">
             <p-panel header="Smart Url Details" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-3">
                   <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_region" [options]="campaign_regions" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_region')" formControlName="campaign_region" placeholder="Select Region" optionValue="id" [readonly]="editable"></p-select>
                   @if (submitted && !f['campaign_region'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_region'].hasError('required') ) {
                         <span class="p-error"> Region is required</span>
                       }
@@ -27,7 +34,7 @@
                   <label htmlFor="campaign_telecom_id"> Select Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-multiselect id="campaign_telecom_id" [options]="telecom_operators" optionLabel="name" [filter]="false" (onChange)="dropdownOnChange($event, 'campaign_telecom_id')" formControlName="campaign_telecom_id" placeholder="Select Operator" optionValue="id" [readonly]="editable"></p-multiselect>
                   @if (submitted && !f['campaign_telecom_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_telecom_id'].hasError('required')) {
                         <span class="p-error"> Operator is required</span>
                       }
@@ -40,7 +47,7 @@
                   <label htmlFor="dafault_telecom_id"> Select Default Operator <span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="dafault_telecom_id" [options]="default_telecom_operators" optionLabel="name" [filter]="false" (onChange)="dropdownOnChange($event, 'dafault_telecom_id')" formControlName="dafault_telecom_id" placeholder="Select Default Operator" optionValue="id" ></p-select>
                   @if (submitted && !f['dafault_telecom_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['dafault_telecom_id'].hasError('required') ) {
                         <span class="p-error"> Default Operator is required</span>
                       }
@@ -52,7 +59,7 @@
                   <label htmlFor="campaign_plan_id">Select Plan<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_plan_id" [options]="planValidity" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_plan_id')"   formControlName="campaign_plan_id" placeholder="Select Plan Validity" optionValue="id" [readonly]="editable"></p-select>
                   @if (submitted && !f['campaign_plan_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_plan_id'].hasError('required') ) {
                         <span class="p-error"> Plan is required</span>
                       }
@@ -65,7 +72,7 @@
                   <label htmlFor="campaign_platform_id">Select Ad Partner<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_platform_id" [options]="advertising_platforms" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_platform_id')" formControlName="campaign_platform_id" placeholder="Select As Partner" optionValue="id"></p-select>
                   @if (submitted && !f['campaign_platform_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_platform_id'].hasError('required') ) {
                         <span class="p-error"> Ad Partner is required </span>
                       }
@@ -91,7 +98,7 @@
                     </p-multiselect>
 
                     @if (submitted && !f['selected_campaign'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['selected_campaign'].hasError('required') ) {
                           <span class="p-error">Please select campaign</span>
                         }
@@ -106,7 +113,7 @@
                   <label htmlFor="campaign_languages">Languages<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-multiselect [options]="languages" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_languages')" formControlName="campaign_languages" defaultLabel="Select Language" optionLabel="name" optionValue="name" display="chip"></p-multiselect>
                   @if (submitted && !f['campaign_languages'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_languages'].hasError('required') ) {
                         <span class="p-error"> Language is required</span>
                       }
@@ -117,7 +124,7 @@
                   <label htmlFor="campaign_default_language">Default Language<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_default_language" [readonly]="default_language_readonly" [options]="default_language_list" optionLabel="name" formControlName="campaign_default_language" placeholder="Select Default Language" optionValue="name"></p-select>
                   @if (submitted && !f['campaign_languages'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_languages'].hasError('required') ) {
                         <span class="p-error"> Default language is required</span>
                       }
@@ -193,7 +200,7 @@
                   <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
                   @if (!f['banner_image_urls'].valid && selectedThemeImageFile!==null) {
                     <div
-                      style="display: block; width: 100%;">
+                      class="cms-field-error">
                       @if (f['banner_image_urls'].hasError('required') || f['banner_image_urls'].hasError('invalidDimensions') ) {
                         <span class="p-error"
                           >
@@ -217,7 +224,7 @@
                   }
                   @if (submitted && !f['banner_image_urls'].valid) {
                     <div
-                      style="display: block; width: 100%;">
+                      class="cms-field-error">
                       @if (f['banner_image_urls'].hasError('required') ) {
                         <span class="p-error">
                           Banner Image is required
@@ -246,8 +253,8 @@
           </div>
         </div>
         <div class="cms-sticky-actions">
+      <p-button [routerLink]="['/campaign/smart-url/list']" label="Cancel" severity="secondary" [outlined]="true"></p-button>
       <p-button type="submit" label="Submit" [raised]="true"></p-button>
-      <p-button [routerLink]="['/campaign/smart-url/list']" label="Cancel" severity="danger"></p-button>
     </div>
       </form>
     </div>

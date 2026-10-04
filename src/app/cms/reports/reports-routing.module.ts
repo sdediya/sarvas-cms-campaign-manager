@@ -20,8 +20,6 @@ import { OperatorRevenueCalculatorComponent } from './operator-revenue-calculato
 import { ChargingReportComponent } from './charging-report/charging-report.component';
 import { RevenueReportV2Component } from './revenue-report-v2/revenue-report-v2.component';
 
-import { SMEServiceApiLogsComponent } from './shemaroome-otp/service-api-logs/service-api-logs.component';
-import { OTPReportsComponent } from './shemaroome-otp/otp-reports/otp-summary.component';
 import { PartnerWiseSummaryV2Component } from './ageing-report-v2/partner-wise-summary/partner-wise-summary-v2.component';
 import { AgeingDumpV2Component } from './ageing-report-v2/ageing-dump/ageing-dump-v2.component';
 import { AgeingSummaryV2Component } from './ageing-report-v2/ageing-summary/ageing-summary-v2.component';
@@ -72,9 +70,6 @@ const routes: Routes = [
 
   {path: 'operatorCalculator', component:OperatorRevenueCalculatorComponent},
   { path: 'charging-report', component:ChargingReportComponent},
-
-  { path: 'smeotp/service-logs', component:SMEServiceApiLogsComponent},
-  { path: 'smeotp/otp-report', component:OTPReportsComponent},
 
   { path: 'service-operator-response-report', component:ServiceOperatorResponseReportComponent},
   { path: 'target-vs-achievement/revenue', component: TargetVsAchievementRevenueComponent },

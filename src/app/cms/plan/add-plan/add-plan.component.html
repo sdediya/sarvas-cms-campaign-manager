@@ -1,14 +1,22 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add Plan</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Plan</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Plans</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Add Plan</h5>
+            <p class="cms-page-subtitle">Create a new subscription plan</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Plan</h5>
+            <p class="cms-page-subtitle">Update subscription plan details</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
       <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid">
+        <div class="p-fluid formgrid grid cms-form-stack">
           <div class="field col-12 md:col-12">
             <div class="grid">
               <!-- <div class="col-12 md:col-6">
@@ -98,11 +106,11 @@
                 }
               </div>
               <div class="field col-12 md:col-4">
-                <label htmlFor="plan_smeplan_id">Service Plan ID<span label styleclass="label-required" class="text-red-500">*</span></label>
-                <input pInputText id="plan_smeplan_id" type="text" formControlName="plan_smeplan_id" placeholder="Service Plan ID" />
-                @if (submitted && !f['plan_smeplan_id'].valid) {
+                <label htmlFor="plan_service_plan_id">Service Plan ID<span label styleclass="label-required" class="text-red-500">*</span></label>
+                <input pInputText id="plan_service_plan_id" type="text" formControlName="plan_service_plan_id" placeholder="Service Plan ID" />
+                @if (submitted && !f['plan_service_plan_id'].valid) {
                   <div style="display: block; width: 100%;">
-                    @if (f['plan_smeplan_id'].hasError('required') ) {
+                    @if (f['plan_service_plan_id'].hasError('required') ) {
                       <span class="p-error">
                         Service Plan ID is required
                       </span>
@@ -293,10 +301,10 @@
               <td class="col-actions">
                 <div class="field m-0">
                   @if (SmsConfigues.controls.length > 1) {
-                    <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                    <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash"></p-button>
                   }
                   @if (i==SmsConfigues.controls.length-1) {
-                    <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                    <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" severity="success"></p-button>
                   }
                 </div>
               </td>
@@ -313,6 +321,7 @@
 </div>
 <!-- </div> -->
 </form>
+</div>
 </div>
 </div>
 </div>

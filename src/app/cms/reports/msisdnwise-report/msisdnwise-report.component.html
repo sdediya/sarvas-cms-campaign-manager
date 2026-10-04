@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="m-0" style="text-wrap: nowrap;">Msisdn Wise Reports</h5>
-      <p-divider></p-divider>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Msisdn Wise Reports</h5>
+          <p class="cms-page-subtitle">MSISDN-level reporting</p>
+        </div>
+      </div>
+
       <form [formGroup]="msisdnForm">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <label htmlFor="msisdn_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker formControlName="msisdn_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
@@ -44,13 +50,13 @@
             </div>
           </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Export</button>
+            <button type="submit" (click)="onSubmit()" pButton pRipple size="small">Export</button>
           </div>
         </div>
       </form>
-      <!-- <p-divider></p-divider>
-      <form [formGroup]="msisdnForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center">
+      <!--
+<form [formGroup]="msisdnForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
 
           <div class="col-4 md:col-3">
             <div class="field col-12">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     selector: 'app-live-dashboard',
     templateUrl: './live-dashboard.component.html',
     styleUrls: ['./live-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LiveDashboardComponent {

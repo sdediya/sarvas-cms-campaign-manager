@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
     selector: 'app-list-landing-page-configuration',
     templateUrl: './list-landing-page-configuration.component.html',
     styleUrls: ['./list-landing-page-configuration.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListLandingPageConfigurationComponent {

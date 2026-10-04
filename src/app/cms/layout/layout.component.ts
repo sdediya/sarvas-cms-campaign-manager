@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnDestroy, Renderer2, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { SidebarComponent } from './sidebar/sidebar/sidebar.component';
@@ -8,6 +8,7 @@ import { LayoutService } from './layout.service';
 @Component({
     selector: 'app-layout',
     templateUrl: './layout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LayoutComponent implements OnDestroy {
@@ -35,8 +36,12 @@ export class LayoutComponent implements OnDestroy {
 
         if (!this.profileMenuOutsideClickListener) {
             this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                const isOutsideClicked = !(this.appTopbar.menu.nativeElement.isSameNode(event.target) || this.appTopbar.menu.nativeElement.contains(event.target)
-                    || this.appTopbar.topbarMenuButton.nativeElement.isSameNode(event.target) || this.appTopbar.topbarMenuButton.nativeElement.contains(event.target));
+                const menuEl = this.appTopbar?.menu?.nativeElement;
+                const topbarBtnEl = this.appTopbar?.topbarMenuButton?.nativeElement;
+                const isOutsideClicked = !(
+                    (menuEl && (menuEl.isSameNode(event.target) || menuEl.contains(event.target)))
+                    || (topbarBtnEl && (topbarBtnEl.isSameNode(event.target) || topbarBtnEl.contains(event.target)))
+                );
 
                 if (isOutsideClicked) {
                     this.hideProfileMenu();

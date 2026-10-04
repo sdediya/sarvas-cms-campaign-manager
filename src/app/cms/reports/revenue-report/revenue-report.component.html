@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="m-0" style="text-wrap: nowrap;">Revenue Report</h5>
-      <p-divider></p-divider>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Revenue Report</h5>
+          <p class="cms-page-subtitle">Operator revenue by date range</p>
+        </div>
+      </div>
+
       <form [formGroup]="revenueReportForm">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="revenue_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -37,21 +43,20 @@
 
             </div>
           </div>
-          <div class="col-4 md:col-3">
-            <label htmlFor="revenue_service_type">Select Service</label>
-            <p-select class="col-3 p-0" [showClear]="true" formControlName="revenue_service_type" id="revenue_service_type" placeholder="Service" [options]="service" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
-          </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" (click)="onSubmit()" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px" styleClass="cms-table-dense">
             <ng-template #caption>
-              <div class="flex">
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>
@@ -75,7 +80,7 @@
             @if (footerData; as columns) {
               <ng-template #footer let-columns>
                 <tr> @for (col of columns; track col; let dateColumn = $first) {
-                  <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+                  <td pFrozenColumn [frozen]="dateColumn">{{ dateColumn && !footerData[col.key] ? 'Total' : footerData[col.key] }}</td>
                 } </tr>
               </ng-template>
             }

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-google-cost',
     templateUrl: './google-cost.component.html',
     styleUrls: ['./google-cost.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GoogleCostComponent implements OnInit{

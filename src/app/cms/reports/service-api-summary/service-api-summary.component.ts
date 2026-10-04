@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-service-api-summary',
     templateUrl: './service-api-summary.component.html',
     styleUrls: ['./service-api-summary.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ServiceApiSummaryComponent implements OnInit{

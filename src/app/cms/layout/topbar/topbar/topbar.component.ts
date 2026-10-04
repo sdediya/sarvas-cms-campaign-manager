@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HttpService } from 'src/app/services/http/http.service';
 import { MenuItem } from 'primeng/api';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 @Component({
     selector: 'app-topbar',
     templateUrl: './topbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TopbarComponent implements OnInit {
@@ -154,6 +155,7 @@ export class TopbarComponent implements OnInit {
 
                 this.storageService.clean();
                 this.stateSerive.removeAllStateValue()
+                try { sessionStorage.removeItem('user_permissions'); } catch { /* ignore */ }
                 this.router.navigate(['/auth/login']);
             },
             error: error => {

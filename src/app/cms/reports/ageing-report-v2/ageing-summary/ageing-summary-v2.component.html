@@ -1,15 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-
-      <div class="p-fluid formgrid grid align-items-center	">
-        <div class="col-12 md:col-3">
-          <h5 class="m-0">Ageing Summary Report</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Ageing Summary Report</h5>
+          <p class="cms-page-subtitle">Ageing summary metrics</p>
         </div>
       </div>
-      <p-divider></p-divider>
-      <form [formGroup]="ageingSummaryReportForm">
-        <div class="p-fluid formgrid grid align-items-center">
+<form [formGroup]="ageingSummaryReportForm">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <label htmlFor="date">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker formControlName="date" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
@@ -38,29 +38,20 @@
             }
           </div>
           <div class="col-4 md:col-3">
-            <label htmlFor="service">Select Product <span label styleclass="label-required" class="text-red-500">*</span></label>
-            <p-select class="col-3 p-0" formControlName="service" id="service" placeholder="Product" [options]="products" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
-            @if (submitted && !f['service'].valid) {
-              <div style="display: block; width: 100%;">@if (f['service'].hasError('required') ) {
-                <span class="p-error">Please select product </span>
-              }</div>
-            }
-          </div>
-          <div class="col-4 md:col-3">
             <label htmlFor="service_id">Select Service</label>
             <p-select class="col-3 p-0" [showClear]="true" formControlName="service_id" id="service_id" placeholder="Service" [options]="services" optionLabel="service_name" [filter]="true"  optionValue="service_id"></p-select>
           </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" (click)="onSubmit()" [disabled]="processing" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" (click)="onSubmit()" [disabled]="processing" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="700px">
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="700px" styleClass="cms-table-dense">
             <ng-template #caption >
               <div class="flex">
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               </div>
             </ng-template>
             <ng-template #header let-columns>

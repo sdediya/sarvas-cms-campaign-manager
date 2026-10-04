@@ -1,12 +1,17 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Top Publisher Report</h5>
+          <p class="cms-page-subtitle">Top publisher performance</p>
+        </div>
+      </div>
+
 
       <form [formGroup]="publisherReportForm" (ngSubmit)="onClickSubmit()">
-        <div class="p-fluid formgrid grid align-items-center">
-          <div class="col-12 md:col-3">
-            <h5 class="m-0">Top Publisher Report</h5>
-          </div>
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12 m-0 p-0">
               <label htmlFor="publisher_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -55,7 +60,7 @@
 
 
           <div class="col-3 md:col-3 flex align-items-center mt-4">
-            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
@@ -64,12 +69,15 @@
       @if (submitted && this.reports.length) {
         <div class="p-fluid formgrid grid align-items-center justify-content-center mt-5">
           <div class="col-12 md:col-6 card ">
-            <p-table [value]="reports">
+            <p-table [value]="reports" styleClass="cms-table-dense">
               <ng-template #caption>
-                <div class="flex">
-                  <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
                 </div>
-              </ng-template>
+              </div>
+            </ng-template>
               <ng-template #header>
                 <tr><th>P7</th><th>Count</th></tr>
               </ng-template>
@@ -82,8 +90,7 @@
       }
       @if (submitted && this.reports.length==0) {
         <div>
-          <p-divider></p-divider>
-          No data found
+No data found
         </div>
       }
 

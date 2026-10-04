@@ -1,12 +1,21 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add SMS Template</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Template</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Add SMS Template</h5>
+            <p class="cms-page-subtitle">Create an SMS template</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Template</h5>
+            <p class="cms-page-subtitle">Update SMS template details</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
+
       <form [formGroup]="smsTempForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid">
           <div class="field col-12 md:col-4">
@@ -76,6 +85,7 @@
           </div>
         </div>
       </form>
+      </div>
     </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-failed-callback-logs',
     templateUrl: './failed-callback-logs.component.html',
     styleUrls: ['./failed-callback-logs.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class FailedCallbackLogsComponent {

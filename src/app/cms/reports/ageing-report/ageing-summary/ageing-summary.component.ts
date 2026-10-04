@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-ageing-summary',
     templateUrl: './ageing-summary.component.html',
     styleUrls: ['./ageing-summary.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 
@@ -36,11 +37,6 @@ export class AgeingSummaryComponent implements OnInit{
   telcoms:any
   data: any;
   advertising_platforms:any
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
-
   constructor(
     private frmbuilder:FormBuilder, 
     private httpService:HttpService,
@@ -61,7 +57,7 @@ export class AgeingSummaryComponent implements OnInit{
     this.ageingSummaryReportForm = frmbuilder.group({
       date: ['', [Validators.required]],
       telcom_id: ['', [Validators.required]],
-      service: ['', [Validators.required]],
+      service: ['legacy'],
       platform_id: ['', []]
     });
   }

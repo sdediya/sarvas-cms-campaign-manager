@@ -1,12 +1,21 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add Service</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Service</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Add Service</h5>
+            <p class="cms-page-subtitle">Create a VAS service</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Service</h5>
+            <p class="cms-page-subtitle">Update service details</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
+
       <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid">
           <div class="field col-3 md:col-3">
@@ -31,6 +40,7 @@
           </div>
         </div>
       </form>
+      </div>
     </div>
   </div>
 </div>

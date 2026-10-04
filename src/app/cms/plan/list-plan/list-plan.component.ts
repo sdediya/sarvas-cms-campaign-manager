@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -9,11 +9,13 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { Router } from '@angular/router';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
+import Utils from 'src/app/utils/utils';
 
 @Component({
     selector: 'app-list-plan',
     templateUrl: './list-plan.component.html',
     styleUrls: ['./list-plan.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListPlanComponent implements OnInit{
@@ -311,9 +313,14 @@ plan_status: any = [{
     })
   }
 
-  copyToClipboard(plan_id:string) {
+  copyToClipboard(plan:any) {
+    const url = Utils.landingPageUrl(this.BASE_URL, plan, 'landing', `prod_id=${encodeURIComponent(plan.id)}`);
+    if(!url){
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing for this plan' });
+      return;
+    }
 
-    let isCopied = this.clipboardService.copyFromContent(`${this.BASE_URL}landingpage?prod_id=${plan_id}`)
+    let isCopied = this.clipboardService.copyFromContent(url)
 
     if(isCopied){
       this.messageService.add({ severity: 'success', summary: 'Success', detail: "Copied: Product Link!" });

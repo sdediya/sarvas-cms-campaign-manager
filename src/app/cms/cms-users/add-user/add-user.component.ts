@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -13,6 +13,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-user',
     templateUrl: './add-user.component.html',
     styleUrls: ['./add-user.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddUserComponent  implements OnInit{

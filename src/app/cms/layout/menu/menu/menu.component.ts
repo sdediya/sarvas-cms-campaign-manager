@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { LayoutService } from '../../layout.service';
 import jsonMenuData from '../../../../../assets/menu.json';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MenuComponent implements OnInit, OnDestroy {

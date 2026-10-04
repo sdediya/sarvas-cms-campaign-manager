@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -14,6 +14,7 @@ import { RxwebValidators } from '@rxweb/reactive-form-validators'
     selector: 'app-add-landing-page-configuration',
     templateUrl: './add-landing-page-configuration.component.html',
     styleUrls: ['./add-landing-page-configuration.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddLandingPageConfigurationComponent implements OnInit {

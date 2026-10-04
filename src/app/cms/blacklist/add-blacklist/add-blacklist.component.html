@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5>Add Blacklist</h5>
-      <div class="mb-1 mt-6">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Blacklist</span>
+          <h5 class="cms-page-title">Add Blacklist</h5>
+          <p class="cms-page-subtitle">Add mobile numbers or series to the blacklist</p>
+        </div>
+      </div>
+      <div class="cms-form-body">
         <form [formGroup]="addBlacklistForm" (ngSubmit)="onSubmit()">
-          <div class="p-fluid formgrid grid">
+          <div class="p-fluid formgrid grid cms-form-stack">
             <div class="field col-3 mb-0">
               <label htmlFor="blacklist_type">Select Blacklist Type<span label styleclass="label-required" class="text-red-500">*</span></label>
               <p-select id="blacklist_type" [options]="blacklist_types" optionLabel="name" formControlName="blacklist_type" (onChange)="onBlacklistTypeChange($event)" placeholder="Select Blacklist Type" optionValue="code"></p-select>
@@ -107,8 +113,8 @@
                 </div>
               </div>
             </form>
-          </div>
-        </div>
       </div>
     </div>
+  </div>
+</div>
     <p-toast></p-toast>

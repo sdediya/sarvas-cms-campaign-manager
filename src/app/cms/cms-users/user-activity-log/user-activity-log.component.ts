@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CrudService } from 'src/app/services/common/crud.service';
 import { userActivityService } from 'src/app/services/common/userActivity.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-user-activity-log',
     templateUrl: './user-activity-log.component.html',
     styleUrls: ['./user-activity-log.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UserActivityLogComponent {

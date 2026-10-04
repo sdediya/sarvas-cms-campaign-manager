@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="m-0" style="text-wrap: nowrap;">Service API vs Operator API Report</h5>
-      <p-divider></p-divider>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Service API vs Operator API Report</h5>
+          <p class="cms-page-subtitle">Service vs operator API response</p>
+        </div>
+      </div>
+
       <form [formGroup]="reportForm">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <label htmlFor="date">Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker formControlName="date" selectionMode="single" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
@@ -33,16 +39,19 @@
             }
           </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" (click)="onSubmit()" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px" styleClass="cms-table-dense">
             <ng-template #caption>
-              <div class="flex align-items-center">
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>

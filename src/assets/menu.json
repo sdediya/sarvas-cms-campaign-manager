@@ -377,14 +377,6 @@
                   "/reports/charging-report"
                 ]
               },
-              {
-                "label": "ShemarooME OTP Report",
-                "item_action": "read",
-                "icon": "pi pi-fw pi-chart-line",
-                 "routerLink": [
-                      "/reports/smeotp/otp-report"
-                    ]              
-              },
                {
                 "label": "Investor Report",
                 "item_action": "read",
@@ -694,14 +686,6 @@
                   "/logs/third-party-logs"
                 ]
               },
-               {
-                    "label": "ShemarooME OTP Logs",
-                    "item_action": "read",
-                    "icon": "pi pi-fw pi-chart-line",
-                    "routerLink": [
-                      "/reports/smeotp/service-logs"
-                    ]
-                  },
                    {
                     "label": "Short Link Logs" ,
                     "item_action": "read",

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-s2s-summary',
     templateUrl: './s2s-summary.component.html',
     styleUrls: ['./s2s-summary.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class S2sSummaryComponent implements OnInit{

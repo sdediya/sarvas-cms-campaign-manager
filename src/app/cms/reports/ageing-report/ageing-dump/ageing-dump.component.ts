@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-ageing-dump',
     templateUrl: './ageing-dump.component.html',
     styleUrls: ['./ageing-dump.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AgeingDumpComponent {
@@ -34,11 +35,6 @@ export class AgeingDumpComponent {
   telcoms:any
   data: any;
   advertising_platforms:any
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
-
   constructor(
     private frmbuilder:FormBuilder, 
     private httpService:HttpService,
@@ -59,7 +55,7 @@ export class AgeingDumpComponent {
     this.ageingMsisdnDumpForm = frmbuilder.group({
       date: ['', [Validators.required]],
       telcom_id: ['', [Validators.required]],
-      service: ['', [Validators.required]],
+      service: ['legacy'],
       platform_id: ['', []]
     });
   }

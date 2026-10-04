@@ -1,10 +1,17 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
       <form [formGroup]="currencyLogForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid align-items-center">
           <div class="col-12 md:col-3">
-            <h5 class="m-0">Currency Logs</h5>
+                  <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Currency Logs</h5>
+          <p class="cms-page-subtitle">View currency conversion logs</p>
+        </div>
+      </div>
+
           </div>
           <div class="col-4 md:col-3">
             <div class="field col-12">
@@ -29,7 +36,7 @@
       </form>
       @if (submitted && isValidForm && recordsFound) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+          <p-table styleClass="cms-table-dense" [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
             <ng-template #caption>
               <div class="flex">
                 <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
@@ -53,7 +60,7 @@
               <tr>
                 <td>
                   @if (write) {
-                    <p-button (click)="showDialog(rowData.id)" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                    <p-button (click)="showDialog(rowData.id)" severity="success" size="small" icon="pi pi-plus"></p-button>
                   }
                 </td>
                 @for (col of columns; track col; let dateColumn = $first) {

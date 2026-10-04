@@ -1,14 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="ml-1 grid">
-        <h5>API Error Dashboard</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">API Error Dashboard</h5>
+          <p class="cms-page-subtitle">API error monitoring</p>
+        </div>
       </div>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <form [formGroup]="apierrorForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center">
+<form [formGroup]="apierrorForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="ip_date_range">Select Date Range<span label styleclass="label-required"
@@ -95,10 +96,13 @@
     @if (submitted) {
       <div>
         @if (reports.length > 0) {
-          <p-table [columns]="cols" [value]="reports" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px">
+          <p-table [columns]="cols" [value]="reports" tableStyleClass="p-datatable-striped" styleClass="cms-table-dense" [scrollable]="true" scrollHeight="400px">
             <ng-template #caption>
-              <div class="flex">
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>

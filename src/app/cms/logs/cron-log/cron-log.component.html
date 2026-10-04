@@ -1,20 +1,24 @@
 
-<div class="grid">
+<div class="grid cms-page">
     <div class="col-12">
         <div class="card">
-			<div class="ml-1 grid">
-				<h5>Cron Logs</h5>
-				<!-- <div class="col-3"> -->
-					<p-select [(ngModel)]="selected_type" [options]="cron_type" optionLabel="name" (onChange)="ontypeSelect($event)" placeholder="Type" optionValue="name" class="ml-4"></p-select>
-				<!-- </div> -->
-			</div>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Logs</span>
+          <h5 class="cms-page-title">Cron Logs</h5>
+          <p class="cms-page-subtitle">Inspect scheduled job execution logs</p>
+        </div>
+      </div>
+
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="selected_type" [options]="cron_type" optionLabel="name" (onChange)="ontypeSelect($event)" placeholder="Type" optionValue="name"></p-select>
+      </div>
+
             
-            <p-divider align="center">
-				<span class="p-tag text-base">Filters</span>
-			</p-divider>
+            
 
 			<form [formGroup]="cronLogsForm" (ngSubmit)="onSubmit()">
-                <div class="p-fluid formgrid grid align-items-center">
+                <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
                    
                     <div class="col-4 md:col-3">
                         <div class="field col-12">
@@ -52,7 +56,7 @@
                         </div>
                     </div>
                     <div class="col-3 md:col-3 flex align-items-center">
-                        <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+                        <button type="submit" pButton pRipple size="small">Submit</button>
                     </div>
                 </div>
             </form>
@@ -60,10 +64,10 @@
 				
 			</div>
 
-            <p-table #dt1 [value]="cron_logs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+            <p-table #dt1 [value]="cron_logs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true styleClass="cms-table-dense">
                 <ng-template #caption>
                     <div class="flex justify-content-between align-items-center flex-column sm:flex-row">
-						<div class="">
+						<div>
 							<p *ngIf="cronlogs_type == 'RENEWAL'" style="color: red; font-weight: 600;">For Kenya Safaricom (Taimatuk), the Renewed Records column represents the number of records successfully attempted for charging. Please do not consider this as charged counts. For actual live renewals, refer to the Live Dashboard.</p>
 							<p *ngIf="cronlogs_type == 'PARKING'" style="color: red; font-weight: 600;">For Kenya Safaricom (Taimatuk), the Parking Records column represents the number of records successfully attempted for charging. Please do not consider this as charged counts. For actual live Parking to Activation, refer to the MSISDN Dump.</p>
 						</div>

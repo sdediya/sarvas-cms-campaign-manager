@@ -1,32 +1,32 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="m-1 grid justify-content-between">
-        <h5>Blacklist Configuration List</h5>
-        @if (write) {
-          <p-button [routerLink]="['/blacklist/add']">Add Blacklist</p-button>
-        }
-      </div>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <div class="col-3">
-          <p-select  [(ngModel)]="filter.blacklist_duration_type" id="duration_type" [options]="blacklist_duration_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'duration_type')" placeholder="Blacklist duration type" optionValue="code"></p-select>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Blacklist</span>
+          <h5 class="cms-page-title">Blacklist Configuration</h5>
+          <p class="cms-page-subtitle">Manage blacklist configuration entries</p>
         </div>
-        <div class="col-3">
-          <p-select  [(ngModel)]="filter.blacklist_type" id="type" [options]="blacklist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'type')" placeholder="Type" optionValue="code"></p-select>
-        </div>
-        <div class="col-3">
-          @if (filter.blacklist_duration_type || filter.blacklist_type) {
-            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
+        <div class="cms-page-header__actions">
+          @if (write) {
+            <p-button [routerLink]="['/blacklist/add']" label="Add Blacklist"></p-button>
           }
         </div>
       </div>
-      <p-divider></p-divider>
-      <p-table #dt1 [value]="blacklist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="filter.blacklist_duration_type" id="duration_type" [options]="blacklist_duration_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'duration_type')" placeholder="Blacklist duration type" optionValue="code"></p-select>
+        <p-select [(ngModel)]="filter.blacklist_type" id="type" [options]="blacklist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'type')" placeholder="Type" optionValue="code"></p-select>
+        <div class="cms-filter-actions">
+          @if (filter.blacklist_duration_type || filter.blacklist_type) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+        </div>
+      </div>
+
+      <p-table #dt1 styleClass="cms-table-dense" [value]="blacklist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
+          <div class="cms-list-tools">
             <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Mobile" class="w-full"/></p-iconfield>
           </div>

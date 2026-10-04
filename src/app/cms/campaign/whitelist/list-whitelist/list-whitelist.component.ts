@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
     selector: 'app-list-whitelist',
     templateUrl: './list-whitelist.component.html',
     styleUrls: ['./list-whitelist.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListWhitelistComponent implements OnInit{

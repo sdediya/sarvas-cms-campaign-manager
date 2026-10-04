@@ -1,14 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="ml-1 grid">
-        <h5>IP Reports</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">IP Reports</h5>
+          <p class="cms-page-subtitle">IP-level reporting</p>
+        </div>
       </div>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <form [formGroup]="ipForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center">
+<form [formGroup]="ipForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="ip_date_range">Select Date Range<span label styleclass="label-required"
@@ -78,12 +79,15 @@
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <!-- <p-table #dt1 [columns]="cols" [value]="reports" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="total_records" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+          <!-- <p-table #dt1 [columns]="cols" [value]="reports" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="total_records" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true styleClass="cms-table-dense">
           <ng-template #caption>
-            <div class="flex justify-content-end flex-column sm:flex-row">
-              <button *ngIf="reports.length>0" type="button" pButton pRipple  (click)="exportToExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
-            </div>
-          </ng-template>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button *ngIf="reports.length>0" type="button" pButton pRipple  (click)="exportToExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+                </div>
+              </div>
+            </ng-template>
           <ng-template #header let-columns>
             <tr>
               <th pFrozenColumn [frozen]="dateColumn" *ngFor="let col of columns; first as dateColumn">

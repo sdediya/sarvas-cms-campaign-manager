@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -8,16 +8,13 @@ import { environment } from 'src/environments/environment';
     selector: 'app-operator-revenue-calculator',
     templateUrl: './operator-revenue-calculator.component.html',
     styleUrls: ['./operator-revenue-calculator.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class OperatorRevenueCalculatorComponent implements OnInit {
   revenueCalForm: FormGroup;
   headers: any[] = [];
   telcoms: any[] = [];
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
   operator_name: any;
   CMS_API = environment.CMS_API;
   telid = '';
@@ -33,7 +30,7 @@ export class OperatorRevenueCalculatorComponent implements OnInit {
   ) {
     this.revenueCalForm = this.frmbuilder.group({
       revenue_telcom_region: ['', [Validators.required]],
-      revenue_service_type: ['', [Validators.required]],
+      revenue_service_type: ['legacy'],
       op_formulas: this.frmbuilder.array([]), 
     });
   }
@@ -243,7 +240,7 @@ generateKey(key: string) {
   }
 
   resetForm() {
-    this.revenueCalForm.reset();
+    this.revenueCalForm.reset({ revenue_service_type: 'legacy' });
     this.op_formulas.clear();
     this.submitted = false;
   }

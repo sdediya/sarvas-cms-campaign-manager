@@ -26,8 +26,6 @@ import { OperatorRevenueCalculatorComponent } from './operator-revenue-calculato
 import { ChargingReportComponent } from './charging-report/charging-report.component';
 import { RevenueReportV2Component } from './revenue-report-v2/revenue-report-v2.component';
 
-import { SMEServiceApiLogsComponent } from './shemaroome-otp/service-api-logs/service-api-logs.component';
-import { OTPReportsComponent } from './shemaroome-otp/otp-reports/otp-summary.component';
 import { MaskMsisdnPipe } from '../../shared/mask-msisdn.pipe';
 import { AgeingDumpV2Component } from './ageing-report-v2/ageing-dump/ageing-dump-v2.component';
 import { AgeingSummaryV2Component } from './ageing-report-v2/ageing-summary/ageing-summary-v2.component';
@@ -61,8 +59,6 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
     OneshotViewReportComponent,
     OperatorRevenueCalculatorComponent,
     ChargingReportComponent,
-    SMEServiceApiLogsComponent,
-    OTPReportsComponent,
     AgeingDumpV2Component,
     AgeingSummaryV2Component,
     PartnerWiseSummaryV2Component,

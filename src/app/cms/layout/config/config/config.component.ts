@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LayoutService } from '../../layout.service';
 import { MenuService } from '../../menu/menu.service';
 
 @Component({
     selector: 'app-config',
     templateUrl: './config.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ConfigComponent implements OnInit{

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
@@ -11,6 +11,7 @@ import { ExcelExportService } from 'src/app/services/excelExport/excel-export.se
     selector: 'app-customer-care-interface',
     templateUrl: './customer-care-interface.component.html',
     styleUrls: ['./customer-care-interface.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomerCareInterfaceComponent implements OnInit{

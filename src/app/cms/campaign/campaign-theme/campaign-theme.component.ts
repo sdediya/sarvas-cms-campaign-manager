@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -13,6 +13,7 @@ import { distinctUntilChanged, throttleTime } from 'rxjs';
     selector: 'app-campaign-theme',
     templateUrl: './campaign-theme.component.html',
     styleUrls: ['./campaign-theme.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CampaignThemeComponent implements OnInit{

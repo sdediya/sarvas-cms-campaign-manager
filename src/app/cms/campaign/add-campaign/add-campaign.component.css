@@ -1,4 +1,9 @@
-/* Scope layout rules to plain HTML tables only — do not affect p-table */
+/* Add / Edit Campaign — visual refinements only */
+
+:host {
+  display: block;
+}
+
 :host ::ng-deep .p-datatable table {
   width: 100%;
   border: none;
@@ -11,10 +16,118 @@
   text-align: left;
 }
 
+:host ::ng-deep .cms-campaign > .col-12 > .card {
+  padding: 1.35rem 1.5rem 1rem;
+}
+
+:host ::ng-deep .cms-campaign .cms-form-stack.formgrid.grid {
+  margin: 0;
+}
+
+:host ::ng-deep .cms-campaign .cms-section-wrap {
+  padding: 0;
+}
+
+:host ::ng-deep .cms-campaign .p-panel.cms-form-section .p-panel-content {
+  padding: 1.15rem 1.15rem 1.15rem;
+}
+
+:host ::ng-deep .cms-campaign .cms-subsection-grid.grid {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .cms-campaign .cms-subsection-grid.grid > .col,
+:host ::ng-deep .cms-campaign .cms-subsection-grid.grid > [class*="col"] {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+:host ::ng-deep .cms-campaign .cms-control-row {
+  justify-content: flex-start;
+}
+
+:host ::ng-deep .cms-campaign .cms-control-row__options {
+  align-items: center;
+}
+
+:host ::ng-deep .cms-campaign .p-panel.cms-form-section .p-panel-header {
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .cms-campaign .p-panel.cms-form-section .p-panel-header .p-panel-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+:host ::ng-deep .cms-campaign .p-select,
+:host ::ng-deep .cms-campaign .p-inputtext,
+:host ::ng-deep .cms-campaign .p-datepicker,
+:host ::ng-deep .cms-campaign textarea.p-inputtext,
+:host ::ng-deep .cms-campaign .p-textarea {
+  width: 100%;
+  border-radius: var(--vas-radius-sm, 6px);
+}
+
+:host ::ng-deep .cms-campaign .p-inputgroup .p-inputtext {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+:host ::ng-deep .cms-campaign .p-inputgroup .p-inputgroup-addon:first-child {
+  border-top-left-radius: var(--vas-radius-sm, 6px);
+  border-bottom-left-radius: var(--vas-radius-sm, 6px);
+}
+
+:host ::ng-deep .cms-campaign .cms-table-dense {
+  border: 1px solid var(--vas-border, #e2e8f0);
+  border-radius: var(--vas-radius, 10px);
+}
+
+:host ::ng-deep .cms-campaign .cms-table-dense .p-datatable-thead > tr > th {
+  background: var(--surface-50, #f8fafc);
+}
+
+:host ::ng-deep .cms-campaign-drawer.p-drawer,
+:host ::ng-deep .p-drawer.cms-campaign-drawer {
+  border-left: 1px solid var(--vas-border, #e2e8f0);
+}
+
+:host ::ng-deep .cms-campaign-drawer .p-drawer-content,
+:host ::ng-deep .p-drawer.cms-campaign-drawer .p-drawer-content {
+  padding: 1.25rem 1.35rem 1.5rem;
+}
+
+:host ::ng-deep .cms-drawer-body .field,
+:host ::ng-deep .cms-drawer-body .col-12,
+:host ::ng-deep .cms-drawer-body .md\:col-6 {
+  margin-bottom: 0.85rem;
+}
+
+:host ::ng-deep .cms-drawer-body .p-inputtext {
+  width: 100%;
+}
+
+:host ::ng-deep .cms-drawer-actions {
+  margin-top: 0.5rem;
+}
+
+:host ::ng-deep .cms-sticky-actions {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  margin-bottom: -1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 table.legacy-table {
   width: 100%;
-  border: 1px solid #eee;
-  padding: 5px;
+  border: 1px solid var(--vas-border, #e2e8f0);
+  border-radius: var(--vas-radius-sm, 6px);
+  padding: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
 }
 
 table.legacy-table tr {
@@ -25,4 +138,21 @@ table.legacy-table th,
 table.legacy-table td {
   width: 20%;
   text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--vas-border, #e2e8f0);
+  font-size: 0.875rem;
+  vertical-align: top;
+}
+
+table.legacy-table th {
+  background: var(--surface-50, #f8fafc);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vas-text-muted, #64748b);
+}
+
+table.legacy-table tr:last-child td {
+  border-bottom: none;
 }

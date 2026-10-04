@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-partner-wise-summary-v2',
     templateUrl: './partner-wise-summary-v2.component.html',
     styleUrls: ['./partner-wise-summary-v2.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PartnerWiseSummaryV2Component {
@@ -35,15 +36,10 @@ export class PartnerWiseSummaryV2Component {
   telcoms:any
   data: any;
   advertising_platforms:any
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
 
   masterService:any = []
   services:any = []
   masterAggregator:any = []
-  products:any = []
 
   processing:any = false
 
@@ -68,7 +64,7 @@ export class PartnerWiseSummaryV2Component {
       date: ['', [Validators.required]],
       tel_id: ['',[Validators.required]],
       partner_id: ['',[Validators.required]],
-      service: ['',[Validators.required]],
+      service: ['legacy'],
       service_id: [''],
       platform_id: ['']
     });
@@ -80,12 +76,10 @@ export class PartnerWiseSummaryV2Component {
     
     this.f['tel_id'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
       let telData:any = this.telcoms.find((e:any)=> e.tel_id == value);
-      this.services = this.masterService = telData.services;
-      this.masterAggregator = telData.master_aggregator
-      this.products = this.service.filter((e:any)=> telData.product.includes(e.name));
+      this.services = this.masterService = telData.services.filter((e:any)=> e.service_type?.toLowerCase() == 'legacy');
+      this.masterAggregator = telData.master_aggregator.filter((e:any)=> e.service_type?.includes('Legacy'));
       
       this.f['partner_id'].reset();
-      this.f['service'].reset();
       this.f['service_id'].reset();
     
       this.submitted =false
@@ -94,23 +88,8 @@ export class PartnerWiseSummaryV2Component {
       this.footerData = []
     });
     this.f['partner_id'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
-      let masterAggregator:any = this.masterAggregator.find((e:any)=> e.maggregator_id == value);
       this.services = this.masterService.filter((e:any)=> e.maggregator_id == value)
-      this.products = this.service.filter((e:any)=> masterAggregator.service_type.includes(e.name));
     
-      this.f['service'].reset();
-      this.f['service_id'].reset();
-    
-      this.submitted =false
-      this.cols = []
-      this.reports = []
-      this.footerData = []
-    });
-  
-    this.f['service'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
-      let masterAggregatorID = this.f['partner_id'].value
-      this.services = this.masterService.filter((e:any)=> e.service_type.toLowerCase() == value && e.maggregator_id == masterAggregatorID)
-      
       this.f['service_id'].reset();
     
       this.submitted =false

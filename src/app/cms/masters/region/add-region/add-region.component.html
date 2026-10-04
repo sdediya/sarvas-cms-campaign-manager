@@ -1,12 +1,21 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add Region</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Region</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Add Region</h5>
+            <p class="cms-page-subtitle">Create a region / market</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Region</h5>
+            <p class="cms-page-subtitle">Update region details</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
+
       <form [formGroup]="regionForm" (ngSubmit)="onSubmit()">
         <div class="p-fluid formgrid grid">
           <div class="field col-6 md:col-6">
@@ -125,6 +134,7 @@
         </div>
       </div>
     </form>
+      </div>
   </div>
 </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators,AbstractControl} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
     selector: 'app-add-campaign',
     templateUrl: './add-campaign.component.html',
     styleUrls: ['./add-campaign.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddCampaignComponent implements OnInit{
@@ -75,17 +76,6 @@ export class AddCampaignComponent implements OnInit{
   post_capping_redirections = []
   blocking_redirections = []
   not_found_redirection = []
-
-  campaign_tpid_redirects = [
-    { name: 'Auto Login to Shemaroome', code: '27' },
-    { name: 'Redirect to Playstore', code: '14' },
-    { name: 'Other', code: '30' }
-  ];
-
-  campaign_redirection = [
-    {name: "No Access Page", code: environment.NO_ACCESS_PAGE},
-    {name: "https://www.shemaroome.com/", code: "https://www.shemaroome.com/"}
-  ]
 
   confType : string = '';
   confTypeSidebar : string = '';
@@ -493,8 +483,6 @@ export class AddCampaignComponent implements OnInit{
         })
         this.telecom_plans = plans;
       }
-      // If OTT selected show campaign_tpid
-      this.addRemoveValidationsOnChange(selectedId==environment.SHEMAROOME_SERVICE_ID,this.campaignForm.get('campaign_tpid'),[Validators.required])
 
       // Get campaign redirections by service
       this.getCampaignRedirectionData(selectedId)

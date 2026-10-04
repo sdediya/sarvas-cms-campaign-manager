@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
@@ -10,6 +10,7 @@ import { HttpService } from 'src/app/services/http/http.service';
     selector: 'app-drr-report',
     templateUrl: './drr-report.component.html',
     styleUrls: ['./drr-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DrrReportComponent {

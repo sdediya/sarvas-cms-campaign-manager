@@ -1,18 +1,24 @@
 <div class="layout-topbar">
     <a class="layout-topbar-logo" routerLink="">
-        <img src="../../../../../assets/images/shemaroo_logo.svg" alt="logo">
+        <img src="../../../../../assets/images/company_logo.svg" alt="Sarva Sys">
+        <span class="layout-topbar-brand">VAS CMS</span>
     </a>
 
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+    <button #menubutton type="button" class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()" aria-label="Toggle menu">
         <i class="pi pi-bars"></i>
     </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <p-togglebutton id="themeSwitchBtn" styleClass="p-button-lg" [(ngModel)]="darkTheme" onIcon="pi pi-moon" offIcon="pi pi-sun" [style]="{ width: 'auto', background: 'none', border: 'none' }" (onChange)="switchTheme($event)"></p-togglebutton>
-        <button #btn type="button" class="p-link layout-topbar-button" (click)="menu.toggle($event)">
-            <i class="pi pi-user"></i>
-        </button>
-        <p-tieredmenu #menu [model]="items" [popup]="true"></p-tieredmenu>
+    <div class="layout-topbar-end">
+        <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+            <p-togglebutton id="themeSwitchBtn" styleClass="p-button-lg" [(ngModel)]="darkTheme" onIcon="pi pi-moon" offIcon="pi pi-sun" [style]="{ width: 'auto', background: 'none', border: 'none' }" (onChange)="switchTheme($event)"></p-togglebutton>
+            <button #btn type="button" class="p-link layout-topbar-button layout-topbar-profile" (click)="menu.toggle($event)" aria-label="User menu">
+                <i class="pi pi-user"></i>
+                @if (loggedInUser?.name) {
+                  <span class="layout-topbar-username">{{ getFirstName(loggedInUser.name) }}</span>
+                }
+            </button>
+            <p-tieredmenu #menu [model]="items" [popup]="true"></p-tieredmenu>
+        </div>
     </div>
 </div>
 

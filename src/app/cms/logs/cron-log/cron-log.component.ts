@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { error } from '@rxweb/reactive-form-validators';
 import { Table } from 'primeng/table';
@@ -28,6 +28,7 @@ interface cronData {
     templateUrl: './cron-log.component.html',
     styleUrls: ['./cron-log.component.css'],
     providers: [DatePipe],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

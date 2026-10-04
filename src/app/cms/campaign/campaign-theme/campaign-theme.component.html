@@ -4,13 +4,19 @@
       <div class="card">
         <div class="p-fluid formgrid grid align-content-center">
           <div class="field col-4 m-0">
-            <h5 class="cms-page-title">Campaign Theme Design</h5>
+            <div class="cms-page-header" style="margin-bottom:0">
+              <div class="cms-page-header__text">
+                <span class="cms-page-kicker">Campaigns</span>
+                <h5 class="cms-page-title">Theme Design</h5>
+                <p class="cms-page-subtitle">Configure campaign theme and branding</p>
+              </div>
+            </div>
           </div>
           <div class="field col-4">
             <label htmlFor="campaign_id">Select Campaign</label>
             <p-select id="campaign_id" [options]="campaignList" optionLabel="name" [filter]="true" (onChange)="onCampaignChange($event)" formControlName="theme_campaign_id" placeholder="Select Campaign" optionValue="id"></p-select>
             @if (submitted && !f['theme_campaign_id'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (f['theme_campaign_id'].hasError('required') ) {
                   <span class="p-error">
                     Please select Campaign
@@ -23,7 +29,7 @@
             <label htmlFor="language">Select Language</label>
             <p-select id="language" [options]="language_list" optionLabel="value" formControlName="theme_language" placeholder="Select language" optionValue="key"></p-select>
             @if (submitted && !f['theme_language'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (f['language'].hasError('required') ) {
                   <span class="p-error">
                     Please select language
@@ -45,7 +51,7 @@
                   <div class="field col-6 md:col-6">
                     <div class="grid">
                       <div class="col-8 pb-0">
-                        <label>Show ShemarooMe Logo</label>
+                        <label>Show Sarva Sys Logo</label>
                       </div>
                       <div class="col-2">
                         <p-toggleswitch formControlName="theme_is_logo"></p-toggleswitch>
@@ -75,7 +81,7 @@
                     </div>
                     <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
                     @if (!f['theme_image_urls'].valid && selectedThemeImageFile!==null) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_image_urls'].hasError('required') || f['theme_image_urls'].hasError('invalidDimensions') ) {
                           <span class="p-error">
                             Please upload theme image of dimensions (640px * 480px)
@@ -139,7 +145,7 @@
                       </ng-template>
                     </p-editor>
                     @if (submitted && !f['theme_logo_title_text'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_logo_title_text'].hasError('required') ) {
                           <span class="p-error">
                             Before Logo Title is required
@@ -162,7 +168,7 @@
                       </ng-template>
                     </p-editor>
                     @if (submitted && !f['theme_banner_title_text'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_banner_title_text'].hasError('required') ) {
                           <span class="p-error">
                             Banner Title is required
@@ -175,7 +181,7 @@
                     <label htmlFor="theme_title_text">Title Text</label>
                     <input pInputText id="theme_title_text" type="text" formControlName="theme_title_text" placeholder="Title Text" />
                     @if (submitted && !f['theme_title_text'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_title_text'].hasError('required') ) {
                           <span class="p-error">
                             Title Text is required
@@ -195,7 +201,7 @@
                     <label htmlFor="theme_additional_text">Additional Text</label>
                     <input pInputText id="theme_additional_text" type="text" formControlName="theme_additional_text" placeholder="Additional Text" />
                     @if (submitted && !f['theme_additional_text'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_additional_text'].hasError('required') ) {
                           <span class="p-error">
                             Additional Text is required
@@ -284,7 +290,7 @@
                       <label htmlFor="theme_exit_button_url">Exit Button URL</label>
                       <input pInputText id="theme_exit_button_url" type="url" formControlName="theme_exit_button_url" placeholder="Exit Button URL"/>
                       @if (f.theme_exit_button_url.errors) {
-                        <div style="display: block; width: 100%;" class="ml-3 mt-1 mb-0">
+                        <div class="cms-field-error" class="ml-3 mt-1 mb-0">
                           <span class="p-error">
                             Invalid URL
                           </span>
@@ -317,7 +323,7 @@
                     <label htmlFor="theme_page_background_color">Theme Background Color</label>
                     <p-select id="theme_page_background_color" [options]="campaignThemeBgColors" optionLabel="name" formControlName="theme_page_background_color" placeholder="Select Theme Background Color" optionValue="code"></p-select>
                     @if (submitted && !f['theme_page_background_color'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_page_background_color'].hasError('required') ) {
                           <span class="p-error">
                             Theme Background Color is required
@@ -330,7 +336,7 @@
                     <label htmlFor="theme_subscribe_button_color">Subscribe Button Color</label><br>
                     <p-colorpicker formControlName="theme_subscribe_button_color"></p-colorpicker>
                     @if (submitted && !f['theme_subscribe_button_color'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_subscribe_button_color'].hasError('required') ) {
                           <span class="p-error">
                             Subscribe Button Color is required
@@ -344,7 +350,7 @@
                       <label htmlFor="theme_exit_button_color">Exit Button Color</label><br>
                       <p-colorpicker formControlName="theme_exit_button_color"></p-colorpicker>
                       @if (submitted && !f['theme_exit_button_color'].valid) {
-                        <div style="display: block; width: 100%;">
+                        <div class="cms-field-error">
                           @if (f['theme_exit_button_color'].hasError('required') ) {
                             <span class="p-error">
                               Subscribe Button Color is required
@@ -358,7 +364,7 @@
                     <label htmlFor="theme_page_text_color">Page Text Color</label><br>
                     <p-colorpicker formControlName="theme_page_text_color"></p-colorpicker>
                     @if (submitted && !f['theme_page_text_color'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_page_text_color'].hasError('required') ) {
                           <span class="p-error">
                             Page Text Color is required
@@ -381,7 +387,7 @@
                       </ng-template>
                     </p-editor>
                     @if (submitted && !f['theme_terms_conditions'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['theme_terms_conditions'].hasError('required') ) {
                           <span class="p-error">
                             Terms & Conditions is required
@@ -405,9 +411,9 @@
                     <div class="m-3 text-xl text-cyan-700 font-semibold edit-pencil flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_logo_title_text" [style]="{'color':campaignThemeForm.value.theme_logo_title_text || 'black'}"></div>
                   </div>
                   <div class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
-                    <div class="edit-pencil" data-fieldName ="shemaroo_logo">
+                    <div class="edit-pencil" data-fieldName ="company_logo">
                       @if (campaignThemeForm.value.theme_is_logo) {
-                        <img  src="../../../../assets/images/shemaroo_logo.svg" alt="Shemaroo ME" width="150px" height="50px">
+                        <img  src="../../../../assets/images/company_logo.svg" alt="Sarva Sys" width="150px" height="50px">
                       }
                     </div>
                     <div class="edit-pencil" data-fieldName ="operator_logo">
@@ -465,7 +471,7 @@
                       <p class="text-xl text-orange-600 mt-4 mb-0">{{'TERMS_CONDITION' | i18n}}</p>
                       <div class="flex flex-column align-items-center" [innerHTML]="campaignThemeForm.value.theme_terms_conditions" [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
                       </div>
-                      <p class="m-6 text-sm">{{this.f['theme_powered_by_text'].value? this.f['theme_powered_by_text'].value: "Powered By: Shemaroo Entertainment Limited"}}</p>
+                      <p class="m-6 text-sm">{{this.f['theme_powered_by_text'].value? this.f['theme_powered_by_text'].value: "Powered By: Sarva Sys"}}</p>
                     </div>
                   </div>
                 </div>

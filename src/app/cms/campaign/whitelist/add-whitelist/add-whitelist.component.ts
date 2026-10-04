@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -10,6 +10,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-whitelist',
     templateUrl: './add-whitelist.component.html',
     styleUrls: ['./add-whitelist.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddWhitelistComponent  implements OnInit{

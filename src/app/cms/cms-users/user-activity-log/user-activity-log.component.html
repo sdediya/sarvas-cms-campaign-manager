@@ -1,29 +1,32 @@
 
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5>Users Activity Logs</h5>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <p-datepicker class="col-3" [(ngModel)]="userActivity_date_range" placeholder="Select User Activity Date"  selectionMode="range" (onSelect)="onSelectFilter($event, 'activity_date')" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
-        </p-datepicker>
-        <p-select class="col-3" [(ngModel)]="selected_user" [options]="users" optionLabel="name" (onChange)="onSelectFilter($event, 'user')" placeholder="User" optionValue="id"></p-select>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Users</span>
+          <h5 class="cms-page-title">User Activity Logs</h5>
+          <p class="cms-page-subtitle">Audit CMS user actions and page activity</p>
+        </div>
+      </div>
 
-        @if (selected_user != '' || userActivity_date_range != null ) {
-          <div class="col-3">
-            <p-button type="submit" label="Submit" (click)="onSubmit()" class="w-6 text-xl" severity="primary" size="small"></p-button>
-            <button type="button" pButton pRipple (click)="clearFilters()" class="ml-4" severity="secondary">Clear</button>
-          </div>
-        }
+      <div class="cms-filter-bar">
+        <p-datepicker [(ngModel)]="userActivity_date_range" placeholder="Select User Activity Date"  selectionMode="range" (onSelect)="onSelectFilter($event, 'activity_date')" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
+        </p-datepicker>
+        <p-select [(ngModel)]="selected_user" [options]="users" optionLabel="name" (onChange)="onSelectFilter($event, 'user')" placeholder="User" optionValue="id"></p-select>
+
+        <div class="cms-filter-actions">
+          @if (selected_user != '' || userActivity_date_range != null ) {
+            <p-button type="submit" label="Submit" (click)="onSubmit()" severity="primary" size="small"></p-button>
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+          @if (selectedUser) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+        </div>
       </div>
-      <div class="flex">
-        @if (selectedUser) {
-          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
-        }
-      </div>
-      <p-table #dt1 [value]="userActivityLogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+
+      <p-table #dt1 styleClass="cms-table-dense" [value]="userActivityLogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
         <ng-template #header>
           <tr>
             <!-- <th style="width: 10px"></th> -->
@@ -71,7 +74,7 @@
             </td>
 
             <td>
-              <p-button (click)="showDialog(userlog)" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+              <p-button (click)="showDialog(userlog)" icon="pi pi-plus" severity="success"></p-button>
             </td>
 
           </tr>

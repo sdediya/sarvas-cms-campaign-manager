@@ -65,8 +65,11 @@ export class CrudService {
     let return_permissions = {read: false, write: false, delete: false};
     let all_permissions = this.StateService.getSingleStateValue('user_permissions');
   
+    // Permissions not hydrated yet (refresh race). Do not deny — callers treat
+    // false read as hard no-access redirect. Temporary read avoids bounce loops;
+    // real permissions replace this as soon as get-permissions resolves.
     if (!all_permissions || !Array.isArray(all_permissions)) {
-      return return_permissions;
+      return { read: true, write: false, delete: false };
     }
 
     let user_permission = all_permissions.find((ele:any)=> {

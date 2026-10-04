@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode} from '@angular/core';
+import { Component, OnInit, isDevMode, ChangeDetectionStrategy } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
 import { HttpService } from './services/http/http.service';
@@ -13,6 +13,7 @@ import { LoadingService } from './shared/loading.service';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AppComponent  implements OnInit{
@@ -20,6 +21,8 @@ export class AppComponent  implements OnInit{
   loading = false;
   CMS_API = environment.CMS_API;
   isLoading$ = this.loadingService.loading$;
+
+  private permissionsFetchStarted = false;
 
   constructor(
     private loadingService: LoadingService,
@@ -31,14 +34,27 @@ export class AppComponent  implements OnInit{
     private userActivityService : userActivityService,
     private crudService : CrudService
     ){
-
-      
+      // Restore cached permissions synchronously so route constructors
+      // don't race to /no-access on refresh before get-permissions returns.
+      try {
+        if (this.storage.isLoggedIn()) {
+          const cached = sessionStorage.getItem('user_permissions');
+          if (cached && !this.StateService.getSingleStateValue('user_permissions')) {
+            this.StateService.addStateValue('user_permissions', JSON.parse(cached));
+          }
+        }
+      } catch {
+        /* ignore corrupt cache */
+      }
 
       router.events.subscribe((val) => {
           if(val instanceof NavigationStart) {
-            let isPermissionsExists = this.StateService.getSingleStateValue('user_permissions')
-            if(this.storage.isLoggedIn() && !isPermissionsExists){
-                this.loading = true;
+            if (this.storage.isLoggedIn() && !this.permissionsFetchStarted) {
+                this.permissionsFetchStarted = true;
+                const isPermissionsExists = this.StateService.getSingleStateValue('user_permissions');
+                if (!isPermissionsExists) {
+                  this.loading = true;
+                }
                 this.getUserPermissions();
             }
           }
@@ -46,9 +62,12 @@ export class AppComponent  implements OnInit{
     }
 
   ngOnInit() {
+    if (this.storage.isLoggedIn() && !this.permissionsFetchStarted) {
+      this.permissionsFetchStarted = true;
+      this.getUserPermissions();
+    }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const currentRoute = event.url
         this.getComponentForRoute(this.route.root)
       }
     })
@@ -65,6 +84,11 @@ export class AppComponent  implements OnInit{
     this.httpService.get(`${this.CMS_API}cms_users/get-permissions`).subscribe({
       next:res=>{
         this.StateService.addStateValue('user_permissions', res.data)
+        try {
+          sessionStorage.setItem('user_permissions', JSON.stringify(res.data));
+        } catch {
+          /* ignore quota / private mode */
+        }
         this.loading = false
       },
       error:err=>{
@@ -85,9 +109,9 @@ export class AppComponent  implements OnInit{
       currentComponentName = 'Not Found';
     }
     // 
-    const url = route.snapshot.url[0].path;
-    this.crudService.getModuleLoaded(url,currentComponentName)
-    this.httpService.getModuleLoaded(url,currentComponentName)
-    this.userActivityService.addLog(url,currentComponentName)
+    const urlSegment = route.snapshot.url?.[0]?.path || route.snapshot.routeConfig?.path || '';
+    this.crudService.getModuleLoaded(urlSegment,currentComponentName)
+    this.httpService.getModuleLoaded(urlSegment,currentComponentName)
+    this.userActivityService.addLog(urlSegment,currentComponentName)
   }
 }

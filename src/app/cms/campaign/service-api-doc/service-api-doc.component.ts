@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-service-api-doc',
     templateUrl: './service-api-doc.component.html',
     styleUrls: ['./service-api-doc.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ServiceApiDocComponent {

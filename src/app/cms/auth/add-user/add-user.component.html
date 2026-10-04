@@ -1,10 +1,18 @@
-<div class="grid">
+<div class="grid cms-page">
 	<div class="col-12">
 		<div class="card">
-			<h5 class="mb-5" *ngIf="!editable">Add User</h5>
-			<h5 class="mb-5" *ngIf="editable">Edit User</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Users</span>
+          <h5 class="cms-page-title" *ngIf="!editable">Add User</h5>
+          <h5 class="cms-page-title" *ngIf="editable">Edit User</h5>
+          <p class="cms-page-subtitle" *ngIf="!editable">Create a CMS user account</p>
+          <p class="cms-page-subtitle" *ngIf="editable">Update CMS user details</p>
+        </div>
+      </div>
+      <div class="cms-form-body">
             <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
-                <div class="p-fluid formgrid grid">
+                <div class="p-fluid formgrid grid cms-form-stack">
                     <div class="field col-6 md:col-6">
                         <label htmlFor="user_fname">First Name</label>
                         <input pInputText id="user_fname" type="text" formControlName="user_fname" placeholder="First Name" />
@@ -108,6 +116,7 @@
                     </div>
                 </div>
             </form>
+      </div>
 		</div>
 	</div>
 </div>

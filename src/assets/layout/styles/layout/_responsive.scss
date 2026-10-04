@@ -1,10 +1,10 @@
 @media screen and (min-width: 1960px) {
     .layout-main, .landing-wrapper {
-        width: 1504px;
+        width: 100%;
+        max-width: 1600px;
         margin-left: auto !important;
         margin-right: auto !important;
     }
-
 }
 
 @media (min-width: 992px) {
@@ -12,16 +12,15 @@
         &.layout-overlay {
             .layout-main-container {
                 margin-left: 0;
-                padding-left: 2rem;
+                padding-left: 1.5rem;
             }
 
             .layout-sidebar {
                 transform: translateX(-100%);
                 left: 0;
-                top: 0;
-                height: 100vh;
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
+                top: $topbarHeight;
+                height: calc(100vh - #{$topbarHeight});
+                border-radius: 0;
             }
 
             &.layout-overlay-active {
@@ -33,7 +32,7 @@
 
         &.layout-static {
             .layout-main-container {
-                margin-left: 300px;
+                margin-left: $sidebarWidth;
             }
 
             &.layout-static-inactive {
@@ -44,7 +43,7 @@
 
                 .layout-main-container {
                     margin-left: 0;
-                    padding-left: 2rem;
+                    padding-left: 1.5rem;
                 }
             }
         }
@@ -63,7 +62,8 @@
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
 
         .layout-sidebar {
@@ -71,8 +71,8 @@
             left: 0;
             top: 0;
             height: 100vh;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
+            border-radius: 0;
+            z-index: 1000;
         }
 
         .layout-mask {

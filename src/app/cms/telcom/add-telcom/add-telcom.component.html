@@ -1,14 +1,22 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="mb-5">Add Operator</h5>
-      }
-      @if (editable) {
-        <h5 class="mb-5">Edit Operator</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Operators</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Add Operator</h5>
+            <p class="cms-page-subtitle">Create a new telecom operator</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Operator</h5>
+            <p class="cms-page-subtitle">Update telecom operator settings</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
       <form [formGroup]="telcomForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid">
+        <div class="p-fluid formgrid grid cms-form-stack">
           <div class="field col-12 md:col-12">
             <div class="grid">
               <div class="field col-12 md:col-6">
@@ -219,7 +227,7 @@
                 </div>
                 <div class="grid">
                   <div class="field col-12 pb-0 mb-0">
-                    <label>Add Service/Partner/Operator Revenue/Shemaroo Revenue</label>
+                    <label>Add Service/Partner/Operator Revenue/Sarva Sys Revenue</label>
                   </div>
                   <div class="field col-12 md:col-12 pt-0">
                     <div formArrayName="tel_services">
@@ -229,7 +237,7 @@
                             <th style="width: 3rem">#</th>
                             <th style="width: 20%">Service<span label styleclass="label-required" class="text-red-500">*</span></th>
                             <th style="width: 20%">Partner</th>
-                            <th style="width: 20%">Shemaroo Revenue (%)<span label styleclass="label-required" class="text-red-500">*</span></th>
+                            <th style="width: 20%">Sarva Sys Revenue (%)<span label styleclass="label-required" class="text-red-500">*</span></th>
                             <th style="width: 20%">Operator Revenue (%)<span label styleclass="label-required" class="text-red-500">*</span></th>
                             <th style="width: 100px;">Options</th>
                           </tr>
@@ -260,13 +268,13 @@
                             </td>
                             <td style="width: 10rem">
                               <div class="field m-0">
-                                <input pInputText id="shemaroo_revenue" type="text" formControlName="shemaroo_revenue" placeholder="Shemaroo Revenue (%)" />
-                                @if (submitted && !f['tel_services'].controls[i].controls['shemaroo_revenue'].valid) {
+                                <input pInputText id="company_revenue" type="text" formControlName="company_revenue" placeholder="Sarva Sys Revenue (%)" />
+                                @if (submitted && !f['tel_services'].controls[i].controls['company_revenue'].valid) {
                                   <div style="display: block; width: 100%;">
-                                    @if (f['tel_services'].controls[i].controls['shemaroo_revenue'].hasError('required') ) {
-                                      <span class="p-error">Shemaroo Revenue is required</span>
+                                    @if (f['tel_services'].controls[i].controls['company_revenue'].hasError('required') ) {
+                                      <span class="p-error">Sarva Sys Revenue is required</span>
                                     }
-                                    @if (f['tel_services'].controls[i].controls['shemaroo_revenue'].errors?.highRevenueShare) {
+                                    @if (f['tel_services'].controls[i].controls['company_revenue'].errors?.highRevenueShare) {
                                       <span class="p-error">Revenue Share is higher that 100%</span>
                                     }
                                   </div>
@@ -291,10 +299,10 @@
                             <td style="width: 10rem">
                               <div class="field m-0">
                                 @if (i!==0) {
-                                  <p-button (click)="removePartner(i)" class="mr-2" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                                  <p-button (click)="removePartner(i)" class="mr-2" severity="danger" size="small" icon="pi pi-trash"></p-button>
                                 }
                                 @if (i==tel_services.controls.length-1) {
-                                  <p-button (click)="addService()" size="small" icon="pi pi-plus" [iconOnly]="true" severity="success"></p-button>
+                                  <p-button (click)="addService()" size="small" icon="pi pi-plus" severity="success"></p-button>
                                 }
                               </div>
                             </td>
@@ -332,7 +340,7 @@
                           </div>
                         }
                       </div>
-                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo') {
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'company') {
                         <div class="col-5 field">
                           <label htmlFor="tel_parking_retry_perday">Parking retry per day<span label styleclass="label-required" class="text-red-500">*</span></label>
                           <input pInputText id="tel_parking_retry_perday" type="text" formControlName="tel_parking_retry_perday" placeholder="Parking retry per day" />
@@ -347,7 +355,7 @@
                           }
                         </div>
                       }
-                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo' && tel_parking_time.controls.length!==0) {
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'company' && tel_parking_time.controls.length!==0) {
                         <div class="col-12 field" formArrayName="tel_parking_times">
                           <label>Schedule Time <small>(24 hours format)</small><span label styleclass="label-required" class="text-red-500">*</span></label>
                           <div class="grid field">
@@ -410,7 +418,7 @@
                           </div>
                         }
                       </div>
-                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo') {
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'company') {
                         <div class="col-5 field">
                           <label htmlFor="tel_grace_retry_perday">Grace retry per day<span label styleclass="label-required" class="text-red-500">*</span></label>
                           <input pInputText id="tel_grace_retry_perday" type="text" formControlName="tel_grace_retry_perday" placeholder="Grace retry per day" />
@@ -425,7 +433,7 @@
                           }
                         </div>
                       }
-                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'shemaroo'  && tel_grace_time.controls.length!==0) {
+                      @if (telcomForm.controls['tel_lifecycle_managed_by'].value == 'company'  && tel_grace_time.controls.length!==0) {
                         <div class="col-12 field" formArrayName="tel_grace_times">
                           <label>Schedule Time <small>(24 hours format)</small><span label styleclass="label-required" class="text-red-500">*</span></label>
                           <div class="grid field">
@@ -468,21 +476,6 @@
               <p-fieldset legend="Reports">
                 <div class="field col-12 md:col-12">
                   <div class="grid">
-                    @if (hasService('sme')) {
-                      <div class="field col-6 md:col-2">
-                        <label htmlFor="tel_ageing_sme_calculation">Ageing Calculation for SME<sup>*</sup></label>
-                        <p-select id="tel_ageing_sme_calculation" [options]="ageingCalculationType" optionLabel="name" optionValue="code" formControlName="tel_ageing_sme_calculation" placeholder="Select type" ></p-select>
-                        @if (submitted && !f['tel_ageing_sme_calculation'].valid) {
-                          <div style="display: block; width: 100%;">
-                            @if (f['tel_ageing_sme_calculation'].hasError('required') ) {
-                              <span class="p-error">
-                                Region is required
-                              </span>
-                            }
-                          </div>
-                        }
-                      </div>
-                    }
                     @if (hasService('legacy')) {
                       <div class="field col-6 md:col-2">
                         <label htmlFor="tel_ageing_legacy_calculation">Ageing Calculation for Legacy<sup>*</sup></label>
@@ -511,6 +504,7 @@
           </div>
         </div>
       </form>
+      </div>
     </div>
   </div>
 </div>

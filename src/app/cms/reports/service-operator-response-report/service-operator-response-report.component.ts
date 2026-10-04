@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { debounceTime } from 'rxjs';
     selector: 'app-service-operator-response-report',
     templateUrl: './service-operator-response-report.component.html',
     styleUrls: ['./service-operator-response-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ServiceOperatorResponseReportComponent implements OnInit{

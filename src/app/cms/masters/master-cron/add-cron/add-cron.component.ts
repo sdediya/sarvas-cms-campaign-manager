@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -12,6 +12,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-cron',
     templateUrl: './add-cron.component.html',
     styleUrls: ['./add-cron.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CronMasterComponent  implements OnInit{

@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="m-0" style="text-wrap: nowrap;">Target vs Achievement Revenue</h5>
-      <p-divider></p-divider>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Target vs Achievement Revenue</h5>
+          <p class="cms-page-subtitle">Revenue target vs achievement</p>
+        </div>
+      </div>
+
       <form [formGroup]="reportForm">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="report_date">Report Date<span class="text-red-500">*</span></label>
@@ -37,10 +43,13 @@
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px" styleClass="cms-table-dense">
             <ng-template #caption>
-              <div class="flex">
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="Export" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="Export" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>

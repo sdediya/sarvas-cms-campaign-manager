@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { Table, TableHeaderCheckbox } from "primeng/table";
     selector: 'app-customer-refund',
     templateUrl: './customer-refund.component.html',
     styleUrls: ['./customer-refund.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomerRefundComponent implements AfterViewInit, OnInit{

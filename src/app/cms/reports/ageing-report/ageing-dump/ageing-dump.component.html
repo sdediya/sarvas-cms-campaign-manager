@@ -1,14 +1,15 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-
-      <div class="p-fluid formgrid grid align-items-center	">
-        <div class="col-12 md:col-3">
-          <h5 class="m-0">Ageing MSISDN Dump</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Ageing MSISDN Dump</h5>
+          <p class="cms-page-subtitle">Ageing MSISDN dump export</p>
         </div>
       </div>
-      <form [formGroup]="ageingMsisdnDumpForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center	">
+<form [formGroup]="ageingMsisdnDumpForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid formgrid grid align-items-center	 cms-filter-bar">
           <div class="col-6 md:col-3">
             <label htmlFor="date">Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker formControlName="date" [readonlyInput]="true" inputId="range" selectionMode="range" view="date" [showIcon]="true" [maxDate]="maxDate">
@@ -37,19 +38,6 @@
             }
           </div>
           <div class="col-6 md:col-3">
-            <label htmlFor="platform_id">Select Service<span label styleclass="label-required" class="text-red-500">*</span></label>
-            <p-select class="col-3 p-0" [showClear]="true" formControlName="service" id="service" placeholder="Service" [options]="service" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
-            @if (submitted && !f['service'].valid) {
-              <div style="display: block; width: 100%;">
-                @if (f['service'].hasError('required') ) {
-                  <span class="p-error">
-                    Please select Service
-                  </span>
-                }
-              </div>
-            }
-          </div>
-          <div class="col-6 md:col-3">
             <label htmlFor="platform_id">Select Ad-Platform</label>
             <p-select class="col-3 p-0" [showClear]="true" formControlName="platform_id" id="platform_id" placeholder="Ad-Platform" [options]="advertising_platforms" optionLabel="name" [filter]="true"  optionValue="id"></p-select>
             @if (submitted && !f['platform_id'].valid) {
@@ -63,7 +51,7 @@
             }
           </div>
           <div class="col-6 md:col-3 flex align-items-center">
-            <button type="submit" pButton pRipple class="w-6 text-xl" severity="success">Export</button>
+            <button type="submit" pButton pRipple severity="success">Export</button>
           </div>
         </div>
       </form>

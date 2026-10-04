@@ -1,14 +1,22 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="cms-page-title">Smart Url</h5>
-      <div class="cms-filter-bar">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          <h5 class="cms-page-title">Smart URL</h5>
+          <p class="cms-page-subtitle">Manage and configure smart URL campaigns</p>
+        </div>
+      </div>
+<div class="cms-filter-bar">
         <p-select [(ngModel)]="telcom_id" id="tel_id" [options]="regions" [filter]="true" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'tel_id')" placeholder="Operator" optionValue="id"></p-select>
 
         <p-select [(ngModel)]="filter.ad_platform_id" id="ad_platform_id" [filter]="true" [options]="advertising_platforms" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'ad_platform_id')" placeholder="Ad Platform" optionValue="id"></p-select>
-        @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
+        <div class="cms-filter-actions">
+          @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
           <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
         }
+        </div>
       </div>
 
       <p-table #dt1 styleClass="cms-table-dense" [value]="campaigns"  [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
@@ -96,7 +104,7 @@
           }
         </td>
         <td class="text-center">
-          <i class="pi pi-clone cursor-pointer" title="{{'Copy Smart Url Link!'}}" (click)="copyToClipboard(campaigns.smart_url_uuid, campaigns.region_shortcode)"></i>
+          <i class="pi pi-clone cursor-pointer cms-copy-action" title="{{'Copy Smart Url Link!'}}" (click)="copyToClipboard(campaigns.smart_url_uuid, campaigns.region_shortcode)"></i>
         </td>
         <td>
           {{campaigns.smart_url_uuid}}
@@ -137,12 +145,12 @@
 
   <ng-template #emptymessage>
     <tr>
-      <td colspan="8">No data found.</td>
+      <td colspan="12" class="cms-table-empty">No data found.</td>
     </tr>
   </ng-template>
   <ng-template #loadingbody>
     <tr>
-      <td colspan="8">Loading data. Please wait.</td>
+      <td colspan="12" class="cms-table-empty">Loading data. Please wait.</td>
     </tr>
   </ng-template>
 </p-table>

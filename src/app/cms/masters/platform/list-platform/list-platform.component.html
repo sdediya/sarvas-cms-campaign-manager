@@ -1,20 +1,29 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="m-2 grid justify-content-between mx-2">
-        <h5 >Ad-Partner List</h5>
-        @if (write) {
-          <p-button [routerLink]="['/masters/add-ad-partner']">Add Ad-Partner</p-button>
-        }
+            <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Ad Partners</h5>
+          <p class="cms-page-subtitle">Manage advertising platforms</p>
+        </div>
+        <div class="cms-page-header__actions">
+          @if (write) {
+            <p-button [routerLink]="['/masters/add-ad-partner']" label="Add Ad-Partner"></p-button>
+          }
+        </div>
       </div>
-      <p-table #dt1 [value]="platforms_list" dataKey="name"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+
+      <p-table #dt1 styleClass="cms-table-dense" [value]="platforms_list" dataKey="name"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
+          <div class="cms-list-tools">
             <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Ad-Partner" class="w-full"/></p-iconfield>
-            @if (platforms_list.length > 0) {
+            <div class="cms-list-tools__actions">
+              @if (platforms_list.length > 0) {
                 <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
@@ -27,7 +36,7 @@
             </th>
             <th pSortableColumn="name" style="min-width: 12rem">
               <div class="flex justify-content-between align-items-center">
-                Name <p-sort-icon class="mx-4" field="name"></p-sort-icon>
+                Name <p-sortIcon class="mx-4" field="name"></p-sortIcon>
               </div>
             </th>
             <th style="min-width: 10rem">
@@ -86,7 +95,7 @@
             </td>
             <td>
               @if (write) {
-                <p-button [routerLink]="['/masters/edit-ad-partner']" [queryParams]="{id: platform_list.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/masters/edit-ad-partner']" [queryParams]="{id: platform_list.id}" severity="success" size="small" icon="pi pi-pencil"></p-button>
               }
             </td>
             <td class="text-center">
@@ -119,12 +128,12 @@
         </ng-template>
         <ng-template #emptymessage>
           <tr>
-            <td colspan="8">No data found.</td>
+            <td colspan="6" class="cms-table-empty">No data found.</td>
           </tr>
         </ng-template>
         <ng-template #loadingbody>
           <tr>
-            <td colspan="8">Loading data. Please wait.</td>
+            <td colspan="6" class="cms-table-empty">Loading data. Please wait.</td>
           </tr>
         </ng-template>
       </p-table>

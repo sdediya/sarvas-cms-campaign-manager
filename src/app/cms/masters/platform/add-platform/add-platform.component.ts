@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     selector: 'app-add-platform',
     templateUrl: './add-platform.component.html',
     styleUrls: ['./add-platform.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddPlatformComponent implements OnInit {

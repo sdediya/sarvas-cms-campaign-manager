@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -14,6 +14,7 @@ import { ExcelExportService } from 'src/app/services/excelExport/excel-export.se
     selector: 'app-list-telcom',
     templateUrl: './list-telcom.component.html',
     styleUrls: ['./list-telcom.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListTelcomComponent implements OnInit{

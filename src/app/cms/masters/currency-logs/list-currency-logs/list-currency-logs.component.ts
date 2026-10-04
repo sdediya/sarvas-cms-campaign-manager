@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-list-currency-logs',
     templateUrl: './list-currency-logs.component.html',
     styleUrls: ['./list-currency-logs.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListCurrencyLogsComponent implements OnInit{

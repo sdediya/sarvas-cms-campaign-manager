@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl, ValidationErrors, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators, required } from '@rxweb/reactive-form-validators'
@@ -12,6 +12,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-telcom',
     templateUrl: './add-telcom.component.html',
     styleUrls: ['./add-telcom.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddTelcomComponent implements OnInit{
@@ -50,7 +51,7 @@ export class AddTelcomComponent implements OnInit{
 
   lifecycle_managed_by_list = [
     { name: 'Telcom / Partner', code: 'telcom' },
-    { name: 'Shemaroo', code: 'shemaroo' }
+    { name: 'Sarva Sys', code: 'company' }
   ]
   telcom_default_flows_list : any = []
   telcom_default_language_list : any = []
@@ -62,7 +63,6 @@ export class AddTelcomComponent implements OnInit{
     tel_id:'',
     tel_name: '',
     tel_lifecycle_managed_by: '',
-    // tel_shemaroo_revenue: '',
     // tel_telcom_revenue: '',
     tel_max_otp_req: '',
     tel_otp_length:'',
@@ -82,7 +82,6 @@ export class AddTelcomComponent implements OnInit{
     tel_is_shortcode: '',
     tel_default_flow:'',
     tel_flows: [],
-    tel_ageing_sme_calculation:'',
     tel_default_language: '',
   }
 
@@ -141,7 +140,6 @@ export class AddTelcomComponent implements OnInit{
       tel_parking_times: this.frmbuilder.array([]),
       tel_grace_times: this.frmbuilder.array([]),
       tel_is_refundable: [false, [Validators.required]],
-      tel_ageing_sme_calculation: ['activation', [Validators.required]],
       tel_ageing_legacy_calculation: ['activation', [Validators.required]],
       tel_default_language: ['', [Validators.required]],
     });
@@ -157,7 +155,7 @@ export class AddTelcomComponent implements OnInit{
     this.telcomForm.get('tel_grace_status').valueChanges.subscribe((value:boolean)=> {
       let managed_by = this.f['tel_lifecycle_managed_by'].value;
 
-      customValidator.default.updateValidations(managed_by == 'shemaroo' && value,this.telcomForm.get('tel_grace_retry_perday'),[Validators.required]);
+      customValidator.default.updateValidations(managed_by == 'company' && value,this.telcomForm.get('tel_grace_retry_perday'),[Validators.required]);
       
       customValidator.default.updateValidations(value,this.telcomForm.get('tel_grace_days'),[Validators.required]);
 
@@ -166,7 +164,7 @@ export class AddTelcomComponent implements OnInit{
     // If parking is active, then validation required for dependant fields
     this.telcomForm.get('tel_parking_status').valueChanges.subscribe((value:boolean)=> {
       let managed_by = this.f['tel_lifecycle_managed_by'].value;
-      customValidator.default.updateValidations(managed_by == 'shemaroo' && value, this.telcomForm.get('tel_parking_retry_perday'), [Validators.required]);
+      customValidator.default.updateValidations(managed_by == 'company' && value, this.telcomForm.get('tel_parking_retry_perday'), [Validators.required]);
 
       customValidator.default.updateValidations(value,this.telcomForm.get('tel_parking_days'),[Validators.required]);
     })
@@ -176,14 +174,14 @@ export class AddTelcomComponent implements OnInit{
       let parkingStatus = this.f['tel_parking_status'].value;
       let graceStatus = this.f['tel_grace_status'].value;
 
-      customValidator.default.updateValidations(value == 'shemaroo' && parkingStatus,this.telcomForm.get('tel_parking_retry_perday'),[Validators.required]);
+      customValidator.default.updateValidations(value == 'company' && parkingStatus,this.telcomForm.get('tel_parking_retry_perday'),[Validators.required]);
 
-      customValidator.default.updateValidations(value == 'shemaroo' && graceStatus,this.telcomForm.get('tel_grace_retry_perday'),[Validators.required]);
+      customValidator.default.updateValidations(value == 'company' && graceStatus,this.telcomForm.get('tel_grace_retry_perday'),[Validators.required]);
 
     })
 
     this.telcomForm.get('tel_grace_retry_perday').valueChanges.subscribe((value:any)=> {
-      if(this.telcomForm.get('tel_lifecycle_managed_by').value == 'shemaroo') {
+      if(this.telcomForm.get('tel_lifecycle_managed_by').value == 'company') {
         this.f['tel_grace_times'].clear();
         for (let index = 0; index < value; index++) {
           this.addGraceTime();
@@ -193,7 +191,7 @@ export class AddTelcomComponent implements OnInit{
     });
 
     this.telcomForm.get('tel_parking_retry_perday').valueChanges.subscribe((value:any)=> {
-      if(this.telcomForm.get('tel_lifecycle_managed_by').value == 'shemaroo') {
+      if(this.telcomForm.get('tel_lifecycle_managed_by').value == 'company') {
         this.f['tel_parking_times'].clear();
         for (let index = 0; index < value; index++) {
           this.addParkingTime(this.currentTelcom.tel_parking_times);
@@ -244,25 +242,15 @@ export class AddTelcomComponent implements OnInit{
       }
 
       value.forEach((element:any,index:any) => {
-        if(element.shemaroo_revenue != '' && element.telcom_revenue != '' && (Number(element.shemaroo_revenue)+Number(element.telcom_revenue) > 100)){
-          this.f['tel_services'].controls[index].controls['shemaroo_revenue'].setErrors({highRevenueShare: true})
+        if(element.company_revenue != '' && element.telcom_revenue != '' && (Number(element.company_revenue)+Number(element.telcom_revenue) > 100)){
+          this.f['tel_services'].controls[index].controls['company_revenue'].setErrors({highRevenueShare: true})
           this.f['tel_services'].controls[index].controls['telcom_revenue'].setErrors({highRevenueShare: true})
         }else {
-          this.f['tel_services'].controls[index].controls['shemaroo_revenue'].setErrors(null)
+          this.f['tel_services'].controls[index].controls['company_revenue'].setErrors(null)
           this.f['tel_services'].controls[index].controls['telcom_revenue'].setErrors(null)
         }
         console.log(this.f['tel_services'])
       });
-      // (const element of value) {
-      //   console.log(element);
-      //   console.log(this.f['tel_services'].controls[index]['shemaroo_revenue'])
-      //   if(element.shemaroo_revenue != '' && element.telcom_revenue != '' && (Number(element.shemaroo_revenue)+Number(element.telcom_revenue) > 100)){
-          
-      //     // this.f['tel_services'][index]['shemaroo_revenue'].setErrors({highRevenueShare: true})
-      //   }else {
-      //     // this.f['tel_services'][index]['shemaroo_revenue'].setErrors(null);
-      //   }
-      // }
       
     })
 
@@ -291,7 +279,7 @@ export class AddTelcomComponent implements OnInit{
       telcom_id: [value.telcom_id || ''],
       telcom_partner_id: [value.telcom_partner_id || ''],
       telcom_service_id: [value.telcom_service_id || '', [Validators.required]],
-      shemaroo_revenue: [value.shemaroo_revenue || '', [Validators.required]],
+      company_revenue: [value.company_revenue || '', [Validators.required]],
       telcom_revenue: [value.telcom_revenue || '', [Validators.required]],
     })  
   }
@@ -350,7 +338,7 @@ export class AddTelcomComponent implements OnInit{
                   this.currentTelcom = response.data
                   this.addService(this.currentTelcom?.tel_services);
                   this.telcomForm.addControl('tel_id', new FormControl('', []));
-                  if(response.data.tel_lifecycle_managed_by=='shemaroo'){
+                  if(response.data.tel_lifecycle_managed_by=='company'){
                     if(response.data.tel_grace_times) {
                       response.data.tel_grace_times = JSON.parse(response.data.tel_grace_times)
                       response.data.tel_grace_times.forEach((ele:any)=> {
@@ -369,7 +357,6 @@ export class AddTelcomComponent implements OnInit{
                     response.data.tel_parking_times = []
                   }
                   let ageing_calculation = JSON.parse(response.data.tel_ageing_calculation);
-                  response.data.tel_ageing_sme_calculation = ageing_calculation?.sme ?? 'activation'
                   response.data.tel_ageing_legacy_calculation =ageing_calculation?.legacy ?? 'activation'
 
                   this.telcomForm.patchValue(response.data)
@@ -460,7 +447,7 @@ export class AddTelcomComponent implements OnInit{
       data.tel_parking_times = JSON.stringify(data.tel_parking_times)
       data.tel_grace_times = JSON.stringify(data.tel_grace_times)
 
-      data.tel_ageing_calculation = JSON.stringify({sme: data.tel_ageing_sme_calculation, legacy: data.tel_ageing_legacy_calculation});
+      data.tel_ageing_calculation = JSON.stringify({legacy: data.tel_ageing_legacy_calculation});
       let telecomAction = this.editable ? "edit" : "add"      
       this.httpService.post(`${this.CMS_API}telcom/${telecomAction}`, data).subscribe({
         next:res=>{
@@ -493,7 +480,7 @@ export class AddTelcomComponent implements OnInit{
     let legacyServices = ["Stylush","Gamesland","Gamiplex","ALL IN ONE FUN","Club Bolly","Humour & Viral","Life & Style","Mens World","Celeb Fitness","Bolly Shorties","Miniplex","Sports World","VDO Box","Viral And Humor","Mobiplex","Entertainment Store","South Plex","Fun Club"]
     for (const e of this.tel_services.value) {
       let service_name:any = this.services.find((service:any)=> service.id == e.telcom_service_id)
-      service  = (service_name?.name == 'ShemarooMe' && type == 'sme') || (type == 'legacy' && legacyServices.includes(service_name?.name));
+      service  = type == 'legacy' && legacyServices.includes(service_name?.name);
       if(service) {
         break;
       }

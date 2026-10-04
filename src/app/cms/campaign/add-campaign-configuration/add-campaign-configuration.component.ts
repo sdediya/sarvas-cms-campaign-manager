@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -11,6 +11,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-campaign-configuration',
     templateUrl: './add-campaign-configuration.component.html',
     styleUrls: ['./add-campaign-configuration.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddCampaignConfigurationComponent implements OnInit{

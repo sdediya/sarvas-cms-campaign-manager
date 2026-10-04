@@ -1,27 +1,38 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="m-1 grid justify-content-between">
-        <h5 class="cms-page-title">Blacklist Configuration List</h5>
-        @if (write) {
-          <p-button [routerLink]="['/campaign/add-blacklist']">Add Blacklist</p-button>
-        }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          <h5 class="cms-page-title">Blacklist</h5>
+          <p class="cms-page-subtitle">Manage campaign blacklist entries</p>
+        </div>
+        <div class="cms-page-header__actions">
+          @if (write) {
+            <p-button [routerLink]="['/campaign/add-blacklist']" label="Add Blacklist"></p-button>
+          }
+        </div>
       </div>
+
       <div class="cms-filter-bar">
           <p-select  [(ngModel)]="filter.blacklist_duration_type" id="duration_type" [options]="blacklist_duration_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'duration_type')" placeholder="Blacklist duration type" optionValue="code"></p-select>
           <p-select  [(ngModel)]="filter.blacklist_type" id="type" [options]="blacklist_types" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'type')" placeholder="Type" optionValue="code"></p-select>
+          <div class="cms-filter-actions">
           @if (filter.blacklist_duration_type || filter.blacklist_type) {
             <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
           }
+        </div>
       </div>
       <p-table #dt1 styleClass="cms-table-dense" [value]="blacklist_confs"  [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
           <div class="cms-list-tools">
             <p-iconfield><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Mobile" class="w-full"/></p-iconfield>
-            @if (blacklist_confs.length > 0) {
+            <div class="cms-list-tools__actions">
+              @if (blacklist_confs.length > 0) {
               <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
             }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
@@ -70,12 +81,12 @@
         </ng-template>
         <ng-template #emptymessage>
           <tr>
-            <td colspan="8">No data found.</td>
+            <td colspan="3" class="cms-table-empty">No data found.</td>
           </tr>
         </ng-template>
         <ng-template #loadingbody>
           <tr>
-            <td colspan="8">Loading data. Please wait.</td>
+            <td colspan="3" class="cms-table-empty">Loading data. Please wait.</td>
           </tr>
         </ng-template>
       </p-table>

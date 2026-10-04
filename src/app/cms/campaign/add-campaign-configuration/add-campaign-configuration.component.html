@@ -1,20 +1,27 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="cms-page-title">Add Campaign Configurations</h5>
-      }
-      @if (editable) {
-        <h5 class="cms-page-title">Edit Campaign Configurations</h5>
-      }
-      <div class="mb-1 mt-6">
+            <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaign Configuration</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Create Configuration</h5>
+            <p class="cms-page-subtitle">Define configuration type, level, and values</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Configuration</h5>
+            <p class="cms-page-subtitle">Define configuration type, level, and values</p>
+          }
+        </div>
+      </div>
+      <div class="cms-form-body">
         <form [formGroup]="campaignConfForm" (ngSubmit)="onSubmit()">
-          <div class="p-fluid formgrid grid">
+          <div class="p-fluid formgrid grid cms-form-stack">
             <div class="field col-3 mb-0">
               <label htmlFor="conf_type">Select Configuration Type<span label styleclass="label-required" class="text-red-500">*</span></label>
               <p-select id="conf_type" [options]="conf_types" optionLabel="name"  (onChange)="onConfTypeChange($event)" formControlName="conf_type" placeholder="Select Configuration Type" optionValue="code" [readonly]="editable"></p-select>
               @if (submitted && !f['conf_type'].valid) {
-                <div style="display: block; width: 100%;">
+                <div class="cms-field-error">
                   @if (f['conf_type'].hasError('required') ) {
                     <span class="p-error">
                       Please select configuration type
@@ -27,7 +34,7 @@
               <label htmlFor="conf_level_type">Select Configuration Level<span label styleclass="label-required" class="text-red-500">*</span></label>
               <p-select id="conf_level_type" [options]="conf_level_types" optionLabel="name" (onChange)="onConfLevelChange($event)" formControlName="conf_level_type" placeholder="Select Configuration Level" optionValue="code" [readonly]="editable"></p-select>
               @if (submitted && !f['conf_level_type'].valid) {
-                <div style="display: block; width: 100%;">
+                <div class="cms-field-error">
                   @if (f['conf_level_type'].hasError('required') ) {
                     <span class="p-error">
                       Please select configuration level
@@ -46,7 +53,7 @@
               <div>
                 <p-select id="conf_entity_id" [options]="conf_entities" optionLabel="name"  formControlName="conf_entity_id" placeholder="Select Entity" optionValue="id" [filter]="true" filterBy="name" [readonly]="editable"></p-select>
                 @if (submitted && !f['conf_entity_id'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['conf_entity_id'].hasError('required') ) {
                       <span class="p-error">
                         Please select entity
@@ -75,7 +82,7 @@
                 <label htmlFor="conf_is_optin_capping">Select Capping On<span label styleclass="label-required" class="text-red-500">*</span></label>
                 <p-select id="conf_is_optin_capping" [options]="conf_is_optin_capping" optionLabel="name"  formControlName="conf_is_optin_capping" placeholder="Select Capping On" optionValue="code" ></p-select>
                 @if (submitted && !f['conf_is_optin_capping'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['conf_is_optin_capping'].hasError('required') ) {
                       <span class="p-error">
                         Please select Capping On Mode
@@ -90,7 +97,7 @@
                 <label htmlFor="conf_entity_value">Enter Configuration Value<span label styleclass="label-required" class="text-red-500">*</span></label>
                 <input pInputText id="conf_entity_value" type="text" formControlName="conf_entity_value" placeholder="Enter Configuration Value"  />
                 @if (submitted && !f['conf_entity_value'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['conf_entity_value'].hasError('required') ) {
                       <span class="p-error">
                         Configuration value is required

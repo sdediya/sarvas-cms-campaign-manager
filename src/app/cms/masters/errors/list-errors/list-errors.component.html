@@ -1,14 +1,19 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
       <div class="grid">
         <div class="col-6 align-items-center justify-content-center">
-          <h5>Custom Response List</h5>
+                <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Masters</span>
+          <h5 class="cms-page-title">Errors</h5>
+          <p class="cms-page-subtitle">Manage error codes and messages</p>
+        </div>
+      </div>
+
         </div>
         <div class="col-6 align-items-center justify-content-center text-right">
-          @if (write) {
-            <p-button [routerLink]="['/masters/add-custom-response']">Add Custom Response</p-button>
-          }
+          
         </div>
       </div>
       <p-tabs [(value)]="tabIndex" (valueChange)="switchHeaders({index: +($event ?? 0)})">
@@ -19,14 +24,16 @@
         <p-tabpanels>
         <p-tabpanel [value]="0">
           @if (errSeverity == 'error') {
-            <p-table #dtError [value]="errorsArr" [lazy]="true" (onLazyLoad)="nextPage($event, 'error')" [paginator]="true" [rows]="10" [totalRecords]="totalErrorRecords" [loading]="errLoading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+            <p-table styleClass="cms-table-dense" #dtError [value]="errorsArr" [lazy]="true" (onLazyLoad)="nextPage($event, 'error')" [paginator]="true" [rows]="10" [totalRecords]="totalErrorRecords" [loading]="errLoading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
               <ng-template #caption>
-                <div class="flex justify-content-between flex-column sm:flex-row">
-                  <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
+                <div class="cms-list-tools">
+            <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
                     <input pInputText type="text" #filter (input)="onGlobalFilter(dtError, $event)" placeholder="Search Response Message" class="w-full"/></p-iconfield>
-                  @if (errorsArr.length>0) {
+                  <div class="cms-list-tools__actions">
+              @if (errorsArr.length>0) {
                       <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
                     }
+            </div>
                 </div>
               </ng-template>
               <ng-template #header>
@@ -90,19 +97,19 @@
                   </td>
                   <td>
                     @if (write) {
-                      <p-button [routerLink]="['/masters/edit-custom-response']" [queryParams]="{id: errorsArr.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                      <p-button [routerLink]="['/masters/edit-custom-response']" [queryParams]="{id: errorsArr.id}" severity="success" size="small" icon="pi pi-pencil"></p-button>
                     }
                   </td>
                 </tr>
               </ng-template>
               <ng-template #emptymessage>
                 <tr>
-                  <td colspan="8">No data found.</td>
+                  <td colspan="6" class="cms-table-empty">No data found.</td>
                 </tr>
               </ng-template>
               <ng-template #loadingbody>
                 <tr>
-                  <td colspan="8">Loading data. Please wait.</td>
+                  <td colspan="6" class="cms-table-empty">Loading data. Please wait.</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -181,19 +188,19 @@
                   </td>
                   <td>
                     @if (write) {
-                      <p-button [routerLink]="['/masters/edit-custom-response']" [queryParams]="{id: successArr.id}" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                      <p-button [routerLink]="['/masters/edit-custom-response']" [queryParams]="{id: successArr.id}" severity="success" size="small" icon="pi pi-pencil"></p-button>
                     }
                   </td>
                 </tr>
               </ng-template>
               <ng-template #emptymessage>
                 <tr>
-                  <td colspan="8">No data found.</td>
+                  <td colspan="6" class="cms-table-empty">No data found.</td>
                 </tr>
               </ng-template>
               <ng-template #loadingbody>
                 <tr>
-                  <td colspan="8">Loading data. Please wait.</td>
+                  <td colspan="6" class="cms-table-empty">Loading data. Please wait.</td>
                 </tr>
               </ng-template>
             </p-table>

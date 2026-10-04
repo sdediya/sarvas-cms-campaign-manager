@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-partner-wise-summary',
     templateUrl: './charging-report.component.html',
     styleUrls: ['./charging-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ChargingReportComponent {
@@ -37,10 +38,6 @@ export class ChargingReportComponent {
   services:any
   data: any;
   advertising_platforms:any
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
   report_type : any = [
     {name: 'Free Trail Activation', code: 'free'},
     {name: 'Optin', code: 'optin'},

@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { error, json } from '@rxweb/reactive-form-validators';
 import { SortEvent } from 'primeng/api';
@@ -15,6 +15,7 @@ import { Observable, catchError } from 'rxjs';
     selector: 'app-investor-report',
     templateUrl: './investor-report.component.html',
     styleUrls: ['./investor-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class InvestorReportComponent {
@@ -42,11 +43,6 @@ export class InvestorReportComponent {
     { label: '2026', value: 2026 }
   ];
 
-  services = [
-    { label: 'SME', value: 'SME' },
-    { label: 'Legacy', value: 'Legacy' }
-  ]
-
   reportTypes = [
     { label: 'Summary', value: 'summary' },
     { label: 'Details', value: 'details' }
@@ -57,7 +53,7 @@ export class InvestorReportComponent {
     private excelExportService: ExcelExportService, private frmbuilder: FormBuilder, private messageService: MessageService,) {
     this.ipForm = frmbuilder.group({
       year: [2026, [Validators.required]],
-      service: [null, [Validators.required]],
+      service: ['Legacy'],
       reportType: ['summary', [Validators.required]],
     });
   }

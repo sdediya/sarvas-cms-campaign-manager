@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -16,6 +16,7 @@ import { distinctUntilChanged, throttleTime } from 'rxjs';
     selector: 'app-add-smart-url',
     templateUrl: './add-smart-url.component.html',
     styleUrls: ['./add-smart-url.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddSmartUrlComponent {

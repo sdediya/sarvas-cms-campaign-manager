@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { HttpService } from 'src/app/services/http/http.service';
 import { environment } from 'src/environments/environment';
@@ -9,11 +9,13 @@ import { Router,ActivatedRoute  } from '@angular/router';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { DatePipe } from '@angular/common';
 import { debounce, debounceTime } from 'rxjs';
+import Utils from 'src/app/utils/utils';
 
 @Component({
     selector: 'app-list-campaign',
     templateUrl: './list-campaign.component.html',
     styleUrls: ['./list-campaign.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListCampaignComponent implements OnInit{
@@ -93,11 +95,19 @@ export class ListCampaignComponent implements OnInit{
     }, 1500);
   }
 
-  copyToClipboard(campaignId: string, campaigntype: string, is_silent:number): void {
-    let isCopied:boolean  = this.clipboardService.copyFromContent(campaignId);
-    if(campaigntype=='wap' ){
-      isCopied =  is_silent == 1 ? this.clipboardService.copyFromContent(`${this.BASE_URL}s_redirect?cid=${campaignId}&click_id=`) :this.clipboardService.copyFromContent(`${this.BASE_URL}landingpage?cid=${campaignId}&click_id=`)
+  copyToClipboard(campaign: any): void {
+    const campaigntype = campaign.campaigntype;
+    let content = campaign.id;
+    if(campaigntype=='wap'){
+      const page = campaign.is_silent == 1 ? 's-redirect' : 'landing';
+      const url = Utils.landingPageUrl(this.BASE_URL, campaign, page, `cid=${encodeURIComponent(campaign.id)}&click_id=`);
+      if(!url){
+        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing for this campaign' });
+        return;
+      }
+      content = url;
     }
+    const isCopied = this.clipboardService.copyFromContent(content);
     if(isCopied){
       let msg = campaigntype=='wap' ? 'Copied: Camapign Link!' : 'Copied: Camapign ID'
       this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });

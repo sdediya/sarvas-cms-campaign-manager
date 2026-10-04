@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -8,6 +8,7 @@ import { ExcelExportService } from 'src/app/services/excelExport/excel-export.se
     selector: 'app-publisher-report',
     templateUrl: './publisher-report.component.html',
     styleUrls: ['./publisher-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PublisherReportComponent {

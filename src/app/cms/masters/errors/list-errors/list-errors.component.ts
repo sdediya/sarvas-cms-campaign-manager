@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { FormBuilder} from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -14,6 +14,7 @@ import { ExcelExportService } from 'src/app/services/excelExport/excel-export.se
     selector: 'app-list-errors',
     templateUrl: './list-errors.component.html',
     styleUrls: ['./list-errors.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListErrorsComponent  implements OnInit {

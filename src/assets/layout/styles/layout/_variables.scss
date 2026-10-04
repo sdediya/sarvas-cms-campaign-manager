@@ -1,4 +1,7 @@
-/* General */
-$scale:14px;                    /* main font size */ 
-$borderRadius:12px;             /* border radius of layout element e.g. card, sidebar */ 
-$transitionDuration:.2s;        /* transition duration of layout elements e.g. sidebar, overlay menus */ 
+/* General — VAS enterprise shell */
+$scale: 14px;                    /* main font size */
+$borderRadius: 10px;             /* border radius of layout elements */
+$transitionDuration: .2s;        /* transition duration of layout elements */
+$sidebarWidth: 260px;
+$topbarHeight: 3.5rem;
+$sidebarBg: #0b1220;

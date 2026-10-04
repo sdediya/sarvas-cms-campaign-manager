@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl, ValidationErrors, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RxwebValidators } from '@rxweb/reactive-form-validators'
@@ -12,6 +12,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-plan',
     templateUrl: './add-plan.component.html',
     styleUrls: ['./add-plan.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddPlanComponent implements OnInit{
@@ -34,14 +35,14 @@ export class AddPlanComponent implements OnInit{
   regions = [];
   services: { id: number; name: string }[] = [];
   plan_validities = [
-    { name: 'Daily', code: 'daily', sme_plan_id:'5ea2f586741cbb1b99000000' },
-    { name: '3 Days', code: '3_days', sme_plan_id:'5ea2f586741cbb1b99000000' },
-    { name: '14 Days', code: '14_days', sme_plan_id:'5ea2f586741cbb1b99000000' },
-    { name: 'Weekly', code: 'weekly', sme_plan_id:'5e44e6b2741cbb358e000000' },
-    { name: 'Monthly', code: 'monthly', sme_plan_id:'5b44845fc1df412ee6000000' },
-    { name: 'Quarterly', code: 'quarterly', sme_plan_id:'5b44845fc1df412ee6000000' },
-    { name: 'Half-Yearly', code: 'half_yearly', sme_plan_id:'5b44845fc1df412ee6000000' },
-    { name: 'Yearly', code: 'yearly', sme_plan_id:'5b44845fc1df412ee6000000' }
+    { name: 'Daily', code: 'daily' },
+    { name: '3 Days', code: '3_days' },
+    { name: '14 Days', code: '14_days' },
+    { name: 'Weekly', code: 'weekly' },
+    { name: 'Monthly', code: 'monthly' },
+    { name: 'Quarterly', code: 'quarterly' },
+    { name: 'Half-Yearly', code: 'half_yearly' },
+    { name: 'Yearly', code: 'yearly' }
   ];
   plan_validity_days :any = {
     daily:1,
@@ -71,7 +72,7 @@ export class AddPlanComponent implements OnInit{
     plan_amount: '',
     plan_validity: '',
     plan_terms_conditions: '',
-    plan_smeplan_id: '',
+    plan_service_plan_id: '',
     plan_region_id: '',
     plan_service_id: '',
     plan_is_free_trial: '',
@@ -116,7 +117,7 @@ export class AddPlanComponent implements OnInit{
       plan_amount: ['', [Validators.required]],
       plan_validity: ['', [Validators.required]],
       // plan_terms_conditions: ['', [Validators.required]],
-      plan_smeplan_id: ['', [Validators.required]],
+      plan_service_plan_id: ['', [Validators.required]],
       plan_region_id: ['', [Validators.required]],
       plan_service_id: ['', [Validators.required]],
       plan_is_free_trial: [false,[]],
@@ -262,33 +263,9 @@ export class AddPlanComponent implements OnInit{
 
   dropdownOnChange(ev: any, fieldName: string) {
     const selectedId = ev.value;
-    const serviceName = this.getServiceNameById(this.f['plan_service_id'].value);
-    // Handle changes based on the fieldName
-    switch (fieldName) {
-      case 'plan_service_id':
-        if (serviceName === 'ShemarooMe') {
-          const currentPlan = this.plan_validities.find(item => item.code === this.f['plan_validity'].value);
-          if (currentPlan) {
-            this.planForm.get('plan_smeplan_id').patchValue(currentPlan.sme_plan_id);
-          }
-        }
-        break;
-      case 'plan_region_id':
-        this.telcoms = this.planData.telcoms.filter((tel: any)  => tel.tel_region_id === selectedId);
-        this.planForm.get('plan_telcom_id').reset();
-        break;
-      case 'plan_validity':
-        if (serviceName === 'ShemarooMe') {
-          const selectedPlan = this.plan_validities.find(item => item.code === selectedId);
-          if (selectedPlan) {
-            this.planForm.get('plan_smeplan_id').patchValue(selectedPlan.sme_plan_id);
-          }
-        }
-        break;
-    }
-    // Clear 'plan_smeplan_id' if the service is not 'ShemarooMe'
-    if (serviceName !== 'ShemarooMe') {
-      this.planForm.get('plan_smeplan_id').patchValue('');
+    if (fieldName === 'plan_region_id') {
+      this.telcoms = this.planData.telcoms.filter((tel: any)  => tel.tel_region_id === selectedId);
+      this.planForm.get('plan_telcom_id').reset();
     }
   }
   
@@ -425,10 +402,6 @@ export class AddPlanComponent implements OnInit{
     return false;
   }
 
-  getServiceNameById(id: number): string | undefined {
-    const service = this.services.find(service => service.id === id);
-    return service ? service.name : undefined;
-  }
   addConstants(value: any, index: number) {
   const formArray = this.f['SmsConfigues'] as FormArray;
   const group = formArray.at(index) as FormGroup;

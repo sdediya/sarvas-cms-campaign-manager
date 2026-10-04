@@ -3,10 +3,12 @@
     flex-direction: column;
     min-height: 100vh;
     justify-content: space-between;
-    padding: 7rem 2rem 2rem 4rem;
+    padding: calc(#{$topbarHeight} + 1.25rem) 1.5rem 1.25rem 1.5rem;
     transition: margin-left $transitionDuration;
+    background-color: var(--surface-ground);
 }
 
 .layout-main {
     flex: 1 1 auto;
+    max-width: 100%;
 }

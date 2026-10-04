@@ -4,7 +4,13 @@
       <div class="card">
         <div class="p-fluid formgrid grid align-content-center">
           <!-- <div class="field col-2 m-0">
-          <h5 class="cms-page-title">Add Landing Page</h5>
+          <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          <h5 class="cms-page-title">Landing Page</h5>
+          <p class="cms-page-subtitle">Configure common landing page settings</p>
+        </div>
+      </div>
         </div> -->
         <div class="field col-3">
           <label htmlFor="theme_region">Select Region</label>
@@ -12,7 +18,7 @@
             (onChange)="dropdownOnChange($event, 'theme_region')" formControlName="theme_region"
           placeholder="Select Region" optionValue="id" [disabled]="!editable"></p-select>
           @if (submitted && !f['theme_region'].valid) {
-            <div style="display: block; width: 100%;">
+            <div class="cms-field-error">
               @if (f['theme_region'].hasError('required') ) {
                 <span class="p-error">
                   Region is required
@@ -27,7 +33,7 @@
             (onChange)="dropdownOnChange($event, 'theme_telecom_id')" formControlName="theme_telecom_id"
           placeholder="Select Operator" optionValue="id" [disabled]="!editable"></p-select>
           @if (submitted && !f['theme_telecom_id'].valid) {
-            <div style="display: block; width: 100%;">
+            <div class="cms-field-error">
               @if (f['theme_telecom_id'].hasError('required') ) {
                 <span class="p-error">
                   Operator is required
@@ -42,7 +48,7 @@
             (onChange)="dropdownOnChange($event, 'theme_service_id')" formControlName="theme_service_id"
           placeholder="Select Service" optionValue="id" [disabled]="!editable"></p-select>
           @if (submitted && !f['theme_service_id'].valid) {
-            <div style="display: block; width: 100%;">
+            <div class="cms-field-error">
               @if (f['theme_service_id'].hasError('required') ) {
                 <span class="p-error">
                   Service is required
@@ -57,7 +63,7 @@
             [filter]="true" (onChange)="onCampaignChange($event)" formControlName="theme_campaign_id"
           [showClear]="true" placeholder="Select Campaign" optionValue="id"></p-multiselect>
           @if (submitted && !f['theme_campaign_id'].valid) {
-            <div style="display: block; width: 100%;">
+            <div class="cms-field-error">
               @if (f['theme_campaign_id'].hasError('required') ) {
                 <span class="p-error">
                   Please select Campaign
@@ -72,7 +78,7 @@
             [filter]="true" formControlName="default_campaign_id" placeholder="Select Default Campaign"
           optionValue="id"></p-select>
           @if (submitted && !f['default_campaign_id'].valid) {
-            <div style="display: block; width: 100%;">
+            <div class="cms-field-error">
               @if (f['default_campaign_id'].hasError('required') ) {
                 <span class="p-error">
                   Please select default Campaign
@@ -97,8 +103,10 @@
               <label>Skip Consent</label>
             </div>
             <div class="col">
-              <p-checkbox formControlName="campaign_c1" value="c1" label="C1"
-              [binary]="true"></p-checkbox>
+              <span class="flex align-items-center gap-2">
+                <p-checkbox formControlName="campaign_c1" [binary]="true" inputId="campaign_c1"></p-checkbox>
+                <label for="campaign_c1" class="m-0">C1</label>
+              </span>
             </div>
           </div>
         </div>
@@ -110,7 +118,7 @@
               formControlName="campaign_skip_type" placeholder="Select Skip Time"
             optionValue="value"></p-select>
             @if (submitted && !f['campaign_skip_type'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (f['campaign_skip_type'].hasError('required') ) {
                   <span class="p-error">
                     Skip time type is required
@@ -127,7 +135,7 @@
             <input pInputText id="campaign_dt" type="text" formControlName="campaign_dt"
               placeholder="Data Flow in seconds" />
             @if (submitted && !f['campaign_dt'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (f['campaign_dt'].hasError('numeric')) {
                   <span class="p-error">
                     Please enter valid DT
@@ -149,7 +157,7 @@
             <input pInputText id="campaign_wf" type="text" formControlName="campaign_wf"
               placeholder="Wifi Flow in seconds" />
             @if (submitted && !f['campaign_wf'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (f['campaign_wf'].hasError('numeric')) {
                   <span class="p-error">
                     Please enter valid WF
@@ -184,7 +192,7 @@
                           formControlName="start_time"></p-datepicker>
                           @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
                             <div
-                              style="display: block; width: 100%;">
+                              class="cms-field-error">
                               @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required') ) {
                                 <span class="p-error"
                                   >
@@ -199,7 +207,7 @@
                           formControlName="end_time"></p-datepicker>
                           @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
                             <div
-                              style="display: block; width: 100%;">
+                              class="cms-field-error">
                               @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required') ) {
                                 <span class="p-error"
                                   >
@@ -239,7 +247,7 @@
                 <div class="field col-6 md:col-6">
                   <div class="grid">
                     <div class="col-8 pb-0">
-                      <label>Show ShemarooMe Logo</label>
+                      <label>Show Sarva Sys Logo</label>
                     </div>
                     <div class="col-2">
                       <p-toggleswitch formControlName="theme_is_logo"></p-toggleswitch>
@@ -275,7 +283,7 @@
                   <small id="theme_image">Theme Image Dimensions (640px * 480px)</small>
                   @if (!f['theme_image_urls'].valid && selectedThemeImageFile!==null) {
                     <div
-                      style="display: block; width: 100%;">
+                      class="cms-field-error">
                       @if (f['theme_image_urls'].hasError('required') || f['theme_image_urls'].hasError('invalidDimensions') ) {
                         <span class="p-error"
                           >
@@ -445,10 +453,10 @@
               [style]="{'background-color':campaignThemeForm.value.theme_page_background_color}">
               <div
                 class="col-12 lg:col-12 xl:col-12 align-content-center flex justify-content-center align-items-center">
-                <div class="edit-pencil" data-fieldName="shemaroo_logo">
+                <div class="edit-pencil" data-fieldName="company_logo">
                   @if (campaignThemeForm.value.theme_is_logo) {
                     <img
-                      src="../../../../assets/images/shemaroo_logo.svg" alt="Shemaroo ME"
+                      src="../../../../assets/images/company_logo.svg" alt="Sarva Sys"
                       width="150px" height="50px">
                   }
                 </div>
@@ -544,7 +552,7 @@
                         [style]="{'color':campaignThemeForm.value.theme_page_text_color || 'black'}">
                       </div>
                                                 <p class="m-2 text-sm" [innerHTML]="langGroup.get('theme_powered_by_text')?.value
-                                                    || 'Powered By: Shemaroo Entertainment Limited'"></p>
+                                                    || 'Powered By: Sarva Sys'"></p>
                     }
                   }
                 </div>

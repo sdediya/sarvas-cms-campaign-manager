@@ -1,7 +1,13 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="cms-page-title">Campaigns</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <h5 class="cms-page-title">Campaigns</h5>
+          <p class="cms-page-subtitle">Manage and configure VAS campaigns</p>
+        </div>
+      </div>
+
       <div class="cms-filter-bar">
         <p-select [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Services" optionValue="id"></p-select>
 
@@ -13,20 +19,25 @@
 
         <p-select [(ngModel)]="filter.status" id="campaign_status" [options]="campaign_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Campaign Status" optionValue="code"></p-select>
 
-        @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
-          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
-        }
+        <div class="cms-filter-actions">
+          @if (filter.tel_id || filter.service_id || filter.region_id || filter.ad_platform_id || filter.campaign_type || filter.status) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+        </div>
       </div>
+
       <p-table #dt1 styleClass="cms-table-dense" [value]="campaigns" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{first}–{last} of {totalRecords}'" [showCurrentPageReport]="true">
         <ng-template #caption>
           <div class="cms-list-tools">
             <p-iconfield>
               <p-inputicon class="pi pi-search"></p-inputicon>
-              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Campaign" class="w-full"/>
+              <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search campaign / ID" class="w-full"/>
             </p-iconfield>
-            @if (campaigns.length>0) {
-              <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
-            }
+            <div class="cms-list-tools__actions">
+              @if (campaigns.length>0) {
+                <button type="button" pButton pRipple (click)="exportToExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
@@ -120,8 +131,8 @@
               }
             </td>
             <td class="text-center">
-              <i class="pi pi-clone cursor-pointer" title="{{campaigns.campaigntype=='wap' ? 'Copy Camapign Link!' : 'Copy Camapign ID'}}" (click)="copyToClipboard(campaigns.id, campaigns.campaigntype, campaigns.is_silent)"></i></td>
-              <td>
+              <i class="pi pi-clone cursor-pointer cms-copy-action" title="{{campaigns.campaigntype=='wap' ? 'Copy Camapign Link!' : 'Copy Camapign ID'}}" (click)="copyToClipboard(campaigns)"></i></td>
+              <td class="cms-id-cell">
                 {{campaigns.id}}
               </td>
               <td>
@@ -169,12 +180,12 @@
 
           <ng-template #emptymessage>
             <tr>
-              <td colspan="8">No data found.</td>
+              <td colspan="16" class="cms-table-empty">No data found.</td>
             </tr>
           </ng-template>
           <ng-template #loadingbody>
             <tr>
-              <td colspan="8">Loading data. Please wait.</td>
+              <td colspan="16" class="cms-table-empty">Loading data. Please wait.</td>
             </tr>
           </ng-template>
         </p-table>

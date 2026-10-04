@@ -1,22 +1,32 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      @if (!editable) {
-        <h5 class="cms-page-title">Add Campaign</h5>
-      }
-      @if (editable) {
-        <h5 class="cms-page-title">Edit Campaign</h5>
-      }
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Campaigns</span>
+          @if (!editable) {
+            <h5 class="cms-page-title">Create Campaign</h5>
+            <p class="cms-page-subtitle">Configure campaign details and operational settings</p>
+          }
+          @if (editable) {
+            <h5 class="cms-page-title">Edit Campaign</h5>
+            <p class="cms-page-subtitle">Update campaign details and operational settings</p>
+            @if (existing_campaign_name) {
+              <div class="cms-page-meta" title="{{ existing_campaign_name }}">{{ existing_campaign_name }}</div>
+            }
+          }
+        </div>
+      </div>
       <form [formGroup]="campaignForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid">
-          <div class="field col-12 md:col-12">
+        <div class="p-fluid formgrid grid cms-form-stack">
+          <div class="col-12 cms-section-wrap">
             <p-panel id="campaign-section-details" header="Campaign Details" [toggleable]="true" [(collapsed)]="sectionCollapsed['details']" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_region">Select Region<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_region">Region<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_region" [options]="campaign_regions" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_region')" formControlName="campaign_region" placeholder="Select Region" optionValue="id"  [readonly]="editable" ></p-select>
                   @if (submitted && !f['campaign_region'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_region'].hasError('required') ) {
                         <span class="p-error">
                           Region is required
@@ -26,10 +36,10 @@
                   }
                 </div>
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_telecom_id">Select Operator<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_telecom_id">Operator<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_telecom_id" [options]="telecom_operators" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_telecom_id')" formControlName="campaign_telecom_id" placeholder="Select Operator" optionValue="id" [readonly]="editable"></p-select>
                   @if (submitted && !f['campaign_telecom_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_telecom_id'].hasError('required') ) {
                         <span class="p-error">
                           Operator is required
@@ -39,10 +49,10 @@
                   }
                 </div>
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_service_id">Select Service<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_service_id">Service<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_service_id" [options]="services" optionLabel="name" (onChange)="dropdownOnChange($event, 'campaign_service_id')" formControlName="campaign_service_id" placeholder="Select Service" optionValue="id" [readonly]="editable"></p-select>
                   @if (submitted && !f['campaign_service_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_service_id'].hasError('required') ) {
                         <span class="p-error">
                           Service is required
@@ -53,10 +63,10 @@
                 </div>
 
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_plan_id">Select Plan<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_plan_id">Plan<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_plan_id" [options]="telecom_plans" optionLabel="name" formControlName="campaign_plan_id" placeholder="Select Plan" optionValue="id" (onChange)="dropdownOnChange($event, 'campaign_plan_id')"></p-select>
                   @if (submitted && !f['campaign_plan_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_plan_id'].hasError('required') ) {
                         <span class="p-error">
                           Plan is required
@@ -78,7 +88,7 @@
                     </span>
                   </div>
                   @if (submitted && !f['campaign_type'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_type'].hasError('required') ) {
                         <span class="p-error">
                           Campaign Type is required
@@ -101,7 +111,7 @@
                       </span>
                     </div>
                     @if (submitted && !f['campaign_service_options'].valid) {
-                      <div style="display: block; width: 100%;">
+                      <div class="cms-field-error">
                         @if (f['campaign_service_options'].hasError('required') ) {
                           <span class="p-error">
                             Please select service options
@@ -112,10 +122,10 @@
                   </div>
                 }
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_flow">Select Campaign Flow<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_flow">Campaign Flow<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_flow" [options]="campaign_flows" optionLabel="name" formControlName="campaign_flow" [readonly]="isFlowReadonly" placeholder="Select Campaign Flow" optionValue="code"></p-select>
                   @if (submitted && !f['campaign_flow'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_flow'].hasError('required') ) {
                         <span class="p-error">
                           Campaign Flow is required
@@ -125,232 +135,257 @@
                   }
                 </div>
                 <div class="field col-12 md:col-3">
-                  <label htmlFor="campaign_owner_id">Select Campaign Owner</label>
-                  <p-select id="campaign_owner_id" [options]="campaign_owners" optionLabel="name" [filter]="true" formControlName="campaign_owner_id" placeholder="Select Campaign Owner" optionValue="id"></p-select>
+                  <label htmlFor="campaign_owner_id">Campaign Owner</label>
+                  <p-select id="campaign_owner_id" [options]="campaign_owners" optionLabel="name" [filter]="true" formControlName="campaign_owner_id" placeholder="Campaign Owner" optionValue="id"></p-select>
                 </div>
               </div>
             </p-panel>
           </div>
           @if (f['campaign_type'].value == 'wap') {
-            <div class="field col-12">
+            <div class="col-12 cms-section-wrap">
               <p-panel id="campaign-section-wap" header="Campaign Setting for WAP" [toggleable]="true" [(collapsed)]="sectionCollapsed['wap']" styleClass="cms-form-section">
-                <div class="grid">
-                  <div class="field col-12 md:col-4 cms-control-row">
-                    <label>Skip Consent</label>
-                    <div class="cms-control-row__options">
-                      <p-checkbox formControlName="campaign_c1" value="c1" label="C1" [binary]="true"></p-checkbox>
-                      <p-checkbox formControlName="campaign_c2" value="c2" label="C2" [binary]="true"></p-checkbox>
-                      <p-checkbox formControlName="campaign_skip_msisdn" value="skip_msisdn" label="Skip Msisdn" [binary]="true"></p-checkbox>
+                <div class="cms-subsection">
+                  <span class="cms-subsection-title">Consent &amp; skip timing</span>
+                  <div class="grid cms-subsection-grid">
+                    <div class="field col-12 md:col-6 cms-control-row">
+                      <label>Skip Consent</label>
+                      <div class="cms-control-row__options">
+                        <span class="flex align-items-center gap-2">
+                          <p-checkbox formControlName="campaign_c1" [binary]="true" inputId="campaign_c1"></p-checkbox>
+                          <label for="campaign_c1" class="m-0">C1</label>
+                        </span>
+                        <span class="flex align-items-center gap-2">
+                          <p-checkbox formControlName="campaign_c2" [binary]="true" inputId="campaign_c2"></p-checkbox>
+                          <label for="campaign_c2" class="m-0">C2</label>
+                        </span>
+                        <span class="flex align-items-center gap-2">
+                          <p-checkbox formControlName="campaign_skip_msisdn" [binary]="true" inputId="campaign_skip_msisdn"></p-checkbox>
+                          <label for="campaign_skip_msisdn" class="m-0">Skip Msisdn</label>
+                        </span>
+                      </div>
                     </div>
+                    @if (f['campaign_c1'].value || f['campaign_c2'].value) {
+                      <div class="field col-12 md:col-3">
+                        <label>Skip Time Type<span label styleclass="label-required" class="text-red-500">*</span></label>
+                        <p-select id="campaign_skip_time_type" [options]="skip_type" optionLabel="name" formControlName="campaign_skip_type" placeholder="Select Skip Time" optionValue="value"></p-select>
+                        @if (submitted && !f['campaign_skip_type'].valid) {
+                          <div class="cms-field-error">
+                            @if (f['campaign_skip_type'].hasError('required') ) {
+                              <span class="p-error">
+                                Skip time type is required
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
                   </div>
                   @if (f['campaign_c1'].value || f['campaign_c2'].value) {
+                    <div class="grid cms-subsection-grid">
+                      <div class="field col-12 md:col-3">
+                        <label htmlFor="campaign_dt">Data Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
+                        <input pInputText id="campaign_dt" type="text" formControlName="campaign_dt" placeholder="Data Flow in seconds" />
+                        @if (submitted && !f['campaign_dt'].valid) {
+                          <div class="cms-field-error">
+                            @if (f['campaign_dt'].hasError('numeric')) {
+                              <span class="p-error">
+                                Please enter valid DT
+                              </span>
+                            }
+                            @if (f['campaign_dt'].hasError('required')) {
+                              <span class="p-error">
+                                Please enter Data flow time
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                      <div class="field col-12 md:col-3">
+                        <label htmlFor="campaign_wf">Wifi Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
+                        <input pInputText id="campaign_wf" type="text" formControlName="campaign_wf" placeholder="Wifi Flow in seconds" />
+                        @if (submitted && !f['campaign_wf'].valid) {
+                          <div class="cms-field-error">
+                            @if (f['campaign_wf'].hasError('numeric')) {
+                              <span class="p-error">
+                                Please enter valid WF
+                              </span>
+                            }
+                            @if (f['campaign_wf'].hasError('required')) {
+                              <span class="p-error">
+                                Please enter Wifi flow time
+                              </span>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                  @if (f['campaign_c1'].value || f['campaign_c2'].value) {
+                    <div class="grid cms-subsection-grid">
+                      @if (f['campaign_skip_type'].value == 'multiple_times') {
+                        <div class="field cms-time-slots col-12 md:col-8" formArrayName="campaign_skip_times">
+                          <table>
+                            <thead>
+                              <th width="45%">Start Time</th>
+                              <th width="45%">End Time</th>
+                              <th></th>
+                            </thead>
+                            <tbody>
+                              @for (form of campaignSkipTimes.controls; track form; let last = $last; let first = $first; let index = $index) {
+                                <tr>
+                                  <td [formGroupName]="index">
+                                    <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="start_time"></p-datepicker>
+                                    @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
+                                      <div class="cms-field-error">
+                                        @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required') ) {
+                                          <span class="p-error">
+                                            Start time is required
+                                          </span>
+                                        }
+                                      </div>
+                                    }
+                                  </td>
+                                  <td [formGroupName]="index">
+                                    <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="end_time"></p-datepicker>
+                                    @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
+                                      <div class="cms-field-error">
+                                        @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required') ) {
+                                          <span class="p-error">
+                                            end time is required
+                                          </span>
+                                        }
+                                      </div>
+                                    }
+                                  </td>
+                                  <td class="cms-row-actions">
+                                    @if (index > 0) {
+                                      <button pButton pRipple type="button" severity="danger" [text]="true" [rounded]="true" (click)="removeTimes(index)"><i class="pi pi-trash"></i></button>
+                                    }
+                                    @if (last) {
+                                      <button pButton pRipple type="button" severity="success" [text]="true" [rounded]="true" (click)="addTimes()"><i class="pi pi-plus"></i></button>
+                                    }
+                                  </td>
+                                </tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <p-divider type="solid"></p-divider>
+
+                <div class="cms-subsection">
+                  <span class="cms-subsection-title">Redirection</span>
+                  <div class="grid cms-subsection-grid">
                     <div class="field col-12 md:col-3">
-                      <label>Skip Time Type<span label styleclass="label-required" class="text-red-500">*</span></label>
-                      <p-select id="campaign_skip_time_type" [options]="skip_type" optionLabel="name" formControlName="campaign_skip_type" placeholder="Select Skip Time" optionValue="value"></p-select>
-                      @if (submitted && !f['campaign_skip_type'].valid) {
-                        <div style="display: block; width: 100%;">
-                          @if (f['campaign_skip_type'].hasError('required') ) {
+                      <label htmlFor="campaign_tpid">Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <p-select id="campaign_tpid" [options]="campaign_redirections" optionLabel="name" formControlName="campaign_tpid" placeholder="Select Redirection" optionValue="code"></p-select>
+                      @if (submitted && !f['campaign_tpid'].valid) {
+                        <div class="cms-field-error">
+                          @if (f['campaign_tpid'].hasError('required') ) {
                             <span class="p-error">
-                              Skip time type is required
+                              Redirection is required
                             </span>
                           }
                         </div>
                       }
                     </div>
-                  }
-                  @if (f['campaign_c1'].value || f['campaign_c2'].value) {
-                    <div class="field col-12 md:col-6">
-                      <div class="grid">
-                        <div class="field col-12 md:col-6">
-                          <label htmlFor="campaign_dt">Data Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
-                          <input pInputText id="campaign_dt" type="text" formControlName="campaign_dt" placeholder="Data Flow in seconds" />
-                          @if (submitted && !f['campaign_dt'].valid) {
-                            <div style="display: block; width: 100%;">
-                              @if (f['campaign_dt'].hasError('numeric')) {
-                                <span class="p-error">
-                                  Please enter valid DT
-                                </span>
-                              }
-                              @if (f['campaign_dt'].hasError('required')) {
-                                <span class="p-error">
-                                  Please enter Data flow time
-                                </span>
-                              }
-                            </div>
+                    <div class="field col-12 md:col-3">
+                      <label htmlFor="campaign_redirection_capping">Post Capping Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <p-select id="campaign_redirection_capping" [options]="post_capping_redirections" optionLabel="name" formControlName="campaign_redirection_capping" placeholder="Select Post Capping Redirection" optionValue="code"></p-select>
+                      @if (submitted && !f['campaign_redirection_capping'].valid) {
+                        <div class="cms-field-error">
+                          @if (f['campaign_redirection_capping'].hasError('required') ) {
+                            <span class="p-error">
+                              Post capping redirection is required
+                            </span>
                           }
                         </div>
-                        <div class="field col-12 md:col-6" >
-                          <label htmlFor="campaign_wf">Wifi Flow in seconds<span label styleclass="label-required" class="text-red-500">*</span></label>
-                          <input pInputText id="campaign_wf" type="text" formControlName="campaign_wf" placeholder="Wifi Flow in seconds" />
-                          @if (submitted && !f['campaign_wf'].valid) {
-                            <div style="display: block; width: 100%;">
-                              @if (f['campaign_wf'].hasError('numeric')) {
-                                <span class="p-error">
-                                  Please enter valid WF
-                                </span>
-                              }
-                              @if (f['campaign_wf'].hasError('required')) {
-                                <span class="p-error">
-                                  Please enter Wifi flow time
-                                </span>
-                              }
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  }
-                </div>
-                @if (f['campaign_c1'].value || f['campaign_c2'].value) {
-                  <div class="grid">
-                    @if (f['campaign_skip_type'].value == 'multiple_times') {
-                      <div class="field card col-12 md:col-6" formArrayName="campaign_skip_times">
-                        <table class="w-100 text-center">
-                          <thead>
-                            <th width="45%">Start Time</th>
-                            <th width="45%">End Time</th>
-                            <th style="width: 15rem; padding: 20px"></th>
-                          </thead>
-                          <tbody>
-                            @for (form of campaignSkipTimes.controls; track form; let last = $last; let first = $first; let index = $index) {
-                              <tr>
-                                <td [formGroupName]="index">
-                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="start_time"></p-datepicker>
-                                  @if (submitted && !f['campaign_skip_times'].controls[index].controls['start_time'].valid) {
-                                    <div style="display: block; width: 100%;">
-                                      @if (f['campaign_skip_times'].controls[index].controls['start_time'].hasError('required') ) {
-                                        <span class="p-error">
-                                          Start time is required
-                                        </span>
-                                      }
-                                    </div>
-                                  }
-                                </td>
-                                <td [formGroupName]="index">
-                                  <p-datepicker [timeOnly]="true" dataType="string" placeholder="hh:mm" formControlName="end_time"></p-datepicker>
-                                  @if (submitted && !f['campaign_skip_times'].controls[index].controls['end_time'].valid) {
-                                    <div style="display: block; width: 100%;">
-                                      @if (f['campaign_skip_times'].controls[index].controls['end_time'].hasError('required') ) {
-                                        <span class="p-error">
-                                          end time is required
-                                        </span>
-                                      }
-                                    </div>
-                                  }
-                                </td>
-                                <td class="flex justify-content-start">
-                                  @if (index > 0) {
-                                    <button pButton pRipple type="button" severity="danger" [text]="true" [rounded]="true" (click)="removeTimes(index)"><i class="pi pi-trash"></i></button>
-                                  }
-                                  @if (last) {
-                                    <button pButton pRipple type="button" severity="success" [text]="true" [rounded]="true" (click)="addTimes()"><i class="pi pi-plus"></i></button>
-                                  }
-                                </td>
-                              </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
-                    }
-                  </div>
-                }
-                <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_tpid"> Select Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_tpid" [options]="campaign_redirections" optionLabel="name" formControlName="campaign_tpid" placeholder="Select  Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_tpid'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_tpid'].hasError('required') ) {
-                          <span class="p-error">
-                            Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_capping">Post Capping Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_capping" [options]="post_capping_redirections" optionLabel="name" formControlName="campaign_redirection_capping" placeholder="Select Post Capping Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_capping'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_capping'].hasError('required') ) {
-                          <span class="p-error">
-                            Post capping redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_blocking">On Blocking Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_blocking" [options]="blocking_redirections" optionLabel="name" formControlName="campaign_redirection_blocking" placeholder="Select On Blocking Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_blocking'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_blocking'].hasError('required') ) {
-                          <span class="p-error">
-                            On Blocking Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_redirection_404">On 404 Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
-                    <p-select id="campaign_redirection_404" [options]="not_found_redirection" optionLabel="name" formControlName="campaign_redirection_404" placeholder="Select On Blocking Redirection" optionValue="code"></p-select>
-                    @if (submitted && !f['campaign_redirection_404'].valid) {
-                      <div style="display: block; width: 100%;">
-                        @if (f['campaign_redirection_404'].hasError('required') ) {
-                          <span class="p-error">
-                            On Blocking Redirection is required
-                          </span>
-                        }
-                      </div>
-                    }
-                  </div>
-                </div>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label for="campaign_tpid">Redirect URL</label>
-                    <input pInputText id="campaign_tpid" type="text" formControlName="campaign_tpid" placeholder="URL" />
-                  </div>
-                </div>
-                <p-divider type="solid"></p-divider>
-                <div class="grid">
-                  <div class="field col-12 md:col-3">
-                    <label htmlFor="campaign_ga_tag"> GA Tag ID </label>
-                    <input pInputText id="campaign_ga_tag" type="text" formControlName="campaign_ga_tag"  placeholder="G-xxxxxxx" />
-                  </div>
-                  <div class="field col-12 md:col-9 cms-control-row">
-                    <label>GA Events</label>
-                    <div class="cms-control-row__options">
-                      @for (event of ga_events; track event) {
-                        <span class="flex align-items-center gap-2">
-                          <p-checkbox name="campaign_ga_events" [value]="event.value"  [formControl]="f['campaign_ga_events']" [inputId]="event.value"></p-checkbox>
-                          <label [for]="event.value" class="m-0">{{ event.name }}</label>
-                        </span>
                       }
                     </div>
+                    <div class="field col-12 md:col-3">
+                      <label htmlFor="campaign_redirection_blocking">On Blocking Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <p-select id="campaign_redirection_blocking" [options]="blocking_redirections" optionLabel="name" formControlName="campaign_redirection_blocking" placeholder="Select On Blocking Redirection" optionValue="code"></p-select>
+                      @if (submitted && !f['campaign_redirection_blocking'].valid) {
+                        <div class="cms-field-error">
+                          @if (f['campaign_redirection_blocking'].hasError('required') ) {
+                            <span class="p-error">
+                              On Blocking Redirection is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    <div class="field col-12 md:col-3">
+                      <label htmlFor="campaign_redirection_404">On 404 Redirection<span label styleclass="label-required" class="text-red-500">*</span></label>
+                      <p-select id="campaign_redirection_404" [options]="not_found_redirection" optionLabel="name" formControlName="campaign_redirection_404" placeholder="Select On 404 Redirection" optionValue="code"></p-select>
+                      @if (submitted && !f['campaign_redirection_404'].valid) {
+                        <div class="cms-field-error">
+                          @if (f['campaign_redirection_404'].hasError('required') ) {
+                            <span class="p-error">
+                              On 404 Redirection is required
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                    <div class="field col-12 md:col-6">
+                      <label for="campaign_redirect_url">Redirect URL</label>
+                      <input pInputText id="campaign_redirect_url" type="text" formControlName="campaign_tpid" placeholder="URL" />
+                    </div>
                   </div>
                 </div>
+
                 <p-divider type="solid"></p-divider>
-                <div class="field col-12 cms-control-row">
-                  <label>Is Silent Redirect</label>
-                  <div class="cms-control-row__options">
-                    <p-checkbox formControlName="campaign_is_silent_redirect" value="silent_redirect" label="Silent Redirect" [binary]="true"></p-checkbox>
+
+                <div class="cms-subsection">
+                  <span class="cms-subsection-title">Analytics</span>
+                  <div class="grid cms-subsection-grid">
+                    <div class="field col-12 md:col-3">
+                      <label htmlFor="campaign_ga_tag">GA Tag ID</label>
+                      <input pInputText id="campaign_ga_tag" type="text" formControlName="campaign_ga_tag"  placeholder="G-xxxxxxx" />
+                    </div>
+                    <div class="field col-12 md:col-9 cms-control-row">
+                      <label>GA Events</label>
+                      <div class="cms-control-row__options">
+                        @for (event of ga_events; track event) {
+                          <span class="flex align-items-center gap-2">
+                            <p-checkbox name="campaign_ga_events" [value]="event.value"  [formControl]="f['campaign_ga_events']" [inputId]="event.value"></p-checkbox>
+                            <label [for]="event.value" class="m-0">{{ event.name }}</label>
+                          </span>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <p-divider type="solid"></p-divider>
+
+                <div class="cms-subsection cms-subsection--last">
+                  <div class="field col-12 md:col-3 cms-control-row m-0">
+                    <label>Is Silent Redirect</label>
+                    <div class="cms-control-row__options">
+                      <span class="flex align-items-center gap-2">
+                        <p-checkbox formControlName="campaign_is_silent_redirect" [binary]="true" inputId="campaign_is_silent_redirect"></p-checkbox>
+                        <label for="campaign_is_silent_redirect" class="m-0">Silent Redirect</label>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </p-panel>
             </div>
           }
-          <div class="field col-12 md:col-12">
+          <div class="col-12 cms-section-wrap">
             <p-panel id="campaign-section-adPartner" header="Ad Partner" [toggleable]="true" [(collapsed)]="sectionCollapsed['adPartner']" styleClass="cms-form-section">
               <div class="grid">
                 <div class="field col-12 md:col-4">
-                  <label htmlFor="campaign_platform_id">Select Platform<span label styleclass="label-required" class="text-red-500">*</span></label>
+                  <label htmlFor="campaign_platform_id">Platform<span label styleclass="label-required" class="text-red-500">*</span></label>
                   <p-select id="campaign_platform_id" [options]="advertising_platforms" optionLabel="name" [filter]="true" (onChange)="dropdownOnChange($event, 'campaign_platform_id')" formControlName="campaign_platform_id" placeholder="Select Platform" optionValue="id"></p-select>
                   @if (submitted && !f['campaign_platform_id'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_platform_id'].hasError('required') ) {
                         <span class="p-error">
                           Platform is required
@@ -360,12 +395,15 @@
                   }
                 </div>
                 <div class="field col-12 md:col-4">
-                  <label htmlFor="campaign_callback_url">Select Platform S2S URL<span label styleclass="label-required" class="text-red-500">*</span></label> &nbsp; @if (f['campaign_callback_url'].valid) {
-                  <i class="pi pi-clone cursor-pointer" title="Copy S2S" (click)="copyS2Surl()"></i>
-                }
+                  <div class="cms-label-row">
+                    <label htmlFor="campaign_callback_url">Platform S2S URL<span label styleclass="label-required" class="text-red-500">*</span></label>
+                    @if (f['campaign_callback_url'].valid) {
+                      <i class="pi pi-clone cursor-pointer cms-copy-action" title="Copy S2S" (click)="copyS2Surl()"></i>
+                    }
+                  </div>
                 <p-select id="campaign_callback_url" [options]="platform_callback_urls" optionLabel="url" formControlName="campaign_callback_url" placeholder="Select Platform S2S URL" (onChange)="dropdownOnChange($event, 'campaign_callback_url')" optionValue="url"></p-select>
                 @if (submitted && !f['campaign_callback_url'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['campaign_callback_url'].hasError('required') ) {
                       <span class="p-error">
                         Platform Callback URL is required
@@ -381,7 +419,7 @@
                   <input pInputText id="campaign_cost_per_aquisition" type="text" formControlName="campaign_cost_per_aquisition" appTwoDigitDecimalDirective placeholder="CPA" (change)="onChangeCpaCpc($event, 'campaign_cost_per_aquisition')" />
                 </div>
                 @if (submitted && !f['campaign_cost_per_aquisition'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['campaign_cost_per_aquisition'].hasError('required') ) {
                       <span class="p-error">
                         CPA is required
@@ -407,7 +445,7 @@
                   <input pInputText id="campaign_cost_per_click" type="text" formControlName="campaign_cost_per_click" appTwoDigitDecimalDirective placeholder="CPC" (change)="onChangeCpaCpc($event, 'campaign_cost_per_click')"/>
                 </div>
                 @if (submitted && !f['campaign_cost_per_click'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['campaign_cost_per_click'].hasError('required') ) {
                       <span class="p-error">
                         CPC is required
@@ -451,7 +489,7 @@
             </div>
           </p-panel>
         </div>
-        <div class="field col-12 md:col-12" style="display: none" >
+        <div class="col-12 cms-section-wrap" style="display: none">
           <p-panel id="campaign-section-reports" header="Reports Alert" [toggleable]="true" [(collapsed)]="sectionCollapsed['reports']" styleClass="cms-form-section">
             <div class="grid">
               <div class="field col-5 align-item-center m-0" style="display: flex; align-items: center;">
@@ -472,7 +510,7 @@
                   <!-- </div> -->
                 </div>
                 @if (submitted && !f['campaign_report_type'].valid) {
-                  <div style="display: block; width: 100%;">
+                  <div class="cms-field-error">
                     @if (f['campaign_report_type'].hasError('required') ) {
                       <span class="p-error">
                         Select atleast 1
@@ -488,7 +526,7 @@
                   <label htmlFor="campaign_report_send_to">To<span label styleclass="label-required" class="text-red-500">*</span> </label>
                   <textarea id="campaign_report_send_to" pTextarea placeholder="Please enter emails with comma separate" class="p-inputtext" rows="5" formControlName="campaign_report_send_to"></textarea>
                   @if (submitted && !f['campaign_report_send_to'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_report_send_to'].hasError('required') ) {
                         <span class="p-error">
                           Insert emails plz
@@ -501,7 +539,7 @@
                   <label htmlFor="campaign_report_send_CC">CC<span label styleclass="label-required" class="text-red-500">*</span> </label>
                   <textarea id="campaign_report_send_CC" pTextarea placeholder="Please enter emails with comma separate" class="p-inputtext" rows="5"  formControlName="campaign_report_send_CC"></textarea>
                   @if (submitted && !f['campaign_report_send_CC'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['campaign_report_send_CC'].hasError('required') ) {
                         <span class="p-error">
                           Insert emails plz
@@ -515,7 +553,7 @@
           </div>
         </p-panel>
       </div>
-      <div class="field col-12 md:col-12" >
+      <div class="col-12 cms-section-wrap">
         <p-panel id="campaign-section-configuration" header="Campaign Configuration" [toggleable]="true" [(collapsed)]="sectionCollapsed['configuration']" styleClass="cms-form-section">
           <div class="field" formArrayName="CampaignConfigues">
             <p-table styleClass="cms-table-dense" tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"  dataKey="idd" [value]="CampaignConfigues.controls" id="addPlatform">
@@ -604,12 +642,12 @@
                     </div>
                   </td>
                   <td style="width: 10rem">
-                    <div class="field m-0">
+                    <div class="field m-0 cms-config-actions">
                       @if (i > 0 ) {
-                        <p-button (click)="removeCampaignConfigue(i)" class="mr-2" severity="danger" icon="pi pi-trash"></p-button>
+                        <p-button (click)="removeCampaignConfigue(i)" severity="danger" [text]="true" [rounded]="true" icon="pi pi-trash"></p-button>
                       }
                       @if (i==CampaignConfigues.controls.length-1) {
-                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" severity="success"></p-button>
+                        <p-button (click)="addCampaignConfigue()" icon="pi pi-plus" severity="success" [text]="true" [rounded]="true"></p-button>
                       }
                     </div>
                   </td>
@@ -619,7 +657,7 @@
           </div>
           @if (campaign_confs.length>0) {
             <div class="field">
-              <p-table  tableStyleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" #dt1 [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event,'')" [paginator]="false" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+              <p-table styleClass="cms-table-dense" tableStyleClass="p-datatable-sm" #dt1 [value]="campaign_confs"  [lazy]="true" (onLazyLoad)="nextPage($event,'')" [paginator]="false" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
                 <ng-template #header>
                   <tr>
                     <th style="width: 5%">#</th>
@@ -654,8 +692,8 @@
 
     </div>
     <div class="cms-sticky-actions">
+      <p-button [routerLink]="['/campaign/list']" label="Cancel" severity="secondary" [outlined]="true"></p-button>
       <p-button type="submit" label="Submit" [raised]="true"></p-button>
-      <p-button [routerLink]="['/campaign/list']" label="Cancel" severity="danger"></p-button>
     </div>
   </form>
 </div>
@@ -664,15 +702,15 @@
 <!-- Configuration Sidebar Starts -->
 @if (configurationSidebarVisible) {
   <div>
-    <p-drawer [(visible)]="configurationSidebarVisible" position="right" [style]="{width:'40em'}">
-      <h3>Edit Campaign Configuration</h3>
-      <form [formGroup]="campaignConfForm" (ngSubmit)="onCampaignConfSubmit()">
+    <p-drawer [(visible)]="configurationSidebarVisible" position="right" [style]="{width:'40em'}" styleClass="cms-campaign-drawer">
+      <h3 class="cms-drawer-title">Edit Campaign Configuration</h3>
+      <form [formGroup]="campaignConfForm" (ngSubmit)="onCampaignConfSubmit()" class="cms-drawer-body">
         <div class="p-fluid formgrid grid">
           <div class="col-12 md:col-6">
             <label htmlFor="conf_type">Enter Configuration Type<span label styleclass="label-required" class="text-red-500">*</span></label>
             <input pInputText id="conf_type" type="text" formControlName="conf_type" placeholder="Enter Configuration Type" [readonly]="true" />
             @if (Sidebarsubmitted && !fc['conf_type'].valid) {
-              <div style="display: block; width: 100%;">
+              <div class="cms-field-error">
                 @if (fc['conf_type'].hasError('required') ) {
                   <span class="p-error">
                     Please select configuration type
@@ -703,7 +741,7 @@
               <label htmlFor="conf_entity_value">Enter Configuration Value<span label styleclass="label-required" class="text-red-500">*</span></label>
               <input pInputText id="conf_entity_value" type="text" formControlName="conf_entity_value" placeholder="Enter Configuration Value"  />
               @if (Sidebarsubmitted && !fc['conf_entity_value'].valid) {
-                <div style="display: block; width: 100%;">
+                <div class="cms-field-error">
                   @if (fc['conf_entity_value'].hasError('required') ) {
                     <span class="p-error">Configuration value is required</span>
                   }
@@ -714,8 +752,8 @@
               }
             </div>
           }
-          <div class="field col-12 md:col-12">
-            <button type="submit" pButton pRipple size="small" class="w-full p-3 text-md">Submit</button>
+          <div class="field col-12 md:col-12 cms-drawer-actions">
+            <button type="submit" pButton pRipple class="w-full">Save Configuration</button>
           </div>
         </div>
       </form>

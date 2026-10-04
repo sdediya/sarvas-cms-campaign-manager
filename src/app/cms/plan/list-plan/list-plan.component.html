@@ -1,38 +1,42 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <div class="grid justify-content-between">
-        <h5 class="m-2">Plans</h5>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Plans</span>
+          <h5 class="cms-page-title">Plans</h5>
+          <p class="cms-page-subtitle">Manage VAS subscription plans</p>
+        </div>
       </div>
-      <p-divider align="center">
-        <span class="p-tag text-base">Filters</span>
-      </p-divider>
-      <div class="grid">
-        <p-select class="col" [(ngModel)]="telcom_id" id="telcom_id" [options]="telcoms" optionLabel="tel_name" [filter]="true" [showClear]="true" (onChange)="filterOnChange($event, 'telcom_id')" placeholder="Operator" optionValue="tel_id"></p-select>
 
-        <!-- <p-select class="col" [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select> -->
+      <div class="cms-filter-bar">
+        <p-select [(ngModel)]="telcom_id" id="telcom_id" [options]="telcoms" optionLabel="tel_name" [filter]="true" [showClear]="true" (onChange)="filterOnChange($event, 'telcom_id')" placeholder="Operator" optionValue="tel_id"></p-select>
 
-        <p-select class="col" [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Service" optionValue="id"></p-select>
+        <!-- <p-select [(ngModel)]="filter.region_id" id="region_id" [options]="regions" optionLabel="name" (onChange)="filterOnChange($event, 'region_id')" placeholder="Region" optionValue="id"></p-select> -->
 
-        <p-select class="col" [(ngModel)]="filter.validity" id="validity" [options]="plan_validity" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'validity')" placeholder="Validity" optionValue="value"></p-select>
+        <p-select [(ngModel)]="filter.service_id" id="service_id" [options]="services" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'service_id')" placeholder="Service" optionValue="id"></p-select>
 
-        <p-select class="col" [(ngModel)]="filter.status" id="status" [options]="plan_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Status" optionValue="value"></p-select>
+        <p-select [(ngModel)]="filter.validity" id="validity" [options]="plan_validity" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'validity')" placeholder="Validity" optionValue="value"></p-select>
 
+        <p-select [(ngModel)]="filter.status" id="status" [options]="plan_status" optionLabel="name" [showClear]="true" (onChange)="filterOnChange($event, 'status')" placeholder="Status" optionValue="value"></p-select>
+
+        <div class="cms-filter-actions">
+          @if (filter.telcom_id || filter.region_id || filter.service_id || filter.validity || filter.status) {
+            <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary" label="Clear"></button>
+          }
+        </div>
       </div>
-      <div class="flex">
-        @if (filter.telcom_id || filter.region_id || filter.service_id || filter.validity || filter.status) {
-          <button type="button" pButton pRipple (click)="clearFilters()" severity="secondary">Clear</button>
-        }
-      </div>
-      <p-divider></p-divider>
-      <p-table #dt1 [value]="plans" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+
+      <p-table #dt1 styleClass="cms-table-dense" [value]="plans" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
         <ng-template #caption>
-          <div class="flex justify-content-between flex-column sm:flex-row">
+          <div class="cms-list-tools">
             <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>
               <input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Plan" class="w-full"/></p-iconfield>
-            @if (plans.length>0) {
+            <div class="cms-list-tools__actions">
+              @if (plans.length>0) {
                 <button type="button" pButton pRipple (click)="exportToExcel()" class="mr-2" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
+            </div>
           </div>
         </ng-template>
         <ng-template #header>
@@ -99,7 +103,7 @@
         </ng-template>
         <ng-template #body let-plans let-rowIndex="rowIndex">
           <tr>
-            <td class="text-center"><i class="pi pi-clone cursor-pointer" title="Copy Product URL" (click)="copyToClipboard(plans.id)"></i></td>
+            <td class="text-center"><i class="pi pi-clone cursor-pointer" title="Copy Product URL" (click)="copyToClipboard(plans)"></i></td>
             <td>{{plans.id}}</td>
             <td>{{plans.name}}</td>
             <td>{{plans.amount}}</td>
@@ -114,10 +118,10 @@
             </td>
             <td>
               @if (write) {
-                <p-button [routerLink]="['/plan/edit']" [queryParams]="{id: plans.id}" title="Edit Plan" class="mr-2" severity="success" size="small" icon="pi pi-pencil" [iconOnly]="true"></p-button>
+                <p-button [routerLink]="['/plan/edit']" [queryParams]="{id: plans.id}" title="Edit Plan" class="mr-2" severity="success" size="small" icon="pi pi-pencil"></p-button>
               }
               @if (write && plans.fallback && plans.fallback==1) {
-                <p-button type="button" (click)="getPlanbyId(plans.id)" title="Add Fallback" severity="success" size="small" icon="pi pi-plus" [iconOnly]="true"></p-button>
+                <p-button type="button" (click)="getPlanbyId(plans.id)" title="Add Fallback" severity="success" size="small" icon="pi pi-plus"></p-button>
               }
             </td>
           </tr>
@@ -141,8 +145,8 @@
 <!-- Fallback Sidebar Starts -->
 @if (fallbackSidebarVisible) {
   <div>
-    <p-drawer [(visible)]="fallbackSidebarVisible" position="right" [style]="{width:'40em'}">
-      <h3>Plan Details</h3>
+    <p-drawer [(visible)]="fallbackSidebarVisible" position="right" [style]="{width:'40em'}" styleClass="cms-campaign-drawer">
+      <h3 class="cms-drawer-title">Plan Details</h3>
       <table>
         <body>
           <tr>
@@ -188,7 +192,7 @@
                 <td>{{ fallback.fallback_amount }}</td>
                 <td>{{ fallback.fallback_validity }}</td>
                 <td>
-                  <p-button type="button" (click)="deleteFallback(fallback.fallback_id, i)" title="Delete Fallback" severity="danger" size="small" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                  <p-button type="button" (click)="deleteFallback(fallback.fallback_id, i)" title="Delete Fallback" severity="danger" size="small" icon="pi pi-trash"></p-button>
                 </td>
               </tr>
             </ng-template>
@@ -239,7 +243,7 @@
                 }
               </div>
               <div class="col-12 md:col-2">
-                <p-button (click)="removeFallback(i)" severity="danger" icon="pi pi-trash" [iconOnly]="true"></p-button>
+                <p-button (click)="removeFallback(i)" severity="danger" icon="pi pi-trash"></p-button>
               </div>
             </div>
           </div>

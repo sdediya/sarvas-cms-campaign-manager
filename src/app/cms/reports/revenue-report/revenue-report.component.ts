@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
     selector: 'app-revenue-report',
     templateUrl: './revenue-report.component.html',
     styleUrls: ['./revenue-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RevenueReportComponent implements OnInit{
@@ -31,11 +32,6 @@ export class RevenueReportComponent implements OnInit{
   reports: any = [];
   footerData: any = {};
   cols: any =[];
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
-
   constructor(
     private frmbuilder:FormBuilder, 
     private httpService:HttpService,
@@ -56,7 +52,7 @@ export class RevenueReportComponent implements OnInit{
     this.revenueReportForm = frmbuilder.group({
       revenue_date_range: ['', [Validators.required]],
       revenue_telcom_region: ['',[Validators.required]],
-      revenue_service_type: ['']
+      revenue_service_type: ['legacy']
     });
   }
 

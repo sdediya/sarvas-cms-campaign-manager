@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -10,6 +10,7 @@ import { CrudService } from 'src/app/services/common/crud.service';
     selector: 'app-add-errors',
     templateUrl: './add-errors.component.html',
     styleUrls: ['./add-errors.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddErrorsComponent implements OnInit{

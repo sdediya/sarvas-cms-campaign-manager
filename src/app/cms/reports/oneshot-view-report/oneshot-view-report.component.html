@@ -1,14 +1,17 @@
 
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <form [formGroup]="oneshotForm">
-        <div class="p-fluid formgrid grid align-items-center">
-          <div class="col-12 md:col-3">
-            <h5 class="m-0" style="text-wrap: nowrap;">One Shot View Dashboard Report</h5>
-          </div>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">One Shot View Dashboard Report</h5>
+          <p class="cms-page-subtitle">OneShot view reporting</p>
         </div>
-        <div class="p-fluid formgrid grid align-items-center">
+      </div>
+
+      <form [formGroup]="oneshotForm">
+<div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3 pt-0">
             <div class="field col-12">
               <label>Select Date<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -46,7 +49,7 @@
             </div>
           </div>
           <div class="col-4 md:col-3 flex align-items-center">
-            <button type="submit" pButton pRipple (click)="onSubmit()" class="w-6 text-xl " [disabled]="loading" size="small">Submit</button>
+            <button type="submit" pButton pRipple (click)="onSubmit()" [disabled]="loading" size="small">Submit</button>
           </div>
         </div>
       </form>
@@ -59,12 +62,15 @@
         </p-tablist>
         <p-tabpanels>
 <p-tabpanel [value]="0">
-          <p-table [columns]="revenue_cols" [value]="revenue_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+          <p-table [columns]="revenue_cols" [value]="revenue_report" tableStyleClass="p-datatable-striped" styleClass="cms-table-dense" [scrollable]="true" scrollHeight="400px" [loading]="loading">
             <ng-template #caption>
-              <div class="flex">
-                @if (revenue_report.length>0) {
-                  <button type="button" pButton pRipple (click)="downloadrevenueExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  @if (revenue_report.length>0) {
+                  <button type="button" pButton pRipple (click)="downloadrevenueExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
                 }
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>
@@ -99,14 +105,17 @@
         </p-table>
       </p-tabpanel>
       <p-tabpanel [value]="1">
-        <p-table [columns]="drr_cols" [value]="drr_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+        <p-table [columns]="drr_cols" [value]="drr_report" tableStyleClass="p-datatable-striped" styleClass="cms-table-dense" [scrollable]="true" scrollHeight="400px" [loading]="loading">
           <ng-template #caption>
-            <div class="flex">
-              @if (drr_report.length>0) {
-                <button type="button" pButton pRipple (click)="downloadDRRExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  @if (drr_report.length>0) {
+                <button type="button" pButton pRipple (click)="downloadDRRExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
               }
-            </div>
-          </ng-template>
+                </div>
+              </div>
+            </ng-template>
           <ng-template #header let-columns>
             <tr> @for (col of columns; track col) {
               <th width="15%"> {{col.header}} </th>
@@ -140,14 +149,17 @@
     </p-tabpanel>
 
     <p-tabpanel [value]="2">
-      <p-table [columns]="adpartner_cols" [value]="adpartner_report" tableStyleClass="p-datatable-striped" [scrollable]="true" scrollHeight="400px" [loading]="loading">
+      <p-table [columns]="adpartner_cols" [value]="adpartner_report" tableStyleClass="p-datatable-striped" styleClass="cms-table-dense" [scrollable]="true" scrollHeight="400px" [loading]="loading">
         <ng-template #caption>
-          <div class="flex">
-            @if (adpartner_report.length>0) {
-              <button type="button" pButton pRipple (click)="downloadadPartnerExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  @if (adpartner_report.length>0) {
+              <button type="button" pButton pRipple (click)="downloadadPartnerExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
             }
-          </div>
-        </ng-template>
+                </div>
+              </div>
+            </ng-template>
         <ng-template #header let-columns>
           <tr> @for (col of columns; track col) {
             <th > {{col.header}} </th>

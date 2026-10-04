@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -12,6 +12,7 @@ import moment from 'moment';
     selector: 'app-google-campaign-cost',
     templateUrl: './google-campaign-cost.component.html',
     styleUrls: ['./google-campaign-cost.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class GoogleCampaignCostComponent implements OnInit{

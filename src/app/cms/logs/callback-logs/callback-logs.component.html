@@ -1,12 +1,17 @@
 
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Logs</span>
+          <h5 class="cms-page-title">Callback Logs</h5>
+          <p class="cms-page-subtitle">Inspect partner callback delivery logs</p>
+        </div>
+      </div>
+
       <form [formGroup]="callbackLogsForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-end">
-          <div class="col-12">
-            <h5 class="m-0 mb-3">Callback Logs</h5>
-          </div>
+        <div class="p-fluid formgrid grid align-items-end cms-filter-bar">
           <div class="field col-12 md:col-3">
             <label for="callback_date_range">Select Date Range<span class="text-red-500">*</span></label>
             <p-datepicker formControlName="callback_date_range" placeholder="Select date range" selectionMode="range" [readonlyInput]="true" inputId="callback_date_range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true">
@@ -48,13 +53,13 @@
             }
           </div>
           <div class="field col-12 md:col-3 flex align-items-center">
-            <button type="submit" pButton pRipple class="w-auto " size="small">Submit</button>
+            <button type="submit" pButton pRipple class="w-auto" size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (freezTableValue) {
         <div>
-          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true styleClass="cms-table-dense">
             <ng-template #caption>
               <div class="flex justify-content-between flex-column sm:flex-row">
                 <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>

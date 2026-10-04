@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService} from 'primeng/api';
@@ -12,6 +12,7 @@ import { Table } from 'primeng/table';
     selector: 'shortlink-logs',
     templateUrl: './shortlink-logs.component.html',
     styleUrls: ['./shortlink-logs.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ShortlinkLogsComponent implements OnInit{

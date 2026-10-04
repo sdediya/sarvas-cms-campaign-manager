@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { MessageService } from 'primeng/api';
@@ -12,6 +12,7 @@ import { debounceTime, finalize } from 'rxjs';
     selector: 'app-ageing-summary-v2',
     templateUrl: './ageing-summary-v2.component.html',
     styleUrls: ['./ageing-summary-v2.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 
@@ -37,15 +38,10 @@ export class AgeingSummaryV2Component implements OnInit{
   telcoms:any
   data: any;
   advertising_platforms:any
-  service: any = [
-    {name: 'SME', code: 'sme'},
-    {name: 'Legacy', code: 'legacy'}
-  ]
 
   masterService:any = []
   services:any = []
   masterAggregator:any = []
-  products:any = []
 
   processing:any = false
 
@@ -70,7 +66,7 @@ export class AgeingSummaryV2Component implements OnInit{
       date: ['', [Validators.required]],
       tel_id: ['',[Validators.required]],
       partner_id: ['',[Validators.required]],
-      service: ['',[Validators.required]],
+      service: ['legacy'],
       service_id: [''],
       platform_id: ['']
     });
@@ -82,12 +78,10 @@ export class AgeingSummaryV2Component implements OnInit{
     
     this.f['tel_id'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
       let telData:any = this.telcoms.find((e:any)=> e.tel_id == value);
-      this.services = this.masterService = telData.services;
-      this.masterAggregator = telData.master_aggregator
-      this.products = this.service.filter((e:any)=> telData.product.includes(e.name));
+      this.services = this.masterService = telData.services.filter((e:any)=> e.service_type?.toLowerCase() == 'legacy');
+      this.masterAggregator = telData.master_aggregator.filter((e:any)=> e.service_type?.includes('Legacy'));
       
       this.f['partner_id'].reset();
-      this.f['service'].reset();
       this.f['service_id'].reset();
       
       this.submitted =false
@@ -97,24 +91,10 @@ export class AgeingSummaryV2Component implements OnInit{
     });
     
     this.f['partner_id'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
-      let masterAggregator:any = this.masterAggregator.find((e:any)=> e.maggregator_id == value);
       this.services = this.masterService.filter((e:any)=> e.maggregator_id == value)
-      this.products = this.service.filter((e:any)=> masterAggregator.service_type.includes(e.name));
-      
-      this.f['service'].reset();
-      this.f['service_id'].reset();
-      
-      this.submitted =false
-      this.cols = []
-      this.reports = []
-      this.footerData = []
-    });
-    
-    this.f['service'].valueChanges.pipe(debounceTime(500)).subscribe((value:any)=>{
-      let masterAggregatorID = this.f['partner_id'].value
-      this.services = this.masterService.filter((e:any)=> e.service_type.toLowerCase() == value && e.maggregator_id == masterAggregatorID)
       
       this.f['service_id'].reset();
+      
       this.submitted =false
       this.cols = []
       this.reports = []

@@ -1,12 +1,17 @@
 
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Logs</span>
+          <h5 class="cms-page-title">Failed Callback Logs</h5>
+          <p class="cms-page-subtitle">Failed partner callback attempts</p>
+        </div>
+      </div>
+
       <form [formGroup]="callbackLogsForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid formgrid grid align-items-center">
-          <div class="col-12 md:col-12">
-            <h5 class="m-0">Failed Callback Logs</h5>
-          </div>
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <div class="field col-12">
               <label htmlFor="log_date">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
@@ -54,13 +59,13 @@
             </div>
           </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (freezTableValue) {
         <div>
-          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true>
+          <p-table #dt1 [value]="callbacklogs" [scrollable]="true" scrollHeight="400px" [lazy]="true" (onLazyLoad)="nextPage($event)" [paginator]="true" [rows]="10" [totalRecords]="totalTableRecords" [loading]="loading" [currentPageReportTemplate]="'{currentPage} of {totalPages}'" [showCurrentPageReport]=true styleClass="cms-table-dense">
             <ng-template #caption>
               <div class="flex justify-content-between flex-column sm:flex-row">
                 <p-iconfield class="mb-2"><p-inputicon class="pi pi-search"></p-inputicon>

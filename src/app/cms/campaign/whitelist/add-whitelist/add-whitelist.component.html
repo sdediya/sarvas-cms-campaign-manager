@@ -1,15 +1,21 @@
 <div class="grid cms-campaign cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="cms-page-title">Add Whitelist</h5>
-      <div class="mb-1 mt-6">
+            <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Whitelist</span>
+          <h5 class="cms-page-title">Add Whitelist</h5>
+          <p class="cms-page-subtitle">Add mobile numbers or series to the whitelist</p>
+        </div>
+      </div>
+      <div class="cms-form-body">
         <form [formGroup]="addWhitelistForm" (ngSubmit)="onSubmit()">
-          <div class="p-fluid formgrid grid">
+          <div class="p-fluid formgrid grid cms-form-stack">
             <div class="field col-3 mb-0">
               <label htmlFor="whitelist_type">Select Whitelist Type<span label styleclass="label-required" class="text-red-500">*</span></label>
               <p-select id="whitelist_type" [options]="whitelist_types" optionLabel="name" formControlName="whitelist_type" (onChange)="onWhitelistTypeChange($event)" placeholder="Select Whitelist Type" optionValue="code"></p-select>
               @if (submitted && !f['whitelist_type'].valid) {
-                <div style="display: block; width: 100%;">
+                <div class="cms-field-error">
                   @if (f['whitelist_type'].hasError('required') ) {
                     <span class="p-error">
                       Please select Whitelist Type
@@ -53,7 +59,7 @@
                   }
 
                   @if (submitted && !f['whitelist_value'].valid) {
-                    <div style="display: block; width: 100%;">
+                    <div class="cms-field-error">
                       @if (f['whitelist_value'].hasError('required') ) {
                         <span class="p-error">
                           Please enter whitelist value

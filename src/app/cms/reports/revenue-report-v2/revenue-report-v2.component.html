@@ -1,10 +1,16 @@
-<div class="grid">
+<div class="grid cms-page">
   <div class="col-12">
     <div class="card">
-      <h5 class="m-0" style="text-wrap: nowrap;">Revenue Report</h5>
-      <p-divider></p-divider>
+      <div class="cms-page-header">
+        <div class="cms-page-header__text">
+          <span class="cms-page-kicker">Reports</span>
+          <h5 class="cms-page-title">Revenue Report</h5>
+          <p class="cms-page-subtitle">Operator revenue by date range</p>
+        </div>
+      </div>
+
       <form [formGroup]="revenueReportForm">
-        <div class="p-fluid formgrid grid align-items-center">
+        <div class="p-fluid formgrid grid align-items-center cms-filter-bar">
           <div class="col-4 md:col-3">
             <label htmlFor="revenue_date_range">Select Date Range<span label styleclass="label-required" class="text-red-500">*</span></label>
             <p-datepicker formControlName="revenue_date_range" selectionMode="range" [readonlyInput]="true" inputId="range" dateFormat="yy-mm-dd" [showIcon]="true" [maxDate]="maxDate" [showButtonBar]="true"></p-datepicker>
@@ -33,34 +39,28 @@
             }
           </div>
           <div class="col-4 md:col-3">
-            <label htmlFor="revenue_product_type">Select Product <span label styleclass="label-required" class="text-red-500">*</span></label>
-            <p-select class="col-3 p-0" formControlName="revenue_product_type" id="revenue_product_type" placeholder="Product" [options]="products" optionLabel="name" [filter]="true"  optionValue="code"></p-select>
-            @if (submitted && !f['revenue_product_type'].valid) {
-              <div style="display: block; width: 100%;">@if (f['revenue_product_type'].hasError('required') ) {
-                <span class="p-error">Please select product </span>
-              }</div>
-            }
-          </div>
-          <div class="col-4 md:col-3">
             <label htmlFor="revenue_service_id">Select Service</label>
             <p-select class="col-3 p-0" [showClear]="true" formControlName="revenue_service_id" id="revenue_service_id" placeholder="Service" [options]="services" optionLabel="service_name" [filter]="true"  optionValue="service_id"></p-select>
           </div>
           <div class="col-3 md:col-3 flex align-items-center">
-            <button type="submit" (click)="onSubmit()" pButton pRipple class="w-6 text-xl " size="small">Submit</button>
+            <button type="submit" (click)="onSubmit()" pButton pRipple size="small">Submit</button>
           </div>
         </div>
       </form>
       @if (submitted && isValidForm) {
         <div>
-          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px">
+          <p-table [columns]="cols" [value]="reports" [scrollable]="true" scrollHeight="400px" styleClass="cms-table-dense">
             <ng-template #caption>
-              <div class="flex align-items-center">
-                <ul class="flex m-0 p-0" style="list-style: none;">
+              <div class="cms-list-tools">
+                <div></div>
+                <div class="cms-list-tools__actions">
+                  <ul class="flex m-0 p-0" style="list-style: none;">
                   @for (service of serviceWiseShare; track service) {
                     <li class="m-0 pr-3">{{service.service_name}}({{service.sel_revenue_share}}%)</li>
                   }
                 </ul>
-                <button type="button" pButton pRipple (click)="downloadExcel()" class="ml-auto" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                <button type="button" pButton pRipple (click)="downloadExcel()" pTooltip="XLS" tooltipPosition="bottom" severity="success"><i class="pi pi-file-excel"></i></button>
+                </div>
               </div>
             </ng-template>
             <ng-template #header let-columns>
@@ -84,7 +84,7 @@
             @if (footerData; as columns) {
               <ng-template #footer let-columns>
                 <tr> @for (col of columns; track col; let dateColumn = $first) {
-                  <td pFrozenColumn [frozen]="dateColumn">{{footerData[col.key]}}</td>
+                  <td pFrozenColumn [frozen]="dateColumn">{{ dateColumn && !footerData[col.key] ? 'Total' : footerData[col.key] }}</td>
                 } </tr>
               </ng-template>
             }

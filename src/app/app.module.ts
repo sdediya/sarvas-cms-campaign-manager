@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
+import { VasAura } from './theme/vas-aura.preset';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,14 +39,12 @@ import { SharedUiModule } from 'src/app/shared/shared-ui.module';
     ConfirmationService,
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: VasAura,
         options: {
           // Keep CMS on light UI regardless of OS dark-mode preference
           darkModeSelector: 'none',
         },
       },
-      license:
-        'eyJpZCI6IjFmOWFlM2Y4LWE0MDAtNDRlMy04N2RhLTdhM2JmZDIyMzllYiIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3OTA0MTE0MTMsImV4cCI6MTgyMTk0NzQxM30.zEORdj2Bzo8iru_twJHQubWaM_VvUh16RcQS2To_-HmLScJxQ3zx6yUAbbMyd4xpHJkwKM94QK9XPEJGLtOPDQ',
     }),
     { provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: MaintenanceInterceptor, multi: true },

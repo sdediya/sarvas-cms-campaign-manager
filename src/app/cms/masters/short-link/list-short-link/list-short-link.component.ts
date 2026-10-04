@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -14,6 +14,7 @@ import { ClipboardService } from 'ngx-clipboard';
     selector: 'app-list-short-link',
     templateUrl: './list-short-link.component.html',
     styleUrls: ['./list-short-link.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListShortLinkComponent implements OnInit {

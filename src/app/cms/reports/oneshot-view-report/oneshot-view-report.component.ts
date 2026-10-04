@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
     selector: 'app-oneshot-view-report',
     templateUrl: './oneshot-view-report.component.html',
     styleUrls: ['./oneshot-view-report.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class OneshotViewReportComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -13,6 +13,7 @@ import { DatePipe } from '@angular/common';
     selector: 'app-list-region',
     templateUrl: './list-region.component.html',
     styleUrls: ['./list-region.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ListRegionComponent implements OnInit {

@@ -1,4 +1,4 @@
-/* Global styles — legacy-layout-tokens.css is the frozen light CMS baseline (pre-Optimus). */
+/* Global styles — legacy-layout-tokens.css is the enterprise CMS baseline. */
 @import "primeicons/primeicons.css";
 @import "./assets/layout/styles/theme/legacy-layout-tokens.css";
 @import "./app/cms/campaign/campaign-ux.css";
@@ -7,7 +7,7 @@
     color: #fff !important;
     padding: 8px 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--vas-radius-sm, 6px);
     outline: none;
 }
 
@@ -16,16 +16,17 @@
 }
 
 label sup {
-    color: red;
+    color: var(--vas-danger, #dc2626);
 }
 
 /* Card surface used by CMS pages */
 .card {
     background: var(--surface-card);
-    padding: 1.5rem;
-    margin-bottom: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--surface-border);
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+    box-shadow: var(--card-shadow, 0 1px 2px rgba(15, 23, 42, 0.04));
 }
 
 /* ---- PrimeNG 22 / Aura compatibility ---- */
@@ -59,7 +60,7 @@ label sup {
     position: absolute;
     left: 0.75rem;
     z-index: 1;
-    color: var(--text-color-secondary, #6c757d);
+    color: var(--text-color-secondary, #64748b);
     pointer-events: none;
 }
 .p-input-icon-left > input,
@@ -77,18 +78,24 @@ label sup {
     max-width: 100%;
 }
 
-/* DataTable density closer to previous CMS look */
+/* DataTable density — compact enterprise tables */
 .p-datatable .p-datatable-thead > tr > th {
-    background: var(--surface-section, #fff);
-    color: var(--text-color, #495057);
+    background: var(--surface-50, #f8fafc);
+    color: var(--text-color-secondary, #64748b);
     font-weight: 600;
-    border-bottom: 1px solid var(--surface-border, #dfe7ef);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--surface-border, #e2e8f0);
+    padding: 0.5rem 0.7rem;
 }
 .p-datatable .p-datatable-tbody > tr > td {
-    border-bottom: 1px solid var(--surface-border, #dfe7ef);
+    border-bottom: 1px solid var(--surface-border, #e2e8f0);
+    padding: 0.5rem 0.7rem;
+    font-size: 0.84rem;
 }
 .p-datatable .p-datatable-tbody > tr:hover {
-    background: var(--surface-hover, #f6f9fc);
+    background: var(--surface-hover, #f8fafc);
 }
 
 /* Fieldset content spacing */
@@ -116,4 +123,13 @@ p-button.p-button-outlined {
 p-button {
     display: inline-flex;
     vertical-align: middle;
+}
+
+/* Compact form labels */
+.field > label,
+.p-formgrid label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    margin-bottom: 0.35rem;
 }

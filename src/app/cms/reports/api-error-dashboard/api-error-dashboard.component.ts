@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExcelExportService } from 'src/app/services/excelExport/excel-export.service';
 import { HttpService } from 'src/app/services/http/http.service';
@@ -12,6 +12,7 @@ import { Observable, catchError } from 'rxjs';
     selector: 'app-api-error-dashboard',
     templateUrl: './api-error-dashboard.component.html',
     styleUrls: ['./api-error-dashboard.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ApiErrorDashboardComponent {
