@@ -314,9 +314,9 @@ plan_status: any = [{
   }
 
   copyToClipboard(plan:any) {
-    const url = Utils.landingPageUrl(this.BASE_URL, plan, 'landing', `prod_id=${encodeURIComponent(plan.id)}`);
+    const url = Utils.landingRefUrl(this.BASE_URL, plan, 'p', plan.id);
     if(!url){
-      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing for this plan' });
+      this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing, or the plan id is invalid' });
       return;
     }
 

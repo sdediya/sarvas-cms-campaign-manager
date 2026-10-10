@@ -99,10 +99,10 @@ export class ListCampaignComponent implements OnInit{
     const campaigntype = campaign.campaigntype;
     let content = campaign.id;
     if(campaigntype=='wap'){
-      const page = campaign.is_silent == 1 ? 's-redirect' : 'landing';
-      const url = Utils.landingPageUrl(this.BASE_URL, campaign, page, `cid=${encodeURIComponent(campaign.id)}&click_id=`);
+      const page = campaign.is_silent == 1 ? 's-redirect' : '';
+      const url = Utils.landingRefUrl(this.BASE_URL, campaign, 'c', campaign.id, page, 'click_id=');
       if(!url){
-        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing for this campaign' });
+        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Region, operator or service shortcode is missing, or the campaign id is invalid' });
         return;
       }
       content = url;
